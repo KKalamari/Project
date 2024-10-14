@@ -12,11 +12,12 @@ double distance(const pair<double, double>& p1, const pair<double, double>& p2) 
 }
 
 //the pseudocode but in cpp?
+
 void modify_neighbors(int p, vector<pair<double, double>>& points, set<int>& out_neighbors, vector<int>& V, double alpha, int R) {
     set<int> candidate_set(V.begin(), V.end());
     candidate_set.insert(out_neighbors.begin(), out_neighbors.end());
-    candidate_set.erase(p);  // Remove point p from candidate set
-    out_neighbors.clear();   // Reset out-neighbors of p
+    candidate_set.erase(p);
+    out_neighbors.clear();   
 
     while (!candidate_set.empty()) {
         int p_star = -1;
