@@ -2,10 +2,11 @@
 #include <string>
 #include <vector>
 #include "graph_creation.h"
+#include "reading.h"
 using namespace std;
 
 //s->starting node, xq->query point, k->result size, search_list_size->L >=k
-int greedysearch(vector <int> s,int query_point,int k_neigh,int L_sizelist)
+void greedysearch(vector <int> s,int query_point,int k_neigh,int L_sizelist)
 {
     //vector<int>* graph = graph_creation(); 
     vector <int> SetL;
@@ -24,5 +25,9 @@ int greedysearch(vector <int> s,int query_point,int k_neigh,int L_sizelist)
         }
 
     }
+
+}
+
+int main(){
 
 }
