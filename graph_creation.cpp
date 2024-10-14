@@ -8,7 +8,7 @@ void addEdge(vector<int> adj[], int u, int v)
     adj[v].push_back(u);
 }
 
-vector <int>* graph_creation(){
+void graph_creation(vector <int>* vec){
     int V = 5;
     vector<int> adj[V];
     addEdge(adj, 0, 1);
@@ -18,5 +18,4 @@ vector <int>* graph_creation(){
     addEdge(adj, 1, 4);
     addEdge(adj, 2, 3);
     addEdge(adj, 3, 4);
-    return adj;
 }
