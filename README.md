@@ -1,2 +1,2 @@
 
-squid 1
+squid 
