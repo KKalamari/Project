@@ -1,21 +1,45 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "euclidean_distance.h"
+#include <list>
+#include <algorithm>
 using namespace std;
 void addEdge(vector<int> adj[], int u, int v)
 {
     adj[u].push_back(v);
-    adj[v].push_back(u);
+    
 }
 
-void graph_creation(vector <int>* vec){
-    int V = 5;
-    vector<int> adj[V];
-    addEdge(adj, 0, 1);
-    addEdge(adj, 0, 4);
-    addEdge(adj, 1, 2);
-    addEdge(adj, 1, 3);
-    addEdge(adj, 1, 4);
-    addEdge(adj, 2, 3);
-    addEdge(adj, 3, 4);
+void graph_creation(vector<vector<float>>*vec,int k, int R ){
+    cout<< "the vector size is: "<< vec->size() <<"\n";
+    cout << "the k is: "<< k <<endl;
+    map <int, list<int>> adj;
+    
+    srand(time(0)); 
+
+    
+    for(int i=0;i<int(vec->size());i++){
+        for (int j=0;j<R;j++){
+            int random_number = rand() % (vec->size())+1; //generating numbers from 1 to vec->size 
+            if (find(adj[i].begin(), adj[i].end(), random_number) == adj[i].end() && i!=random_number)  //not found nor i=R thus adding neighbor
+                adj[i].push_back(random_number);
+            else{
+                j--;
+                cout<<"hello never ending torment"<<endl;
+                continue; //redo the loop until you find some neighbor which is not already in the list or not its self.
+            }
+        
+    }
+    }
+
+    cout << "Graph adjacency list:\n";
+    for (const auto& node : adj) {
+        cout << "Node " << node.first << ": ";
+        for (const auto& neighbor : node.second) {
+            cout << neighbor << " ";
+        }
+        cout << endl;
+    }
 }
+

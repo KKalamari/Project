@@ -1,2 +1,3 @@
 #pragma once
-void reading_fvec(int argc,char*argv);
+using namespace std;
+vector<vector<float>>* reading_fvecs(const char* filename,int bounda,int boundb);
