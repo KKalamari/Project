@@ -3,4 +3,4 @@
 #include <map>
 using namespace std;
 #pragma once
-map <pair <int,int>,float> euclidean_distance(vector<vector<float>>*vec);
+void euclidean_distance(vector<vector<float>>*vec,vector<float>query_point, map<int,float>&);

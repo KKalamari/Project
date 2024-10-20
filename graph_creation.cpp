@@ -4,14 +4,11 @@
 #include "euclidean_distance.h"
 #include <list>
 #include <algorithm>
+#include <map>
 using namespace std;
-void addEdge(vector<int> adj[], int u, int v)
-{
-    adj[u].push_back(v);
-    
-}
 
-void graph_creation(vector<vector<float>>*vec,int k, int R ){
+
+map <int, list<int>> graph_creation(vector<vector<float>>*vec,int k, int R ){
     cout<< "the vector size is: "<< vec->size() <<"\n";
     cout << "the k is: "<< k <<endl;
     map <int, list<int>> adj;
@@ -33,13 +30,14 @@ void graph_creation(vector<vector<float>>*vec,int k, int R ){
     }
     }
 
-    cout << "Graph adjacency list:\n";
-    for (const auto& node : adj) {
-        cout << "Node " << node.first << ": ";
-        for (const auto& neighbor : node.second) {
-            cout << neighbor << " ";
-        }
-        cout << endl;
-    }
+    // cout << "Graph adjacency list:\n";
+    // for (const auto& node : adj) {
+    //     cout << "Node " << node.first << ": ";
+    //     for (const auto& neighbor : node.second) {
+    //         cout << neighbor << " ";
+    //     }
+    //     cout << endl;
+    // }
+    return adj;
 }
 

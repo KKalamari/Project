@@ -41,13 +41,13 @@ using namespace std;
 
 
 
-    for(int i=0;i<printed_vectors;i++){
-        cout<< "Vector "<< (bounda+i)<< ":" ;
-        for(int j=0;j<vector_size;j++){
-            cout << (*vec)[i][j]<< " ";
-        }
-        cout<< "\n \n";
-    }
+    // for(int i=0;i<printed_vectors;i++){
+    //     cout<< "Vector "<< (bounda+i)<< ":" ;
+    //     for(int j=0;j<vector_size;j++){
+    //         cout << (*vec)[i][j]<< " ";
+    //     }
+    //     cout<< "\n \n";
+    // }
 
     fclose(fd);
     return vec;

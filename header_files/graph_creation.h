@@ -1,8 +1,9 @@
 #include <vector>
 #include <iostream>
+#include <map>
+#include <list>
 #pragma once
 using namespace std;
 // Declare the functions from file.cpp here
-void addEdge(vector<int> adj[], int u, int v);
-void graph_creation(vector<vector<float>>*,int k, int R);
+map <int, list<int>> graph_creation(vector<vector<float>>*,int k, int R);
 

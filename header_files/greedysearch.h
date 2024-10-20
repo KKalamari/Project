@@ -1,0 +1,10 @@
+#include <map>
+#include <list>
+#include <iostream>
+#include <vector>
+#pragma once
+using namespace std;
+
+bool unexplored_nodes(list <int>L,list <int>visited);
+void addtoL(list <int> neighbors,list <int> &L,map <int,float>distances,int Lsizelist);
+list <int> greedysearch( map <int, list<int>> s,vector<float> query_point,int k_neigh,int L_sizelist,map <int,float>distances);
