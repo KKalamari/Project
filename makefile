@@ -5,7 +5,7 @@ OUTPUT_DIR = output
 .PHONY: all clean
 
 # Object files
-OBJS = $(OUTPUT_DIR)/graph_creation.o $(OUTPUT_DIR)/euclidean_distance.o $(OUTPUT_DIR)/reading.o
+OBJS = $(OUTPUT_DIR)/graph_creation.o $(OUTPUT_DIR)/euclidean_distance.o $(OUTPUT_DIR)/reading.o $(OUTPUT_DIR)/greedysearch.o
 
 all: $(OUTPUT_DIR)/main 
 
