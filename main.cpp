@@ -5,6 +5,7 @@
 #include "greedysearch.h"
 #include "euclidean_distance.h"
 #include <list>
+#include <utility>
 using namespace std;
 // the syntax for execution  is: ./main k_num R_num
 
@@ -32,16 +33,19 @@ int main(int argc,char** argv){
     cout <<"reading got done"<< endl;
     xq=(*vec2)[0]; //we assing the query as the first vector
        
-    map <int, list<int>> graph;
+    map <int, set<int>> graph;
     graph = graph_creation(vec,k_neigh,R);
     cout <<"graph got made"<< endl;
     map  <int,float> distances;
     cout << " I am before the calculation"<<endl;
     euclidean_distance(vec,xq,distances); //inside this function the distances variable is filled with the euclidean_distances of every vector from the query point
     cout <<"I am before the greedySearch LESGOO"<<endl;
-    list <int> L =greedysearch(graph,xq,k_neigh,L_sizelist,distances);
-    cout<< "the L list is: "<< endl;
-    for(list <int> :: iterator lit=L.begin() ;lit!=L.end();lit++){
+    pair <set <int>,set <int>> PairSet;
+    PairSet = greedysearch(graph,xq,k_neigh,L_sizelist,distances);
+    set <int> L=PairSet.first;
+    set <int> V=PairSet.second;
+    cout<< "the L set is: "<< endl;
+    for(set <int> :: iterator lit=L.begin() ;lit!=L.end();lit++){
         cout<< " "<<*lit;
     }
     cout <<endl << "I am before deallocating"<< endl;
