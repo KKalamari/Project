@@ -10,9 +10,8 @@ using namespace std;
 
 
 
-map <int, set<int>> graph_creation(vector<vector<float>>*vec,int k, int R ){
+map <int, set<int>> graph_creation(vector<vector<float>>*vec, int R ){
     cout<< "the vector size is: "<< vec->size() <<"\n";
-    cout << "the k is: "<< k <<endl;
     map <int, set<int>> adj;
     
     srand(time(0)); 

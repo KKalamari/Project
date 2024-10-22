@@ -34,7 +34,7 @@ int main(int argc,char** argv){
     xq=(*vec2)[0]; //we assing the query as the first vector
        
     map <int, set<int>> graph;
-    graph = graph_creation(vec,k_neigh,R);
+    graph = graph_creation(vec,R);
     cout <<"graph got made"<< endl;
     map  <int,float> distances;
     cout << " I am before the calculation"<<endl;

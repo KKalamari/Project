@@ -62,31 +62,6 @@ void addtoL(set <int> neighbors,set <int> &L,map <int,float>distances,int Lsizel
 }
 
 
-            
-// float minimum_distance(list <int> L,map <int,float>& distances,int &p){
-//     list <int>::iterator lit;
-//     float mindist=distances[L.front()]-1; //making sure it's less than the actual distance of the first node
-//     for(lit=L.begin();lit!=L.end();lit++){
-//         if(mindist>distances[*lit]){
-//             mindist=distances[*lit];
-//             p=int(*lit);
-//         }
-
-//     }
-//     return mindist;
-// }
-
-
-// void pruning_nodes(int nodes_to_detele,map <int,float>distances,list <int>& L){
-//     float maxdist=L.front()-1;
-//         list <int>:: iterator lit;
-//         for(nodes_to_detele;nodes_to_detele!=0;nodes_to_detele--){
-//             L.pop_back(); //removing the last element of the list, thus the one with the bigger distance.
-//     }
-// }
-
-
-
 //s->starting node, xq->query point, k->result size, search_list_size->L >=k
 pair <set <int>,set <int>> greedysearch( map <int, set<int>> s,vector<float> query_point,int k_neigh,int L_sizelist,map <int,float>distances){
     //initialize set L
@@ -115,3 +90,24 @@ pair <set <int>,set <int>> greedysearch( map <int, set<int>> s,vector<float> que
     return make_pair(L,V); //returning L which contains the k nearest neighbors
 }
 
+// float minimum_distance(list <int> L,map <int,float>& distances,int &p){
+//     list <int>::iterator lit;
+//     float mindist=distances[L.front()]-1; //making sure it's less than the actual distance of the first node
+//     for(lit=L.begin();lit!=L.end();lit++){
+//         if(mindist>distances[*lit]){
+//             mindist=distances[*lit];
+//             p=int(*lit);
+//         }
+
+//     }
+//     return mindist;
+// }
+
+
+// void pruning_nodes(int nodes_to_detele,map <int,float>distances,list <int>& L){
+//     float maxdist=L.front()-1;
+//         list <int>:: iterator lit;
+//         for(nodes_to_detele;nodes_to_detele!=0;nodes_to_detele--){
+//             L.pop_back(); //removing the last element of the list, thus the one with the bigger distance.
+//     }
+// }
