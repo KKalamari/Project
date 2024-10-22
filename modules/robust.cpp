@@ -36,7 +36,7 @@ void modify_neighbors(int p, vector<pair<double, double>>& points, set<int>& out
         }
 
         out_neighbors.insert(p_star);
-        if (out_neighbors.size() == R) break;
+        if  (out_neighbors.size() == static_cast<size_t>(R)) break;
 
         for (auto it = candidate_set.begin(); it != candidate_set.end();)
         {
