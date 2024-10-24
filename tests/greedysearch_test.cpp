@@ -73,7 +73,7 @@ void greedy_search(){
     map <int,float>distances; //distance of the <int> node from the query 
     distances[0] = 8.0;
     distances[1]=2.5;
-    distances[2]=2.0;
+    distances[2]=2.5;
     distances[3]=2.0;
     vector<float> xq={1.5};
     pair <set <int>,set <int>> PairSet;
