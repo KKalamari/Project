@@ -8,15 +8,16 @@
 
 using namespace std;
 
+// checking if the searching for an unexplored node in L happens correctly.
 void test_unexplored_nodes(){
-    set <int> L ={0,1,2};
-    set <int> V ={1,2,3};
+    list <int> L ={0,1,2};
+    list <int> V ={1,2,3};
     bool biased_checker=1; //L contains zero which does not exist in V
     bool actual_checker=unexplored_nodes(L,V);
     TEST_CHECK(actual_checker==biased_checker);
 
     L={0,1,2,3}; //L contains "1 " which does not exist in V
-     V={0,2,3};
+    V={0,2,3};
     actual_checker= unexplored_nodes(L,V);
     TEST_CHECK(actual_checker==biased_checker);
 
@@ -40,9 +41,10 @@ void test_unexplored_nodes(){
 
 }
 
+//checking if the addition of neighbor nodes in L list happends correctly.
 void test_addtoL(){
-    set <int> L;
-    set <int> neighbors;
+    list <int> L;
+    list <int> neighbors;
     map <int,float> distances;
     int L_sizelist;
 
@@ -51,7 +53,7 @@ void test_addtoL(){
     distances={{1,float(7.65)},{2,float(4.5)},{3,float(8)}};
     addtoL(neighbors,L,distances,L_sizelist);
 
-    set <int>::iterator lit=L.begin();
+    list <int>::iterator lit=L.begin();
     TEST_CHECK(*lit==2);
         lit++;
         TEST_CHECK(*lit==1);
@@ -60,9 +62,31 @@ void test_addtoL(){
     }
 
 
+    //checking the greedysearch basic functions
+void greedy_search(){
+    //checking if the p function the way it should.
+    map <int, list<int>> s;
+    s[0]={1,2};
+    s[1]={3,0};
+    s[2]={1,3};
+    s[3]={2,0};
+    map <int,float>distances; //distance of the <int> node from the query 
+    distances[0] = 8.0;
+    distances[1]=2.5;
+    distances[2]=2.0;
+    distances[3]=2.0;
+    vector<float> xq={1.5};
+    pair <set <int>,set <int>> PairSet;
+    PairSet = greedysearch(s,xq,2,4,distances);
+
+
+    }
+
+
 TEST_LIST{
     {"test_unexplored_nodes",test_unexplored_nodes},
     {"test_addtoL()",test_addtoL},
+    {"greedy_search",greedy_search},
     {NULL, NULL}  // Terminate the test list
 
 
