@@ -1,82 +1,135 @@
-#include <iostream>
+#include <acutest.h>
+#include "robust.h"
 #include <vector>
-#include <set>
-#include <map>
-#include <cstdlib>
-#include <ctime>
-#include <algorithm>
-#include "acutest.h" 
+#include <unordered_set>
+#include <utility>
 #include <cmath>
+#include <iostream>
 
-using namespace std;
-
-void modify_neighbors(int p, vector<pair<double, double>>& points, set<int>& out_neighbors, vector<int>& V, double alpha, int R);
-
-void test_modify_neighbors_basic() {
-    vector<pair<double, double>> points = {{0, 0}, {1, 1}, {2, 2}, {3, 3}};
-    set<int> out_neighbors;
-    vector<int> V = {1, 2, 3}; // Candidates are the last three points
-    int p = 0; // The point at (0, 0)
-    double alpha = 1.0;
-    int R = 2; // We want 2 neighbors
-
-    modify_neighbors(p, points, out_neighbors, V, alpha, R);
-
-    // Check if out_neighbors contains the expected indices
-    TEST_CHECK(out_neighbors.size() == 2);
-    TEST_CHECK(out_neighbors.count(1) > 0 || out_neighbors.count(2) > 0);
+// A helper function to check if two graphs are identical
+bool compareGraphs(const std::vector<std::vector<int>>& g1, const std::vector<std::vector<int>>& g2) {
+    if (g1.size() != g2.size()) return false;
+    for (size_t i = 0; i < g1.size(); ++i) {
+        if (g1[i].size() != g2[i].size()) return false;
+        for (size_t j = 0; j < g1[i].size(); ++j) {
+            if (g1[i][j] != g2[i][j]) return false;
+        }
+    }
+    return true;
 }
 
-void test_modify_neighbors_with_alpha() {
-    vector<pair<double, double>> points = {{0, 0}, {1, 1}, {2, 2}, {3, 3}};
-    set<int> out_neighbors;
-    vector<int> V = {1, 2, 3};
-    int p = 0;
-    double alpha = 0.5; // Adjust alpha to see if it affects neighbor selection
-    int R = 2;
+// Test case: basic pruning with a simple graph
+void test_basic_pruning(void) {
+    // Create a simple graph: 4 nodes, fully connected initially
+    std::vector<std::vector<int>> graph = {
+        {1, 2, 3},  // Neighbors of node 0
+        {0, 2, 3},  // Neighbors of node 1
+        {0, 1, 3},  // Neighbors of node 2
+        {0, 1, 2}   // Neighbors of node 3
+    };
+    
+    // Corresponding 2D points (coordinates for each node)
+    std::vector<std::pair<double, double>> points = {
+        {0.0, 0.0},  // Point for node 0
+        {1.0, 0.0},  // Point for node 1
+        {0.0, 1.0},  // Point for node 2
+        {1.0, 1.0}   // Point for node 3
+    };
+    
+    std::unordered_set<int> candidateSet;
+    double alpha = 1.5; // Set alpha
+    size_t R = 2;       // Max number of neighbors after pruning
 
-    modify_neighbors(p, points, out_neighbors, V, alpha, R);
+    // Apply the RobustPrune algorithm to node 0
+    RobustPrune(graph, points, 0, candidateSet, alpha, R);
 
-    // Here we expect to get both 1 and 2 since alpha allows it
-    TEST_CHECK(out_neighbors.size() == 2);
-    TEST_CHECK(out_neighbors.count(1) > 0);
-    TEST_CHECK(out_neighbors.count(2) > 0);
+    // Expected result after pruning (only 2 closest neighbors should be kept)
+    std::vector<std::vector<int>> expectedGraph = {
+        {1, 2},    // Node 0 should have only 2 neighbors left
+        {0, 2, 3}, // Others remain unchanged
+        {0, 1, 3},
+        {0, 1, 2}
+    };
+
+    TEST_CHECK(compareGraphs(graph, expectedGraph));
 }
 
-void test_modify_neighbors_edge_case() {
-    vector<pair<double, double>> points = {{0, 0}};
-    set<int> out_neighbors;
-    vector<int> V; // No candidates
-    int p = 0; // Only one point
-    double alpha = 1.0;
-    int R = 2;
+// Test case: pruning with higher alpha to relax pruning
+void test_high_alpha_pruning(void) {
+    // Same graph setup as before
+    std::vector<std::vector<int>> graph = {
+        {1, 2, 3},
+        {0, 2, 3},
+        {0, 1, 3},
+        {0, 1, 2}
+    };
 
-    modify_neighbors(p, points, out_neighbors, V, alpha, R);
+    // Same points as before
+    std::vector<std::pair<double, double>> points = {
+        {0.0, 0.0},  
+        {1.0, 0.0},  
+        {0.0, 1.0},  
+        {1.0, 1.0}  
+    };
 
-    // Expect no neighbors found
-    TEST_CHECK(out_neighbors.empty());
+    std::unordered_set<int> candidateSet;
+    double alpha = 3.0; // Higher alpha, relaxed pruning
+    size_t R = 2;       // Max number of neighbors after pruning
+
+    // Apply RobustPrune algorithm to node 0
+    RobustPrune(graph, points, 0, candidateSet, alpha, R);
+
+    // Expected result: the pruning is more relaxed with higher alpha
+    std::vector<std::vector<int>> expectedGraph = {
+        {1, 2},    // Node 0 should still have only 2 neighbors due to R
+        {0, 2, 3}, 
+        {0, 1, 3}, 
+        {0, 1, 2}  
+    };
+
+    TEST_CHECK(compareGraphs(graph, expectedGraph));
 }
 
-void test_modify_neighbors_exact_limit() {
-    vector<pair<double, double>> points = {{0, 0}, {1, 1}, {1, 2}, {2, 1}};
-    set<int> out_neighbors;
-    vector<int> V = {1, 2, 3};
-    int p = 0; // Point (0, 0)
-    double alpha = 1.0;
-    int R = 2; // We want exactly 2 neighbors
+// // Test case: pruning with lower alpha for stricter pruning
+// void test_low_alpha_pruning(void) {
+//     // Same graph setup as before
+//     std::vector<std::vector<int>> graph = {
+//         {1, 2, 3},
+//         {0, 2, 3},
+//         {0, 1, 3},
+//         {0, 1, 2}
+//     };
 
-    modify_neighbors(p, points, out_neighbors, V, alpha, R);
+//     // Same points as before
+//     std::vector<std::pair<double, double>> points = {
+//         {0.0, 0.0},  
+//         {1.0, 0.0},  
+//         {0.0, 1.0},  
+//         {1.0, 1.0}  
+//     };
 
-    // Check that we have exactly 2 neighbors
-    TEST_CHECK(out_neighbors.size() == 2);
-    TEST_CHECK(out_neighbors.count(1) > 0 || out_neighbors.count(2) > 0);
-}
+//     std::unordered_set<int> candidateSet;
+//     double alpha = 0.5; // Lower alpha, stricter pruning
+//     size_t R = 2;       // Max number of neighbors after pruning
 
+//     // Apply RobustPrune algorithm to node 0
+//     RobustPrune(graph, points, 0, candidateSet, alpha, R);
+
+//     // Expected result: stricter pruning with lower alpha, might remove more nodes
+//     std::vector<std::vector<int>> expectedGraph = {
+//         {1, 2},    // Node 0 still has 2 neighbors due to R, but could be stricter in pruning candidates
+//         {0, 2, 3}, 
+//         {0, 1, 3}, 
+//         {0, 1, 2}  
+//     };
+
+//     TEST_CHECK(compareGraphs(graph, expectedGraph));
+// }
+
+// Registering the test cases with Acutest
 TEST_LIST = {
-    { "test_modify_neighbors_basic", test_modify_neighbors_basic },
-    { "test_modify_neighbors_with_alpha", test_modify_neighbors_with_alpha },
-    { "test_modify_neighbors_edge_case", test_modify_neighbors_edge_case },
-    { "test_modify_neighbors_exact_limit", test_modify_neighbors_exact_limit },
-    { nullptr, nullptr }
+    {"Basic Pruning", test_basic_pruning},
+    {"High Alpha Pruning", test_high_alpha_pruning},
+   // {"Low Alpha Pruning", test_low_alpha_pruning},
+    {NULL, NULL} // End of test list
 };
-
