@@ -5,7 +5,7 @@
 #include <string>
 #include <cstring>
 using namespace std;
- vector<vector<float>>* reading_fvecs(const char* filename,int bounda,int boundb){
+ vector<vector<float>> reading_fvecs(const char* filename,int bounda,int boundb){
    
     FILE* fd;
     
@@ -32,23 +32,26 @@ using namespace std;
     int printed_vectors=boundb-bounda+1;
     fseek(fd,(bounda-1)*fvector_size,SEEK_SET); //back at the start of the vector which is bounded by bounda
     cout<< "printed_vectors are :" << printed_vectors << "\n";
-    vector<vector<float>>* vec = new vector<vector<float>>(printed_vectors, vector<float>(vector_size));
+    vector<vector<float>> vec(printed_vectors);
+    cout << "I am before the for"<<endl;
     for(int i=0;i<printed_vectors;i++){
+        vec[i].resize(vector_size);
         fseek(fd,4,SEEK_CUR);
-        fread((*vec)[i].data(), sizeof(float), vector_size, fd);
+        fread(vec[i].data(), sizeof(float), vector_size, fd);
 
     }
 
 
 
     // for(int i=0;i<printed_vectors;i++){
-    //     cout<< "Vector "<< (bounda+i)<< ":" ;
+    //     cout<< "Vector "<< (bounda)<< ":" ;
     //     for(int j=0;j<vector_size;j++){
-    //         cout << (*vec)[i][j]<< " ";
+    //         cout << (*vec)[i][j]<< ", ";
     //     }
     //     cout<< "\n \n";
     // }
-
+    cout << " I am before closing"<< endl;
     fclose(fd);
+    cout<< " I am before returning"<< endl;
     return vec;
 }
