@@ -1,53 +1,73 @@
-#include <iostream>
-#include <vector>
+#include "robust.h"
 #include <cmath>
 #include <limits>
-#include <set>
-#include <algorithm>
-using namespace std;
+#include <iostream>
 
-//euclidean distance between two points
-double distance(const pair<double, double>& p1, const pair<double, double>& p2)
+double distance(const std::pair<double, double>& a, const std::pair<double, double>& b) 
 {
-    return sqrt(pow(p1.first - p2.first, 2) + pow(p1.second - p2.second, 2));
+    return std::sqrt((a.first - b.first) * (a.first - b.first) + (a.second - b.second) * (a.second - b.second));
 }
 
-//the pseudocode but in cpp?
-
-void modify_neighbors(int p, vector<pair<double, double>>& points, set<int>& out_neighbors, vector<int>& V, double alpha, int R)
+void RobustPrune(
+    std::vector<std::vector<int>>& graph,
+    const std::vector<std::pair<double, double>>& points,
+    int p,
+    std::unordered_set<int>& candidateSet,
+    double alpha,
+    size_t R
+) 
 {
-    set<int> candidate_set(V.begin(), V.end());
-    candidate_set.insert(out_neighbors.begin(), out_neighbors.end());
-    candidate_set.erase(p);
-    out_neighbors.clear();   
-
-    while (!candidate_set.empty())
+    for (int neighbor : graph[p]) 
     {
-        int p_star = -1;
-        double min_distance = numeric_limits<double>::infinity();
-        for (int p_prime : candidate_set)
+        candidateSet.insert(neighbor);
+    }
+    candidateSet.erase(p); 
+
+    std::unordered_set<int> newNeighbors;
+
+    while (!candidateSet.empty() && newNeighbors.size() < R) 
+    {
+        int closestPoint = -1;
+        double minDistance = std::numeric_limits<double>::max();
+
+        for (int candidate : candidateSet) 
         {
-            double dist = distance(points[p], points[p_prime]);
-            if (dist < min_distance)
+            double dist = distance(points[p], points[candidate]);
+            if (dist < minDistance) 
             {
-                min_distance = dist;
-                p_star = p_prime;
+                minDistance = dist;
+                closestPoint = candidate;
             }
         }
 
-        out_neighbors.insert(p_star);
-        if  (out_neighbors.size() == static_cast<size_t>(R)) break;
-
-        for (auto it = candidate_set.begin(); it != candidate_set.end();)
+        if (closestPoint == -1) 
         {
-            int p_prime = *it;
-            if (alpha * distance(points[p_star], points[p_prime]) <= distance(points[p], points[p_prime]))
+            break; 
+        }
+
+        newNeighbors.insert(closestPoint);
+        candidateSet.erase(closestPoint);
+
+        for (auto it = candidateSet.begin(); it != candidateSet.end();) 
+        {
+            double distToClosest = distance(points[closestPoint], points[*it]);
+            double distToP = distance(points[p], points[*it]);
+
+            if (alpha * distToClosest <= distToP) 
             {
-                it = candidate_set.erase(it);
-            } else
+                it = candidateSet.erase(it); 
+            } else 
             {
                 ++it;
             }
         }
     }
+
+    graph[p].clear();
+
+    for (int neighbor : newNeighbors) 
+    {
+        graph[p].push_back(neighbor);
+    }
 }
+
