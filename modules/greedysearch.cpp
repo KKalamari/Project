@@ -13,105 +13,146 @@
 
 
 using namespace std;
+//Έχω λούσει λίγο με τη χρήση των lists, Θα ήταν αρκετά πιο αποδοτικό η χρήση sets, θα διορθωθεί στη 2η άσκηση, προχωράμε ελπίζω <3.
 
 
-//POSSIBLE MISTAKE!!!!
-bool unexplored_nodes(set <int>L,set <int>visited){ 
+//CUSTOM COMPARATOR, may be needed eventually.
+// struct CompareByDistance {
+//     map<int, float>& distances;
     
-    for(set <int> :: iterator lit=L.begin();lit!=L.end();lit++){ //for every element available in L
+//     CompareByDistance(map<int, float>& d) : distances(d) {}
+    
+//     bool operator()(int a, int b) const {
+//         return distances[a] < distances[b];  // Order by ascending distance
+//     }
+// };
+
+//ensuring that L contains at leasτ one node which haven't been already explored.
+bool unexplored_nodes(list <int>L,list <int>visited){ 
+    
+    for(list <int> :: iterator lit=L.begin();lit!=L.end();lit++){ //for every element there is in L
         bool found=0;
-        set <int> :: iterator vit=visited.begin(); //iterator for V list
+        list <int> :: iterator vit=visited.begin(); // we iterate V list
         for(vit=visited.begin();vit!=visited.end();vit++){
-        if(*vit==*lit){
+        if(*vit==*lit){ //if the current L element exist in V declare found=1 and break the loop, start checking on a new L element
             found=1;
             break;
         }
     }
-    if(found==0)
+    if(found==0) //if we didn;t found a match, insantly return 1
         return 1; //just found an unexplored node, return 1
     }
     return 0; //every node has been explored
 
 }
 
-//CORRECT
-void addtoL(set <int> neighbors,set <int> &L,map <int,float>distances,int Lsizelist){
-    set <int>:: iterator nit;
-    set <int>:: iterator lit;
+//The same logic with the above just for a specific node
+bool unexplored_node(int node, const list<int>& visited) { 
+    // Check if the node exists in the visited list
+    for (auto vit = visited.begin(); vit != visited.end(); vit++) {
+        if (*vit == node) {
+            return 0; //just found a match in visites list 
+        }
+    }
+    return true; // Node does not exist in the visited list
+}
+
+
+//aading the neighbors of the node which P contains in a sorted way.Also prunes the nodes when overextending the L_sizelist.
+void addtoL(list <int> neighbors,list <int> &L,map <int,float>distances,int Lsizelist){
+    cout<<endl<< "------------------------------------------------------------------";
+    list <int>:: iterator nit;
+    list <int>:: iterator lit;
     for(nit=neighbors.begin();nit!=neighbors.end();nit++){
+
         bool inserted=0; //POSSIBLE OVERTHINKING!!!
-        if(find(L.begin(), L.end(), *nit) == L.end()){ // if the node does not already exist in L
+        cout << "we are checking node :"<<*nit<<endl;
+        if(unexplored_node(*nit,L)){ // if the node does not already exist in L
             for(lit=L.begin();lit!=L.end();lit++){
                 if(distances[*nit]<distances[*lit]){
+                    cout << "we are inserting node "<< *nit <<"before node" <<*lit <<endl;
                     L.insert(lit,*nit);
-                    if(int(L.size())>Lsizelist)
-                        L.erase(next(L.end(),0)); //erasing the last element,the one with the greater value,from set L
+                    if(int(L.size())>Lsizelist){
+                        cout<< "we are erasing "<<L.back()<<endl;
+                        L.pop_back(); //erasing the last element,the one with the greater value,from set L
+                    }
                     inserted=1;
                     break;
                 }
             }
+
         }
         if(inserted==0){
-            if(int(L.size())<Lsizelist)
-                L.insert(next(L.end(),0),*nit);
+            if(int(L.size())<Lsizelist){
+                cout<<"pushing back "<< *nit<<endl;
+                L.push_back(*nit);
+            }
+            
             //else do nothing. If L.size()>Lsizelist and the new element is the bigger one, it will be added and be removed instantly
-            //so we do nothing!
+            //so we're doing nothing!
             
         }
+    cout <<"the L is";
+    for(list <int>:: iterator lit =L.begin();lit!=L.end();lit++)
+        cout<<" " << *lit;
+    cout <<endl;
     }
 }
 
 
-            
-// float minimum_distance(list <int> L,map <int,float>& distances,int &p){
-//     list <int>::iterator lit;
-//     float mindist=distances[L.front()]-1; //making sure it's less than the actual distance of the first node
-//     for(lit=L.begin();lit!=L.end();lit++){
-//         if(mindist>distances[*lit]){
-//             mindist=distances[*lit];
-//             p=int(*lit);
-//         }
-
-//     }
-//     return mindist;
-// }
-
-
-// void pruning_nodes(int nodes_to_detele,map <int,float>distances,list <int>& L){
-//     float maxdist=L.front()-1;
-//         list <int>:: iterator lit;
-//         for(nodes_to_detele;nodes_to_detele!=0;nodes_to_detele--){
-//             L.pop_back(); //removing the last element of the list, thus the one with the bigger distance.
-//     }
-// }
-
-
-
 //s->starting node, xq->query point, k->result size, search_list_size->L >=k
-pair <set <int>,set <int>> greedysearch( map <int, set<int>> s,vector<float> query_point,int k_neigh,int L_sizelist,map <int,float>distances){
-    //initialize set L
-    map <int, set<int>>::iterator it; //https://www.geeksforgeeks.org/iterators-c-stl/
+pair <set <int>,set <int>> greedysearch( map <int, list<int>>& s,vector<float> query_point,int k_neigh,int L_sizelist,map <int,float>distances){
+
+    map <int, list<int>>::iterator it; //https://www.geeksforgeeks.org/iterators-c-stl/
     it=s.begin();
-    set <int> L; //List L will contain the neighbors of each node we have traversed. It's initialized with S as the starting_node
+    list <int> L; //List L will contain the neighbors of each node we have traversed. It's initialized with S as the starting_node    
+    list<int> V; //list containing all the visited nodes we already traversed and searched their nεighbours
     addtoL(it->second,L,distances,L_sizelist); //passing the neighbors of s which will be added to L
-    set<int> V; //list containing all the visited nodes we already traversed and searched their naighbours
-    V.insert(it->first); //s traversed, we put it in the visited list
-    int p; //this will hold the nearest neighbor the query
+    V.push_back(it->first); //it->first s traversed, we put it in the visited list
+    // cout << endl<<"the V is:";
+    
+    // for(list <int> :: iterator vit=V.begin();vit!=V.end();vit++)
+    //     cout << " "<<*vit;
+    // cout<<endl;
 
-    while(L.empty()!=0 && unexplored_nodes(L,V)==1){ 
-        p=int(*next(L.begin(), 0)); // p=first node of set L
-        L.erase( next(L.begin(), 0)); 
-       
-        addtoL(s[p],L,distances,L_sizelist);
-        V.insert(p);
-        
+    int p; //this will hold the nearest neighbor from the query which exists in L
+
+    while( unexplored_nodes(L,V)==1){  //while there are still unexplroed nodes in L
+        list <int>::iterator Literator=L.begin();
+        p=*Literator; 
+        while(unexplored_node ( p,V)==0){ //ensuring p does not show in a node we have already traversed.
+            Literator++;
+            p=*Literator;
+        }
+        addtoL(s[p],L,distances,L_sizelist); //adding to L the neighbors of the current node we are in.
+        V.push_back(p); //pushing back to V the traversed node.
+        // cout << endl<<"the V is:";
+        // for(list <int> :: iterator vit=V.begin();vit!=V.end();vit++)
+        //     cout << " "<<*vit;
         
     }
-    if(int(L.size())>k_neigh){
-        for(int i=L.size();i>k_neigh;i++)
-        L.erase( next(L.begin(), 0)); //removing the last elemt of the list, thus the bigger one.
+   
+  
+    while(int(L.size())>k_neigh){
+        // cout <<"popping L"<<endl;
+        L.pop_back();
+    } 
+    cout <<"the k neighbors are: "<<endl;
+    for(list <int> :: iterator lit=L.begin();lit!=L.end();lit++){
+        cout <<" "<< *lit;
+    }
+    //CompareByDistance comp(distances);
+    set <int> Lset;
+    set <int> Vset;
+    // set<int, CompareByDistance> Lset(comp);
+    // set <int> Vset;
+    for(list <int> ::iterator lit=L.begin();lit!=L.end();lit++){
+        Lset.insert(*lit);
     }
 
-    return make_pair(L,V); //returning L which contains the k nearest neighbors
+    for (list <int> :: iterator vit=V.begin();vit!=V.end();vit++){
+        Vset.insert(*vit);
+    } 
+    return make_pair(Lset,Vset); //returning L which contains the k nearest neighbors
 }
 
