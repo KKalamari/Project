@@ -27,9 +27,7 @@ void RobustPrune(
 
         graph[p].remove(neighbor);// removing every neighbor from p
     }
-    //candidateSet.erase(p); //Propably is not needed!!
-
-    
+//    candidateSet.erase(p); 
 
     unordered_set<int> newNeighbors;
 
