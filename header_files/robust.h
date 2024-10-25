@@ -2,6 +2,8 @@
 #define ROBUSTPRUNE_H
 
 #include <vector>
+#include <list>
+#include <map>
 #include <unordered_set>
 #include <utility> // for std::pair
 #include <cstddef> // for size_t
@@ -11,7 +13,7 @@ double distance(const std::pair<double, double>& a, const std::pair<double, doub
 
 // RobustPrune function declaration
 void RobustPrune(
-    std::vector<std::vector<int>>& graph, 
+    std::map<int, std:: list <int>>& graph, 
     const std::vector<std::pair<double, double>>& points, 
     int p, 
     std::unordered_set<int>& candidateSet, 

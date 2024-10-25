@@ -3,6 +3,7 @@
 #include <limits>
 #include <iostream>
 
+
 using namespace std;
 
 double distance(const pair<double, double>& a, const pair<double, double>& b) 
@@ -11,25 +12,30 @@ double distance(const pair<double, double>& a, const pair<double, double>& b)
 }
 
 void RobustPrune(
-    vector<vector<int>>& graph,
+    map<int,list<int>>& graph,
     const vector<pair<double, double>>& points,
     int p,
-    unordered_set<int>& candidateSet,
+    unordered_set<int>& candidateSet, //v
     double alpha,
     size_t R
 ) 
 {
+    //adding every neighbor of p in the candidate Set
     for (int neighbor : graph[p]) 
     {
         candidateSet.insert(neighbor);
+
+        graph[p].remove(neighbor);// removing every neighbor from p
     }
-    candidateSet.erase(p); 
+    //candidateSet.erase(p); //Propably is not needed!!
+
+    
 
     unordered_set<int> newNeighbors;
 
     while (!candidateSet.empty() && newNeighbors.size() < R) 
     {
-        int closestPoint = -1;
+        int closestPoint = -1; //τι είναι αυτό;
         double minDistance = numeric_limits<double>::max();
 
         for (int candidate : candidateSet) 
@@ -48,7 +54,7 @@ void RobustPrune(
         }
 
         newNeighbors.insert(closestPoint);
-        candidateSet.erase(closestPoint);
+        candidateSet.erase(closestPoint); //γιατί κάνουμε erase εδώ;
 
         for (auto it = candidateSet.begin(); it != candidateSet.end();) 
         {
