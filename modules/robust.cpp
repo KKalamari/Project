@@ -2,20 +2,19 @@
 #include <cmath>
 #include <limits>
 #include <iostream>
-
-
+#include <bits/stdc++.h>
 using namespace std;
 
-double distance(const pair<double, double>& a, const pair<double, double>& b) 
+double eucledian(const pair<double, double>& a, const pair<double, double>& b) 
 {
     return sqrt((a.first - b.first) * (a.first - b.first) + (a.second - b.second) * (a.second - b.second));
 }
 
-void RobustPrune(
-    map<int,list<int>>& graph,
+void Robust(
+    vector<vector<int>>& graph,
     const vector<pair<double, double>>& points,
     int p,
-    unordered_set<int>& candidateSet, //v
+    unordered_set<int>& candidateset,
     double alpha,
     size_t R
 ) 
@@ -24,45 +23,42 @@ void RobustPrune(
     //adding every neighbor of p in the candidate Set
     for (int neighbor : graph[p]) 
     {
-        candidateSet.insert(neighbor);
-
-        graph[p].remove(neighbor);// removing every neighbor from p
+        candidateset.insert(neighbor);
     }
-//    candidateSet.erase(p); 
 
-    unordered_set<int> newNeighbors;
+    unordered_set<int> newneighbors;
 
-    while (!candidateSet.empty() && newNeighbors.size() < R) 
+    while (!candidateset.empty() && newneighbors.size() < R) 
     {
-        int closestPoint = -1; //τι είναι αυτό;
-        double minDistance = numeric_limits<double>::max();
+        int closestpoint = -1;
+        double mindistance = numeric_limits<double>::max();
 
-        for (int candidate : candidateSet) 
+        for (int candidate : candidateset) 
         {
-            double dist = distance(points[p], points[candidate]);
-            if (dist < minDistance) 
+            double dist = eucledian(points[p], points[candidate]);
+            if (dist < mindistance) 
             {
-                minDistance = dist;
-                closestPoint = candidate; //p
+                mindistance = dist;
+                closestpoint = candidate;
             }
         }
 
-        if (closestPoint == -1) 
+        if (closestpoint == -1) 
         {
             break; 
         }
 
-        newNeighbors.insert(closestPoint);
-        // candidateSet.erase(closestPoint); //γιατί κάνουμε erase εδώ;
+        newneighbors.insert(closestpoint);
+        //candidateset.erase(closestpoint);
 
-        for (auto it = candidateSet.begin(); it != candidateSet.end();) 
+        for (auto it = candidateset.begin(); it != candidateset.end();) 
         {
-            double distToClosest = distance(points[closestPoint], points[*it]);
-            double distToP = distance(points[p], points[*it]);
+            double distToClosest = eucledian(points[closestpoint], points[*it]);
+            double distToP = eucledian(points[p], points[*it]);
 
             if (alpha * distToClosest <= distToP) 
             {
-                it = candidateSet.erase(it); 
+                it = candidateset.erase(it); 
             } else 
             {
                 ++it;
@@ -72,10 +68,10 @@ void RobustPrune(
 
     graph[p].clear();
 
-    for (int neighbor : newNeighbors) 
+    for (int neighbor : newneighbors) 
     {
         graph[p].push_back(neighbor);
     }
-    
+
 }
 
