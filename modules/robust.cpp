@@ -23,7 +23,7 @@ void RobustPrune(
     {
         candidateSet.insert(neighbor);
     }
-    candidateSet.erase(p); 
+//    candidateSet.erase(p); 
 
     unordered_set<int> newNeighbors;
 

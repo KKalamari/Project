@@ -90,41 +90,6 @@ void test_high_alpha_pruning(void) {
     TEST_CHECK(compareGraphs(graph, expectedGraph));
 }
 
-// // Test case: pruning with lower alpha for stricter pruning
-// void test_low_alpha_pruning(void) {
-//     // Same graph setup as before
-//     std::vector<std::vector<int>> graph = {
-//         {1, 2, 3},
-//         {0, 2, 3},
-//         {0, 1, 3},
-//         {0, 1, 2}
-//     };
-
-//     // Same points as before
-//     std::vector<std::pair<double, double>> points = {
-//         {0.0, 0.0},  
-//         {1.0, 0.0},  
-//         {0.0, 1.0},  
-//         {1.0, 1.0}  
-//     };
-
-//     std::unordered_set<int> candidateSet;
-//     double alpha = 0.5; // Lower alpha, stricter pruning
-//     size_t R = 2;       // Max number of neighbors after pruning
-
-//     // Apply RobustPrune algorithm to node 0
-//     RobustPrune(graph, points, 0, candidateSet, alpha, R);
-
-//     // Expected result: stricter pruning with lower alpha, might remove more nodes
-//     std::vector<std::vector<int>> expectedGraph = {
-//         {1, 2},    // Node 0 still has 2 neighbors due to R, but could be stricter in pruning candidates
-//         {0, 2, 3}, 
-//         {0, 1, 3}, 
-//         {0, 1, 2}  
-//     };
-
-//     TEST_CHECK(compareGraphs(graph, expectedGraph));
-// }
 
 // Registering the test cases with Acutest
 TEST_LIST = {
