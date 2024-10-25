@@ -19,6 +19,7 @@ void RobustPrune(
     double alpha,
     size_t R
 ) 
+
 {
     //adding every neighbor of p in the candidate Set
     for (int neighbor : graph[p]) 
@@ -42,7 +43,7 @@ void RobustPrune(
             if (dist < minDistance) 
             {
                 minDistance = dist;
-                closestPoint = candidate;
+                closestPoint = candidate; //p
             }
         }
 
@@ -52,7 +53,7 @@ void RobustPrune(
         }
 
         newNeighbors.insert(closestPoint);
-        candidateSet.erase(closestPoint); //γιατί κάνουμε erase εδώ;
+        // candidateSet.erase(closestPoint); //γιατί κάνουμε erase εδώ;
 
         for (auto it = candidateSet.begin(); it != candidateSet.end();) 
         {
@@ -75,5 +76,6 @@ void RobustPrune(
     {
         graph[p].push_back(neighbor);
     }
+    
 }
 
