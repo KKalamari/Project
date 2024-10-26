@@ -58,7 +58,7 @@ bool unexplored_node(int node, const list<int>& visited) {
 }
 
 
-//aading the neighbors of the node which P contains in a sorted way.Also prunes the nodes when overextending the L_sizelist.
+//adding the neighbors of the node which P contains in a sorted way.Also prunes the nodes when overextending the L_sizelist.
 void addtoL(list <int> neighbors,list <int> &L,map <int,float>distances,int Lsizelist){
     cout<<endl<< "------------------------------------------------------------------";
     list <int>:: iterator nit;
