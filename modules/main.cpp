@@ -9,6 +9,7 @@
 using namespace std;
 // the syntax for execution  is: ./main k_num R_num
 
+//basically main will be Vamana algorithm.
 int main(int argc,char** argv){
     const char* filename="siftsmall_base.fvecs";
     vector<vector<float>> vec; //structure where we gonna keep all the vectors from the dataset file
