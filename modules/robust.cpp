@@ -11,14 +11,16 @@ double eucledian(const pair<double, double>& a, const pair<double, double>& b)
 }
 
 void Robust(
-    vector<vector<int>>& graph,
+    map <int, list<int>>& graph,
     const vector<pair<double, double>>& points,
     int p,
     unordered_set<int>& candidateset,
     double alpha,
     size_t R
 ) 
+
 {
+    //adding every neighbor of p in the candidate Set
     for (int neighbor : graph[p]) 
     {
         candidateset.insert(neighbor);
@@ -70,5 +72,6 @@ void Robust(
     {
         graph[p].push_back(neighbor);
     }
+
 }
 
