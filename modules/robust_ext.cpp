@@ -80,21 +80,16 @@ void RobustPrune(
         map<pair <int,int>,float> distancePtoCand;
         euclidean_distance(candidateSet,p,vec,distancePtoCand);
         for (auto candidate = candidateSet.begin(); candidate != candidateSet.end(); ) {
-            cout << "before the comparison with distances" <<distancePtoCand[make_pair(p, *candidate)]<<"<"<< distances[make_pair(point, *candidate)]<<endl;
 
         
 
             
 
-            if (alpha * distancePtoCand[make_pair(p, *candidate)] <= distances[make_pair(point, *candidate)]) {
-                cout << "before the erasure" << endl;
+            if (alpha * distancePtoCand[make_pair(p, *candidate)] <= distances[make_pair(point, *candidate)]) 
                 candidate = candidateSet.erase(candidate);  // Erase also updates the  iterator to next element
-                cout << "after the erasure" << endl;
-        }   
-            else {
+            else 
                 candidate++;  // if not erasion happens, we move the iterator manually to the next element.
         }
-    }
     }
 
 

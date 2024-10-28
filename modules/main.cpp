@@ -35,9 +35,9 @@ int main(int argc,char** argv){
     xq=vec2[0]; //we assing the query as the first vector
        
     map <int, list<int>> graph;
-    graph = graph_creation(vec,R);
+    graph = graph_creation(vec,R); //random R directed graph
     cout <<"graph got made"<< endl;
-    map  <int,float> distances;
+    map  <int,double> distances;
     cout << " I am before the calculation"<<endl;
     euclidean_distance(vec,xq,distances); //inside this function the distances variable is filled with the euclidean_distances of every vector from the query point
     cout <<"I am before the greedySearch LESGOO"<<endl;

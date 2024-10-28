@@ -45,7 +45,7 @@ void test_unexplored_nodes(){
 void test_addtoL(){
     list <int> L;
     list <int> neighbors;
-    map <int,float> distances;
+    map <int,double> distances;
     int L_sizelist;
 
     L_sizelist=3;
@@ -70,7 +70,7 @@ void greedy_search(){
     s[1]={3,0};
     s[2]={1,3};
     s[3]={2,0};
-    map <int,float>distances; //distance of the <int> node from the query 
+    map <int,double>distances; //distance of the <int> node from the query 
     distances[0] = 8.0;
     distances[1]=2.5;
     distances[2]=2.5;
