@@ -59,7 +59,7 @@ bool unexplored_node(int node, const list<int>& visited) {
 
 
 //adding the neighbors of the node which P contains in a sorted way.Also prunes the nodes when overextending the L_sizelist.
-void addtoL(list <int> neighbors,list <int> &L,map <int,float>distances,int Lsizelist){
+void addtoL(list <int> neighbors,list <int> &L,map <int,double>distances,int Lsizelist){
     cout<<endl<< "------------------------------------------------------------------";
     list <int>:: iterator nit;
     list <int>:: iterator lit;
@@ -101,7 +101,7 @@ void addtoL(list <int> neighbors,list <int> &L,map <int,float>distances,int Lsiz
 
 
 //s->starting node, xq->query point, k->result size, search_list_size->L >=k
-pair <set <int>,set <int>> greedysearch( map <int, list<int>>& s,vector<float> query_point,int k_neigh,int L_sizelist,map <int,float>distances){
+pair <set <int>,set <int>> greedysearch( map <int, list<int>>& s,vector<float> query_point,int k_neigh,int L_sizelist,map <int,double>distances){
 
     map <int, list<int>>::iterator it; //https://www.geeksforgeeks.org/iterators-c-stl/
     it=s.begin();
