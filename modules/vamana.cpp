@@ -2,6 +2,8 @@
 #include "euclidean_distance.h"
 #include "graph_creation.h"
 #include "greedysearch.h"
+#include <unordered_set>
+#include "vamana.h"
 using namespace std;
 
 
@@ -33,6 +35,7 @@ int medoid(vector<vector<float>>vec){ //returning the node which is the medoid (
         j++;
     }
 
+    cout<< "the medoid is "<<returning_node<< " with distance " <<summ_of_distances[returning_node]<<endl;
     return returning_node;
 }
 
@@ -42,5 +45,16 @@ void vamana_index_algorithm(vector<vector<float>> vec,int L, int R){
     int medoid_node =medoid(vec);
     map <int, list<int>> s;
     s[medoid_node]=graph[medoid_node]; //giving the neighbor nodes as value to the s node.
+    unordered_set<int> random_permutation;
+    for( int i=0;i<int(vec.size());i++){
+        random_permutation.insert(i);
+    }
+            cout<< " the unordered set contains:";
+
+    for(auto i : random_permutation){
+        cout <<" "<< i;
+    }
+    cout <<endl;
     
 }
+
