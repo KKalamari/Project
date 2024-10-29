@@ -40,4 +40,4 @@ $(OUTPUT_DIR):
 	mkdir -p $(OUTPUT_DIR)
 
 clean:
-	rm -f $(OUTPUT_DIR)/euclidean_distance.o $(OUTPUT_DIR)/graph_creation.o $(OUTPUT_DIR)/reading.o $(OUTPUT_DIR)/greedysearch.o $(OUTPUT_DIR)?vamana.o $(OUTPUT_DIR)/main
+	rm -f $(OUTPUT_DIR)/euclidean_distance.o $(OUTPUT_DIR)/graph_creation.o $(OUTPUT_DIR)/reading.o $(OUTPUT_DIR)/greedysearch.o $(OUTPUT_DIR)/vamana.o $(OUTPUT_DIR)/main

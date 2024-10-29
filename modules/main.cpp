@@ -6,6 +6,7 @@
 #include "euclidean_distance.h"
 #include <list>
 #include <utility>
+#include "vamana.h"
 using namespace std;
 // the syntax for execution  is: ./main k_num R_num
 
@@ -27,6 +28,8 @@ int main(int argc,char** argv){
         R=7;
     }
     int L_sizelist=2*k_neigh; 
+
+    
     vector<float> xq;
     filename="siftsmall_query.fvecs";
     vector<vector<float>> vec2; //structure where we gonna keep all the vectors from the dataset file
@@ -37,6 +40,9 @@ int main(int argc,char** argv){
     map <int, list<int>> graph;
     graph = graph_creation(vec,R); //random R directed graph
     cout <<"graph got made"<< endl;
+    int medoid_node=medoid(vec);
+    int medoid_node=medoid(vec);
+
     map  <int,double> distances;
     cout << " I am before the calculation"<<endl;
     euclidean_distance(vec,xq,distances); //inside this function the distances variable is filled with the euclidean_distances of every vector from the query point
