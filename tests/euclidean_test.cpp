@@ -16,7 +16,7 @@ void test_euclidean(){
 
     
     float real_euclidean_distance= 831.931;
-    map<int,float>distance ;
+    map<int,double>distance ;
     float tolerance = 0.1;
 
     euclidean_distance(vec,query_point,distance);
