@@ -15,8 +15,8 @@ READING_SRCS = reading_test.cpp  ./../modules/reading.cpp
 GRAPH_SRCS = graph_test.cpp ./../modules/graph_creation.cpp #include graph_creationg to the test
 ROBUST_EXT_SRCS = robust_ext_test.cpp ./../modules/robust_ext.cpp 
 EUCLIDEAN_SRCS = euclidean_test.cpp ./../modules/euclidean_distance.cpp
-GREEDY_SRCS = greedysearch_test.cpp ./../modules/greedysearch.cpp
-MEDOID_SRCS = medoid_test.cpp ./../modules/vamana.cpp ./../modules/euclidean_distance.cpp
+GREEDY_SRCS = greedysearch_test.cpp ./../modules/greedysearch.cpp# Add graph_creation.cpp to MEDOID_SRCS to link with medoid_test
+MEDOID_SRCS = medoid_test.cpp ./../modules/vamana.cpp ./../modules/euclidean_distance.cpp ./../modules/graph_creation.cpp ./../modules/robust_ext.cpp ./../modules/greedysearch.cpp
 
 # Acutest include directory
 ACUTEST_DIR = ./../header_files  # Path to the directory with header files
@@ -45,17 +45,14 @@ $(ROBUST_EXT_TARGET): $(ROBUST_EXT_SRCS)
 	$(CXX) $(CXXFLAGS) $(ACUTEST_FLAGS) -I$(ROBUST_EXT_DIR) -o $(ROBUST_EXT_TARGET) $(ROBUST_EXT_SRCS)
 
 $(MEDOID_TARGET): $(MEDOID_SRCS)
-	$(CXX) $(CXXFLAGS) $(ACUTEST_FLAGS) -I$(MEDOID_DIR) -o $(MEDOID_TARGET) $(MEDOID_SRCS)
+	$(CXX) $(CXXFLAGS) $(ACUTEST_FLAGS) -I$(MEDOID_DIR) -I$(GRAPH_CREATION_DIR) -o $(MEDOID_TARGET) $(MEDOID_SRCS)
 
-# Rule to clean up the compiled output
 clean:
 	rm -f $(GRAPH_TARGET) $(READING_TARGET) $(EUCLIDEAN_TARGET) $(GREEDY_TARGET) $(ROBUST_EXT_TARGET) $(MEDOID_TARGET)
 
-# Rule to run the tests
 run: $(GRAPH_TARGET) $(READING_TARGET) $(EUCLIDEAN_TARGET) $(GREEDY_TARGET) $(ROBUST_EXT_TARGET)
-	$(GRAPH_TARGET)
-	$(READING_TARGET)
-	$(EUCLIDEAN_TARGET)
-	$(GREEDY_TARGET)
-	$(ROBUST_EXT_TARGET)
-
+	./$(GRAPH_TARGET)
+	./$(READING_TARGET)
+	./$(EUCLIDEAN_TARGET)
+	./$(GREEDY_TARGET)
+	./$(ROBUST_EXT_TARGET)

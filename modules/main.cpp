@@ -76,9 +76,9 @@ const char* filename="siftsmall_base.fvecs";
         R=atoi(R_num);
         } 
     else {
-        k_neigh=20;
-        R=7;
+        k_neigh=1;
+        R=13;
     }
     int L_sizelist=2*k_neigh; 
-    vamana_index_algorithm(vec);
+    vamana_index_algorithm(vec,R);
 }

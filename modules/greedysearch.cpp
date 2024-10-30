@@ -3,6 +3,7 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
+#include "greedysearch.h"
 #include "graph_creation.h"
 #include "euclidean_distance.h"
 #include <reading.h>
@@ -47,14 +48,14 @@ bool unexplored_nodes(list <int>L,list <int>visited){
 }
 
 //The same logic with the above just for a specific node
-bool unexplored_node(int node, const list<int>& visited) { 
+bool unexplored_node(int node, const list<int> visited) { 
     // Check if the node exists in the visited list
     for (auto vit = visited.begin(); vit != visited.end(); vit++) {
         if (*vit == node) {
             return 0; //just found a match in visites list 
         }
     }
-    return true; // Node does not exist in the visited list
+    return 1; // Node does not exist in the visited list
 }
 
 
@@ -66,14 +67,11 @@ void addtoL(list <int> neighbors,list <int> &L,map <int,double>distances,int Lsi
     for(nit=neighbors.begin();nit!=neighbors.end();nit++){
 
         bool inserted=0; //POSSIBLE OVERTHINKING!!!
-        cout << "we are checking node :"<<*nit<<endl;
         if(unexplored_node(*nit,L)){ // if the node does not already exist in L
             for(lit=L.begin();lit!=L.end();lit++){
                 if(distances[*nit]<distances[*lit]){
-                    cout << "we are inserting node "<< *nit <<"before node" <<*lit <<endl;
                     L.insert(lit,*nit);
                     if(int(L.size())>Lsizelist){
-                        cout<< "we are erasing "<<L.back()<<endl;
                         L.pop_back(); //erasing the last element,the one with the greater value,from set L
                     }
                     inserted=1;
@@ -92,28 +90,20 @@ void addtoL(list <int> neighbors,list <int> &L,map <int,double>distances,int Lsi
             //so we're doing nothing!
             
         }
-    // cout <<"the L is";
-    // for(list <int>:: iterator lit =L.begin();lit!=L.end();lit++)
-    //     cout<<" " << *lit;
-    // cout <<endl;
+    
     }
 }
 
 
 //s->starting node, xq->query point, k->result size, search_list_size->L >=k
-pair <set <int>,set <int>> greedysearch( map <int, list<int>>& s,vector<float> query_point,int k_neigh,int L_sizelist,map <int,double>distances){
+pair <set <int>,set <int>> greedysearch( map <int, list<int>>& graph,int &s,vector<float> query_point,int k_neigh,int L_sizelist,map <int,double>distances){
 
-    map <int, list<int>>::iterator it; //https://www.geeksforgeeks.org/iterators-c-stl/
-    it=s.begin();
     list <int> L; //List L will contain the neighbors of each node we have traversed. It's initialized with S as the starting_node    
     list<int> V; //list containing all the visited nodes we already traversed and searched their nεighbours
-    addtoL(it->second,L,distances,L_sizelist); //passing the neighbors of s which will be added to L
-    V.push_back(it->first); //it->first s traversed, we put it in the visited list
-    // cout << endl<<"the V is:";
-    
-    // for(list <int> :: iterator vit=V.begin();vit!=V.end();vit++)
-    //     cout << " "<<*vit;
-    // cout<<endl;
+    addtoL(graph[s],L,distances,L_sizelist); //passing the neighbors of s which will be added to L
+    V.push_back(s); //it->first s traversed, we put it in the visited list
+   
+
 
     int p; //this will hold the nearest neighbor from the query which exists in L
 
@@ -124,11 +114,9 @@ pair <set <int>,set <int>> greedysearch( map <int, list<int>>& s,vector<float> q
             Literator++;
             p=*Literator;
         }
-        addtoL(s[p],L,distances,L_sizelist); //adding to L the neighbors of the current node we are in.
+        addtoL(graph[p],L,distances,L_sizelist); //adding to L the neighbors of the current node we are in.
         V.push_back(p); //pushing back to V the traversed node.
-        // cout << endl<<"the V is:";
-        // for(list <int> :: iterator vit=V.begin();vit!=V.end();vit++)
-        //     cout << " "<<*vit;
+        
         
     }
    

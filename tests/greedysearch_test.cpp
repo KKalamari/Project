@@ -65,11 +65,13 @@ void test_addtoL(){
     //checking the greedysearch basic functions
 void greedy_search(){
     //checking if the p function the way it should.
-    map <int, list<int>> s;
-    s[0]={1,2};
-    s[1]={3,0};
-    s[2]={1,3};
-    s[3]={2,0};
+    map <int, list<int>> graph;
+    graph[0]={1,2};
+    graph[1]={3,0};
+    graph[2]={1,3};
+    graph[3]={2,0};
+    int s=0;
+    
     map <int,double>distances; //distance of the <int> node from the query 
     distances[0] = 8.0;
     distances[1]=2.5;
@@ -77,7 +79,7 @@ void greedy_search(){
     distances[3]=2.0;
     vector<float> xq={1.5};
     pair <set <int>,set <int>> PairSet;
-    PairSet = greedysearch(s,xq,2,4,distances);
+    PairSet = greedysearch(graph,s,xq,2,4,distances);
 
 
     }
