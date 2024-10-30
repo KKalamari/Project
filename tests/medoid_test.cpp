@@ -4,7 +4,9 @@
 #include <list>
 #include <vector>
 #include <iostream>
+#include <set>
 #include "vamana.h"
+
 
 
 void testing_modoiod(){
