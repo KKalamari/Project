@@ -5,10 +5,11 @@
 #include <algorithm>
 #include "acutest.h"  // Include Acutest
 #include "greedysearch.h"
-
+#include "euclidean_distance.h"
+#include "reading.h"
 using namespace std;
 
-// checking if the searching for an unexplored node in L happens correctly.
+//checking if the searching for an unexplored node in L happens correctly.
 void test_unexplored_nodes(){
     list <int> L ={0,1,2};
     list <int> V ={1,2,3};
@@ -79,7 +80,13 @@ void greedy_search(){
     distances[3]=2.0;
     vector<float> xq={1.5};
     pair <set <int>,set <int>> PairSet;
-    PairSet = greedysearch(graph,s,xq,2,4,distances);
+    const char* filename="siftsmall_base.fvecs";
+    const char* filename2 = "siftsmall_query.fvecs";
+   vector <vector<float>> vec=reading_fvecs(filename,1,10000); //διαβάζει τα 10000 vectors/nodes μαζί με τις συντεταγμένες του καθενός
+   vector <vector <float>> query_vec= reading_fvecs(filename2,1,100); //διαβάζει τις συντεταγμένες του καθε query.
+    PairSet = greedysearch(vec,graph,s,query_vec,2,4,distances);
+    set <int> L= PairSet.first;
+    for
 
 
     }
@@ -93,3 +100,48 @@ TEST_LIST{
 
 
 };
+
+
+// void test_greedyseach(){
+
+//     vector <vector<float>> vec {
+//         {10.0,5.0,27.0,35.0,12.0,144.0,15.75,88.25,56.0,23.5}, //smallest
+//         {0.0,2.5,192.0,47.3,65.8,32.0,276.0,8.0,19.37,4.0},
+//         {13.0,21.0,42.0,3.0,75.0,98.0,24.0,29.0,8.0,11.0}, //161.637 2nd smaller
+//         {26.0,1.0,22.0,10.0,2.0,97.0,76.0,34.0,32.0,55.0}, //3rd smaller
+//         {11.0,22.0,52.0,68.0,69.0,112.0,25.0,444.0,777.0,8.0} //839.809
+
+//     };
+
+//     map <int,list<int>>graph;
+//     vector<float> xq={13.0,78.6,45.7,77.0,12.3,3.0,39.7,90.0,27.8,12.8};
+//     int k_neigh=3;
+//     int L_sizelist=4;
+
+//     graph[0] = {1,3,4};
+//     graph[1] = {0,1,2};
+//     graph[2] = {2,3,4};
+//     graph[3] = {0,3,4};
+//     graph[4] = {1,2,3};
+
+//     int s=3;
+//     map <int,double>distances;
+//     pair <set <int>,set<int>> pairSet;
+//     pairSet = greedysearch( vec,graph,s,xq, k_neigh, L_sizelist,distances);
+//     set <int> L=pairSet.first;
+//     TEST_CHECK(int(L.size())==k_neigh);
+//     cout << "the L set is:";
+//     for(auto nodes : L){
+//         cout << nodes <<" ";
+//     }
+//     cout <<endl;
+//     TEST_CHECK(L.find(0)!=L.end());
+//     TEST_CHECK(L.find(2)!=L.end());
+//     TEST_CHECK(L.find(3)!=L.end());
+// }
+
+// TEST_LIST{
+//     {"test_greedysearch",test_greedyseach},
+//     {NULL,NULL}
+
+// };
