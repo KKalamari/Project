@@ -6,7 +6,7 @@
 #include <vector>
 #include "euclidean_distance.h"
 #include <math.h>
-
+#include <list>
 using namespace std;
 
 void test_euclidean(){
@@ -14,13 +14,13 @@ void test_euclidean(){
     vec[0]={8,45,765};
     vector<float>query_point={456,43,64  };
 
-    
+    list <int> Pneighbor={0};
     float real_euclidean_distance= 831.931;
-    map<int,double>distance ;
+    map<int,double>distances ;
     float tolerance = 0.1;
 
-    euclidean_distance(vec,query_point,distance);
-    TEST_CHECK(fabs(distance[0] - real_euclidean_distance) < tolerance); //https://stackoverflow.com/questions/17333/how-do-you-compare-float-and-double-while-accounting-for-precision-loss
+    euclidean_distance(Pneighbor,vec,query_point,distances);
+    TEST_CHECK(fabs(distances[0] - real_euclidean_distance) < tolerance); //https://stackoverflow.com/questions/17333/how-do-you-compare-float-and-double-while-accounting-for-precision-loss
 }
 
 

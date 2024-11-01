@@ -57,16 +57,19 @@ void RobustPrune(
 //adding every neighbor of p in the candidate Set
     map <pair <int,int>,float> distances;
     
+    // there is a possibily that V set contains point as an element which was causing a segmentation problem. When i added this it got fixed!
+    auto find_p=candidateSet.find(point);
+    if(find_p!=candidateSet.end())
+        candidateSet.erase(point);
+    graph[point].clear();
+    
     for (int neighbor : graph[point]) 
     {  
         if(neighbor!=point)
             candidateSet.insert(neighbor); //Inserting all the neighbors of point in the candidate_set
     }
     
-    auto find_p=candidateSet.find(point);
-    if(find_p!=candidateSet.end())
-        candidateSet.erase(point);
-    graph[point].clear();
+    
     
     int p; //p will contain the nearest neighbor.Initialized with -1 to ensure it starts as empty 
     euclidean_distance(candidateSet,point,vec,distances);
