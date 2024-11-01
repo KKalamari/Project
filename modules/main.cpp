@@ -76,9 +76,15 @@ const char* filename="siftsmall_base.fvecs";
         R=atoi(R_num);
         } 
     else {
-        k_neigh=1;
-        R=13;
+        k_neigh=100;
+        R=80;
     }
-    int L_sizelist=2*k_neigh; 
-    vamana_index_algorithm(vec,R);
+    vector <vector <float>> query;
+    const char* filename2="siftsmall_query.fvecs";
+    query =reading_fvecs(filename2,1,100);
+    int L_sizelist=120; 
+    map <int,list<int>> graph=vamana_index_algorithm(vec,R);
+    int s =8736;
+    map<int,double> distances;
+    greedysearch(vec,graph,s,query[0],k_neigh,L_sizelist,distances);
 }
