@@ -1,6 +1,8 @@
 #include <utility>
 #include <iostream>
 #include <map>
+#include <vector>
+
 #include <list>
 using namespace std;
 #pragma once

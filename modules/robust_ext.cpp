@@ -5,14 +5,12 @@
 #include "greedysearch.h"
 using namespace std;
 
-using namespace std;
-
 
 void euclidean_distance(set <int> &candidate_set, int point,vector<vector<float>>vec,map<pair <int,int>,float>&distances) 
 {
    
     for(set <int> ::iterator setIt=candidate_set.begin();setIt!=candidate_set.end();setIt++){
-         double euclidean=0.0;
+        double euclidean=0.0;
         for(int i=0;i<int(vec[*setIt].size());i++)
             euclidean+=pow(vec[*setIt][i] - vec[point][i], 2);
     
@@ -57,23 +55,24 @@ void RobustPrune(
 //adding every neighbor of p in the candidate Set
     map <pair <int,int>,float> distances;
     
-    // there is a possibily that V set contains point as an element which was causing a segmentation problem. When i added this it got fixed!
-    auto find_p=candidateSet.find(point);
-    if(find_p!=candidateSet.end())
-        candidateSet.erase(point);
-    graph[point].clear();
+  
     
     for (int neighbor : graph[point]) 
     {  
         if(neighbor!=point)
             candidateSet.insert(neighbor); //Inserting all the neighbors of point in the candidate_set
     }
-    
+      // there is a possibily that V set contains point as an element which was causing a segmentation problem. When i added this it got fixed!
+    set <int>::iterator exisiting_p=candidateSet.find(point);
+    if(exisiting_p!=candidateSet.end())
+        candidateSet.erase(point);
+    graph[point].clear();
     
     
     int p; //p will contain the nearest neighbor.Initialized with -1 to ensure it starts as empty 
+    //cout <<"I am before euclidean distance"<<endl;
     euclidean_distance(candidateSet,point,vec,distances);
-    
+   // cout <<" I am before the while"<<endl;
     while (candidateSet.empty()!=1){
         p=pickingP(point,candidateSet,distances); //choosing the node from the candidate set with the smallest distance from corrent point and adressing it to p
        

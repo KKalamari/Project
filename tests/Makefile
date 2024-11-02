@@ -23,7 +23,7 @@ ACUTEST_DIR = ./../header_files  # Path to the directory with header files
 ACUTEST_FLAGS = -I$(ACUTEST_DIR)  # Include Acutest header
 GRAPH_CREATION_DIR = ./../header_files  # Directory for graph_creation.h (and not only graph creation)
 EUCLIDEAN_DISTANCE_DIR = ./../header_files  # Directory for euclidean_distance.h
-ROBUST_EXT_DIR= ./../modules 
+ROBUST_EXT_DIR= ./../header_files 
 MEDOID_DIR=./../header_files
 
 # The target rule to build the executables
@@ -58,4 +58,4 @@ run: $(GRAPH_TARGET) $(READING_TARGET) $(EUCLIDEAN_TARGET) $(GREEDY_TARGET) $(RO
 	./$(EUCLIDEAN_TARGET)
 	./$(GREEDY_TARGET)
 	./$(ROBUST_EXT_TARGET)
-	./$(VAMANA_TARGET)
+#./$(VAMANA_TARGET)
