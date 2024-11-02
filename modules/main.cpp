@@ -7,12 +7,15 @@
 #include "vamana.h"
 #include <list>
 #include <utility>
+#include <chrono>
 
 using namespace std;
+using namespace chrono;
 // the syntax for execution  is: ./main k_num R_num
 
 
 int main(int argc,char** argv){
+        auto start = high_resolution_clock::now();
 const char* filename="siftsmall_base.fvecs";
     vector<vector<float>> vec; //structure where we gonna keep all the vectors from the dataset file
     vec=reading_fvecs(filename,1,10000);  
@@ -26,7 +29,7 @@ const char* filename="siftsmall_base.fvecs";
         } 
     else {
         k_neigh=100;
-        R=80;
+        R=100;
     }
     vector <vector <float>> query;
     const char* filename2="siftsmall_query.fvecs";
@@ -36,4 +39,8 @@ const char* filename="siftsmall_base.fvecs";
     int s =8736;
     map<int,double> distances;
     greedysearch(vec,graph,s,query[0],k_neigh,L_sizelist);
+      auto end = high_resolution_clock::now();
+    auto duration = duration_cast<minutes>(end - start);
+    cout << "Execution time: " << duration.count() << " minutes" << endl;
+
 }

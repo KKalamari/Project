@@ -6,21 +6,16 @@
 #include <list>
 using namespace std;
 
-void euclidean_distance(list<int>& Pneighbors,vector<vector<float>>&vec,vector<float>query_point,map  <int,double>&distances) { 
-    double euclidean=0; 
-    for(list <int> ::iterator lit=Pneighbors.begin();lit!=Pneighbors.end();lit++){
-        for(int i=0; i<int(Pneighbors.size());i++){
-            if(vec[*lit]==query_point)
-                continue;
-            for(int j=0; j<int(vec[i].size());j++){ //calculating  distance for each dimension
-                euclidean+=pow(query_point[j]-vec[*lit][j],2);
-            }
-            distances[*lit]=sqrt(euclidean);
+void euclidean_distance(list<int>& Pneighbors, vector<vector<float>>& vec, vector<float> query_point, map<int, double>& distances) { 
+    for (list<int>::iterator lit = Pneighbors.begin(); lit != Pneighbors.end(); lit++) { 
+        double euclidean = 0; 
+        for (int j = 0; j < int(vec[*lit].size()); j++) { // Calculating distance for each dimension
+            euclidean += pow(query_point[j] - vec[*lit][j], 2);
         }
-
+        distances[*lit] = sqrt(euclidean); // Storing the distance in the map
     }
 }
-    
+
     
     
     // for(int i=0;i<int(vec.size());i++){ //getting the number of total vectors

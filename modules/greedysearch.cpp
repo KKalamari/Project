@@ -68,7 +68,7 @@ void addtoL(list <int> neighbors,list <int> &L,map <int,double>&distances,int Ls
     for(nit=neighbors.begin();nit!=neighbors.end();nit++){
 
         bool inserted=0; //POSSIBLE OVERTHINKING!!!
-        if(unexplored_node(*nit,L)&&*nit!=s){ // if the node does not already exist in L
+        if(unexplored_node(*nit,L)){ // if the node does not already exist in L
             // cout<<"distance of neighbor  is "<<*nit<< " "<<distances[*nit]<< "and distance of "<< *lit<<" is "<< distances[*lit]<<endl;
             for(lit=L.begin();lit!=L.end();lit++){
                 if(distances[*nit]<distances[*lit]){
@@ -114,11 +114,16 @@ pair <set <int>,set <int>> greedysearch(vector<vector<float>> &vec, map <int, li
     int p; //this will hold the nearest neighbor from the query which exists in L
     list <int>::iterator Literator=L.begin();
     while( unexplored_nodes(L,V)==1){  //while there are still unexplored nodes in L
-        
+        Literator = L.begin();
         p=*Literator; 
         while(unexplored_node ( p,V )==0){ //ensuring p does not show in a node we have already traversed.
             Literator++;
             p=*Literator;
+            if (Literator != L.end()) {
+                p = *Literator;
+            } else {
+                break; 
+            }
         }
         euclidean_distance(L,vec,query_point,distances);
         euclidean_distance(graph[p],vec,query_point,distances);
@@ -157,4 +162,3 @@ pair <set <int>,set <int>> greedysearch(vector<vector<float>> &vec, map <int, li
     
     return make_pair(Lset,Vset); //returning L which contains the k nearest neighbors
 }
-

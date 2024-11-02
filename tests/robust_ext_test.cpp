@@ -5,6 +5,7 @@
 #include "acutest.h"
 #include <utility>
 #include <list>
+#include "robust_ext.h"
 using namespace std;
 
 //checking euclidean_distance and pickingP
