@@ -141,7 +141,7 @@ pair <set <int>,set <int>> greedysearch(vector<vector<float>> &vec, map <int, li
     
     while(int(L.size())>k_neigh)
         L.pop_back();
-    cout<< "the L after the pruning is: ";
+    //cout<< "the L after the pruning is: ";
      for(auto lit : L){
             cout <<lit<<" ";
         }

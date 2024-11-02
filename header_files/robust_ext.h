@@ -1,21 +1,17 @@
-
-#pragma once
-#include <set>
-#include <map>
 #include <vector>
 #include <list>
-#include <cmath>
-#include <iterator>
-#include <utility>
-#include <algorithm>
+#include <map>
+#include <set>
+#pragma once
+using namespace std;
 
-void euclidean_distance(const std::set<int>& candidateSet, int point, const std::vector<std::vector<float>>& vec, std::map<std::pair<int, int>, float>& distances);
-int pickingP(int point, std::set<int>& candidate_set, std::map<std::pair<int, int>, float>& distances);
+void euclidean_distance(set <int> &candidate_set, int point,vector<vector<float>>vec,map<pair <int,int>,float>&distances);
+int pickingP(int point,set <int> &candidate_set,map<pair <int,int>,float> &distances );
 void RobustPrune(
-    std::map<int, std::list<int>>& graph,
+    map<int,list<int>>& graph,
     int point,
-    std::vector<std::vector<float>>& vec,
-    std::set<int>& candidateSet,
+    vector<vector<float>> &vec, //distances
+    set<int>& candidateSet, //V
     double alpha,
     size_t R
 );
