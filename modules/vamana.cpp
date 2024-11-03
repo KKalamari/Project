@@ -46,15 +46,13 @@ int medoid(vector<vector<float>>& vec) {
     return returning_node;
 }
 
-map <int, list<int>> vamana_index_algorithm(vector<vector<float>> vec, int R){
+map <int, list<int>> vamana_index_algorithm(vector<vector<float>>& vec, int R,int& medoid_node){
     int number_of_nodes=vec.size();
     map <int, list<int>> graph = graph_creation(vec,R); //graph contains each node with its neghbors
     
-    int medoid_node = medoid(vec);
+    medoid_node = medoid(vec);
     cout <<"medoid is" << medoid_node<<"!!!"<<endl;;
-   // int medoid_node= 8736;
     //creating the random permutation
-    //int medoid_node=8736;
     random_device rd; // Obtain a random number from hardware
     mt19937 generator(rd()); // Seed the generator
     vector<int> nodes;
@@ -65,13 +63,14 @@ map <int, list<int>> vamana_index_algorithm(vector<vector<float>> vec, int R){
     map <int,double>distances;
     for(int i=0;i<number_of_nodes;i++){
         pair < set<int>,set<int>> pairSet;
-        pairSet= greedysearch(vec,graph,medoid_node,vec[nodes[i]],1.2,14);//xσι=vec[nodes[i]],k_neigh,L_sizelist
+        pairSet= greedysearch(vec,graph,medoid_node,vec[nodes[i]],1,14);//xσι=vec[nodes[i]],k_neigh,L_sizelist
         set <int>  setV= pairSet.second;
         RobustPrune(graph,nodes[i],vec,setV,1.2,14);  //12=R,σ(ι)=nodes[i]
             
         for(list <int> ::iterator outNeighbors=graph[nodes[i]].begin();outNeighbors!=graph[nodes[i]].end();outNeighbors++){
             if(int(graph[*outNeighbors].size())+1>R){
-                setV.clear();
+                setV.clear(); 
+                setV.insert(i);
                 for(auto neighbors : graph[*outNeighbors]){
                     if(*outNeighbors==i)
                         continue;
@@ -79,7 +78,7 @@ map <int, list<int>> vamana_index_algorithm(vector<vector<float>> vec, int R){
                     
                 }
                 
-                RobustPrune(graph,*outNeighbors,vec,setV,1,12);
+                RobustPrune(graph,*outNeighbors,vec,setV,1.2,14);
 
             }
             else{
@@ -89,18 +88,6 @@ map <int, list<int>> vamana_index_algorithm(vector<vector<float>> vec, int R){
 
     }
 
-    cout<< "Final graph: "<<endl;
-    for(int i=0;i<int(graph.size());i++){
-        cout <<" node "<< i<< " has neighbors:";
-        for(auto final_nodes : graph[i] ){
-            cout << final_nodes <<" ";
-        }
-    }
-    
-
-
-
-    cout <<endl;
     return graph;
 }
 

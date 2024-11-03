@@ -104,11 +104,7 @@ pair <set <int>,set <int>> greedysearch(vector<vector<float>> &vec, map <int, li
     map <int,double>distances;
     euclidean_distance(graph[s],vec,query_point,distances); //distances[0],distances[3],distances[4]
     addtoL(graph[s],L,distances,L_sizelist,s,vec,query_point); //passing the neighbors of s which will be added to L
-    cout <<"the L is: ";
-    for (auto lit: L){
-        cout << lit<<" ";
-    }
-    cout <<endl;
+   
     V.push_back(s); //it->first s traversed, we put it in the visited list
 
     int p; //this will hold the nearest neighbor from the query which exists in L
@@ -128,12 +124,7 @@ pair <set <int>,set <int>> greedysearch(vector<vector<float>> &vec, map <int, li
         euclidean_distance(L,vec,query_point,distances);
         euclidean_distance(graph[p],vec,query_point,distances);
         addtoL(graph[p],L,distances,L_sizelist,s,vec,query_point); //adding to L the neighbors of the current node we are in.
-        cout<< "the L is ";
-        for(auto lit : L){
-            cout <<lit<<" ";
-        }
-        cout <<endl;
-
+       
         V.push_back(p); //pushing back to V the traversed node.
     
         
@@ -141,11 +132,7 @@ pair <set <int>,set <int>> greedysearch(vector<vector<float>> &vec, map <int, li
     
     while(int(L.size())>k_neigh)
         L.pop_back();
-    cout<< "the L after the pruning is: ";
-     for(auto lit : L){
-            cout <<lit<<" ";
-        }
-        cout <<endl;
+    
     
     set <int> Lset;
     set <int> Vset;

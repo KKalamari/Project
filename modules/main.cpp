@@ -35,12 +35,20 @@ const char* filename="siftsmall_base.fvecs";
     const char* filename2="siftsmall_query.fvecs";
     query =reading_fvecs(filename2,1,100);
     int L_sizelist=120; 
-    map <int,list<int>> graph=vamana_index_algorithm(vec,R);
-    int s =8736;
+    int medoid_node;
+    map <int,list<int>> graph=vamana_index_algorithm(vec,R,medoid_node);
+    int s =medoid_node;
     map<int,double> distances;
-    greedysearch(vec,graph,s,query[0],k_neigh,L_sizelist);
-      auto end = high_resolution_clock::now();
+    pair<set <int>,set <int>> pairset;
+    pairset = greedysearch(vec,graph,s,query[0],k_neigh,L_sizelist);
+    auto end = high_resolution_clock::now();
     auto duration = duration_cast<minutes>(end - start);
+    
     cout << "Execution time: " << duration.count() << " minutes" << endl;
-
+    set <int> L=pairset.first;
+    cout <<"the k neighbors are: ";
+    for(set <int>::iterator k_neighbors =L.begin();k_neighbors!=L.end();k_neighbors++){
+        cout <<*k_neighbors<< ",";
+    }
+    cout <<endl;
 }
