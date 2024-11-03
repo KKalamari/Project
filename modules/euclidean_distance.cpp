@@ -16,13 +16,13 @@ void euclidean_distance(list<int>& Pneighbors, vector<vector<float>>& vec, vecto
     }
 }
 
-void euclidean_for_everything(vector<vector<float>>&vec,int**){
-    int vector_size=int (vec.size());
-    for(int i=0;i<vector_size;i++){
-        for(int j=)
-    }
+// void euclidean_for_everything(vector<vector<float>>&vec,int**){
+//     int vector_size=int (vec.size());
+//     for(int i=0;i<vector_size;i++){
+//         for(int j=)
+//     }
 
-}
+// }
 
     
     

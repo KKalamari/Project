@@ -29,18 +29,16 @@ int main(int argc,char** argv){
         R=atoi(R_num);
         } 
     else {
-        k_neigh=100;
-        R=14;
+        k_neigh=50;
+        R=20;
         a=1;
     }
-    int vector_size=int(vec.size());
-    int arr[vector_size][vector_size];
 
-    
+
     vector <vector <float>> query;
     const char* filename2="siftsmall_query.fvecs";
     query =reading_fvecs(filename2,1,100);
-    int L_sizelist=120; 
+    int L_sizelist=100; 
     int medoid_node;
     map <int,list<int>> graph=vamana_index_algorithm(vec,R,medoid_node,L_sizelist,a);
     int s =medoid_node;
