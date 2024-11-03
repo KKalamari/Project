@@ -29,7 +29,7 @@ const char* filename="siftsmall_base.fvecs";
         } 
     else {
         k_neigh=100;
-        R=100;
+        R=14;
     }
     vector <vector <float>> query;
     const char* filename2="siftsmall_query.fvecs";
