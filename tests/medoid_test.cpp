@@ -41,7 +41,8 @@ void vamana_testing(){
 };
     
     int medoid_test;
-    vamana_index_algorithm(vec,2,medoid_test);
+    int R=2;
+    vamana_index_algorithm(vec,R,medoid_test);
 
 }
 
