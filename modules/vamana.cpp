@@ -46,7 +46,7 @@ int medoid(vector<vector<float>>& vec) {
     return returning_node;
 }
 
-map <int, list<int>> vamana_index_algorithm(vector<vector<float>>& vec, int& R,int& medoid_node){
+map <int, list<int>> vamana_index_algorithm(vector<vector<float>>& vec, int& R,int& medoid_node,int &L_sizelist,int& a){
     int number_of_nodes=vec.size();
     map <int, list<int>> graph = graph_creation(vec,R); //graph contains each node with its neghbors
     
@@ -63,9 +63,9 @@ map <int, list<int>> vamana_index_algorithm(vector<vector<float>>& vec, int& R,i
     map <int,double>distances;
     for(int i=0;i<number_of_nodes;i++){
         pair < set<int>,set<int>> pairSet;
-        pairSet= greedysearch(vec,graph,medoid_node,vec[nodes[i]],1,100);//xσι=vec[nodes[i]],k_neigh,L_sizelist
+        pairSet= greedysearch(vec,graph,medoid_node,vec[nodes[i]],1,L_sizelist);//xσι=vec[nodes[i]],k_neigh,L_sizelist
         set <int>  setV= pairSet.second;
-        RobustPrune(graph,nodes[i],vec,setV,1,R);  //12=R,σ(ι)=nodes[i]
+        RobustPrune(graph,nodes[i],vec,setV,a,R);  //12=R,σ(ι)=nodes[i]
             
         for(list <int> ::iterator outNeighbors=graph[nodes[i]].begin();outNeighbors!=graph[nodes[i]].end();outNeighbors++){
             if(int(graph[*outNeighbors].size())+1>R){
@@ -78,7 +78,7 @@ map <int, list<int>> vamana_index_algorithm(vector<vector<float>>& vec, int& R,i
                     
                 }
                 
-                RobustPrune(graph,*outNeighbors,vec,setV,1,R);
+                RobustPrune(graph,*outNeighbors,vec,setV,a,R);
 
             }
             else{

@@ -15,12 +15,13 @@ using namespace chrono;
 
 
 int main(int argc,char** argv){
-        auto start = high_resolution_clock::now();
-const char* filename="siftsmall_base.fvecs";
+    auto start = high_resolution_clock::now();
+    const char* filename="siftsmall_base.fvecs";
     vector<vector<float>> vec; //structure where we gonna keep all the vectors from the dataset file
     vec=reading_fvecs(filename,1,10000);  
     int k_neigh; //the k nearest neighbors we want to find.
     int R; //The number which defines the random neighbors each node is going to have
+    int a;
     if(argc>1){ //if the user has provided k and R values then use them, else use some default
        char* k_num=argv[1];
         k_neigh=atoi(k_num);
@@ -30,13 +31,18 @@ const char* filename="siftsmall_base.fvecs";
     else {
         k_neigh=100;
         R=14;
+        a=1;
     }
+    int vector_size=int(vec.size());
+    int arr[vector_size][vector_size];
+
+    
     vector <vector <float>> query;
     const char* filename2="siftsmall_query.fvecs";
     query =reading_fvecs(filename2,1,100);
     int L_sizelist=120; 
     int medoid_node;
-    map <int,list<int>> graph=vamana_index_algorithm(vec,R,medoid_node);
+    map <int,list<int>> graph=vamana_index_algorithm(vec,R,medoid_node,L_sizelist,a);
     int s =medoid_node;
     map<int,double> distances;
     pair<set <int>,set <int>> pairset;
