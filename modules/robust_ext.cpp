@@ -50,7 +50,7 @@ void RobustPrune(
     map<int,list<int>>& graph,
     int point,
     vector<vector<float>> &vec, //distances
-    set<int>& candidateSet, //V
+    set<int>& candidateSet,
     double alpha,
     size_t R
 ) {
@@ -62,7 +62,7 @@ void RobustPrune(
     for (int neighbor : graph[point]) 
     {  
         if(neighbor!=point)
-            candidateSet.insert(neighbor); //Inserting all the neighbors of point in the candidate_set
+            candidateSet.insert(neighbor);//inserting all the neighbors of point in the candidate_set
     }
       // there is a possibily that V set contains point as an element which was causing a segmentation problem. When i added this it got fixed!
     set <int>::iterator exisiting_p=candidateSet.find(point);

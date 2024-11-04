@@ -47,7 +47,7 @@ int main(int argc,char** argv){
     const char* filename3 = "siftsmall_groundtruth.ivecs";
     ground = reading_ivecs (filename3,1,100);
     int k =0;
-    for(int i =0; i<100; i++) {
+    for(int i =0; i<100; i++) { //for loop that runs all the querys and counts how many common numbers there are
         vector<int> comp = ground[i];
         pair<set <int>, set<int>> L = greedysearch (vec,graph,s,query[i],k_neigh,L_sizelist);
         set <int> setV = L.first;
@@ -56,9 +56,10 @@ int main(int argc,char** argv){
             if(setV.count(value) > 0)
             count++;
         }
-        if (k>= 90) 
+        if (count>= 90) 
             k++;
-        cout<<count<<endl;
+
+        cout<<i<<"th query has "<< count<<"/100"<< endl;
     }
     cout<< k<< endl;
 
@@ -68,9 +69,6 @@ int main(int argc,char** argv){
     
     cout << "Execution time: " << duration.count() << " minutes" << endl;
     set <int> L=pairset.first;
-    cout <<"the k neighbors are: ";
-    for(set <int>::iterator k_neighbors =L.begin();k_neighbors!=L.end();k_neighbors++){
-        cout <<*k_neighbors<< ",";
-    }
+
     cout <<endl;
 }

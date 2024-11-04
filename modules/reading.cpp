@@ -42,14 +42,6 @@ using namespace std;
     }
 
 
-
-    // for(int i=0;i<printed_vectors;i++){
-    //     cout<< "Vector "<< (bounda)<< ":" ;
-    //     for(int j=0;j<vector_size;j++){
-    //         cout << (*vec)[i][j]<< ", ";
-    //     }
-    //     cout<< "\n \n";
-    // }
     cout << " I am before closing"<< endl;
     fclose(fd);
     cout<< " I am before returning"<< endl;
@@ -92,15 +84,6 @@ vector<vector<int>> reading_ivecs(const char* filename,int bounda,int boundb){
 
     }
 
-
-
-    // for(int i=0;i<printed_vectors;i++){
-    //     cout<< "Vector "<< (bounda)<< ":" ;
-    //     for(int j=0;j<vector_size;j++){
-    //         cout << (*vec)[i][j]<< ", ";
-    //     }
-    //     cout<< "\n \n";
-    // }
     cout << " I am before closing"<< endl;
     fclose(fd);
     cout<< " I am before returning"<< endl;
