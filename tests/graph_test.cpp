@@ -1,4 +1,4 @@
-// greedy.cpp
+
 #include <iostream>
 #include <vector>
 #include <set>
@@ -6,8 +6,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
-#include "acutest.h"  // Include Acutest
-#include "graph_creation.h"  // Include the header for graph_creation
+#include "acutest.h"
+#include "graph_creation.h" 
 
 using namespace std;
 
@@ -30,7 +30,6 @@ void test_graph_creation(void) {
 
 }
 
-// Test list for Acutest
 TEST_LIST = {
     {"test_graph_creation", test_graph_creation},
     {NULL, NULL}  // Terminate the test list

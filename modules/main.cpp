@@ -13,28 +13,26 @@ using namespace std;
 using namespace chrono;
 // the syntax for execution  is: ./main k_num R_num
 
-
+// k r a l
 int main(int argc,char** argv){
     auto start = high_resolution_clock::now();
     const char* filename="siftsmall_base.fvecs";
     vector<vector<float>> vec; //structure where we gonna keep all the vectors from the dataset file
     vec=reading_fvecs(filename,1,10000);  
-    int k_neigh; //the k nearest neighbors we want to find.
-    int R; //The number which defines the random neighbors each node is going to have
-    int a;
-    if(argc>1){ //if the user has provided k and R values then use them, else use some default
-       char* k_num=argv[1];
-        k_neigh=atoi(k_num);
-        char* R_num=argv[2];
-        R=atoi(R_num);
-        } 
-    else {
-        k_neigh=100;
-        R=16;
-        a=1.1;
-    }
+    int k_neigh = 100; //the k nearest neighbors we want to find.
+    int R = 16; //The number which defines the random neighbors each node is going to have
+    int a=1.1;
+    int L_sizelist=120;
+    if(argc>1) //if the user has provided k and R values then use them, else use some default
+        k_neigh= atoi(argv[1]);
+    if(argc>2) 
+        R = atoi(argv[2]);
+    if(argc>3)
+        a = atoi(argv[3]);
+    if(argc>4) 
+        L_sizelist = atoi(argv[4]);           
 
-
+    cout<<"k is "<< k_neigh <<"\n R is "<<R<<"\n a is " <<a <<"L is " <<L_sizelist<<endl; 
     vector <vector <float>> queries;
 
     
@@ -51,7 +49,7 @@ int main(int argc,char** argv){
     euclidean_distance_of_queries (vec,queries,querymatrix); //cal
 
     cout <<"I am aftet the calculation"<<endl;
-    int L_sizelist=150; 
+
     int medoid_node;
     map <int,list<int>> graph=vamana_index_algorithm(vec,R,medoid_node,L_sizelist,a,vecmatrix,querymatrix);
     int s =medoid_node;

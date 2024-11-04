@@ -88,7 +88,7 @@ void robust_prune_test(){
 TEST_LIST{
     {"pickingP_test",pickingP_test},
     {"robust_prune_test",robust_prune_test},
-    {NULL, NULL}  // Terminate the test list
+    {NULL, NULL}  
 
 };
 
