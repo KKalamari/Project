@@ -65,7 +65,8 @@ vector<vector<double>>& vecmatrix,vector<vector<double>>& querymatrix){
     map <int,double>distances;
     for(int i=0;i<number_of_nodes;i++){
         pair < set<int>,set<int>> pairSet;
-        pairSet= greedysearch(vec,graph,medoid_node,nodes[i],1,L_sizelist,vecmatrix);//xσι=vec[nodes[i]],k_neigh,L_sizelist
+        int k=1;
+        pairSet= greedysearch(vec,graph,medoid_node,nodes[i],k,L_sizelist,vecmatrix);//xσι=vec[nodes[i]],k_neigh,L_sizelist
         set <int>  setV= pairSet.second;
         RobustPrune(graph,nodes[i],vec,setV,a,R,vecmatrix);  //12=R,σ(ι)=nodes[i]
             

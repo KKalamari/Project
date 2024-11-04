@@ -70,8 +70,9 @@ void addtoL(list <int> neighbors,list <int> &L,vector<vector<double>>&querymatri
         if(unexplored_node(*nit,L)){ // if the node does not already exist in L
             // cout<<"distance of neighbor  is "<<*nit<< " "<<querymatrix[*nit]<< "and distance of "<< *lit<<" is "<< querymatrix[*lit]<<endl;
             for(lit=L.begin();lit!=L.end();lit++){
-               // cout<<"the distances are : "<<querymatrix[*nit][query]<<"<"<<querymatrix[*lit][query];
+              //  cout<<"the distances are : "<<querymatrix[*nit][query]<<"<"<<querymatrix[*lit][query]<<endl;
                 if(querymatrix[*nit][query]<querymatrix[*lit][query]){
+                //    cout <<"we are inserting "<<*nit<<endl;
                     L.insert(lit,*nit);
                     if(int(L.size())>Lsizelist){
                         L.pop_back(); //erasing the last element,the one with the greater value,from set L
@@ -84,6 +85,7 @@ void addtoL(list <int> neighbors,list <int> &L,vector<vector<double>>&querymatri
         }
         if(inserted==0){
             if(int(L.size())<Lsizelist){
+              //  cout << "we are pushing back"<<*nit<<endl;
                 L.push_back(*nit);
             }
             
@@ -91,13 +93,18 @@ void addtoL(list <int> neighbors,list <int> &L,vector<vector<double>>&querymatri
             //so we're doing nothing!
             
         }
+        // cout<<"the L is: ";
+        // for(auto nodes : L){
+        //     cout <<nodes << " ";
+        // }
+        // cout <<endl;
     
     }
 }
 
 
 //s->starting node, xq->query point, k->result size, search_list_size->L >=k
-pair <set <int>,set <int>> greedysearch(vector<vector<float>> &vec, map <int, list<int>>& graph,int &s,int& query_point,int k_neigh,int L_sizelist,vector<vector<double>>&querymatrix){
+pair <set <int>,set <int>> greedysearch(vector<vector<float>> &vec, map <int, list<int>>& graph,int &s,int& query_point,int &k_neigh,int &L_sizelist,vector<vector<double>>&querymatrix){
     list <int> L; //List L will contain the neighbors of each node we have traversed. It's initialized with S as the starting_node    
     list<int> V; //list containing all the visited nodes we already traversed and searched their nεighbours
 
@@ -127,7 +134,8 @@ pair <set <int>,set <int>> greedysearch(vector<vector<float>> &vec, map <int, li
     
         
     }
-    
+    // cout << "the k_neigh are"<<k_neigh <<endl;
+    // cout << "the L size is"<<L.size();
     while(int(L.size())>k_neigh)
         L.pop_back();
     
@@ -145,6 +153,10 @@ pair <set <int>,set <int>> greedysearch(vector<vector<float>> &vec, map <int, li
     for (list <int> :: iterator vit=V.begin();vit!=V.end();vit++){
         Vset.insert(*vit);
     } 
+
+    for(list <int> ::iterator lit=L.begin();lit!=L.end();lit++){
+        Lset.insert(*lit);
+    }
 
     
     return make_pair(Lset,Vset); //returning L which contains the k nearest neighbors

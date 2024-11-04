@@ -35,19 +35,18 @@ void euclidean_distance_of_database(vector<vector<float>> &vec, vector<vector<do
     }
 }
 
-void euclidean_distance_of_queries(vector<vector<float>>& vec, vector<vector<float>> &queries , vector <vector<double>> &matrix){
-    for(int i=0;i<int(vec.size());i++){
-        double euclidean =0;
-        for(int j=0; j<int(queries.size());j++){
-            for(int k=0;k<int (vec[k].size());k++){
-                euclidean+= pow(vec[i][k]-queries[j][k],2 );
+void euclidean_distance_of_queries(vector<vector<float>>& vec, vector<vector<float>> &queries, vector<vector<double>> &matrix) {
+    for (int i = 0; i < int(vec.size()); i++) {
+        for (int j = 0; j < int(queries.size()); j++) {
+            double euclidean = 0;  // Reset for each query
+            for (int k = 0; k < int(vec[i].size()); k++) {
+                euclidean += pow(vec[i][k] - queries[j][k], 2);
             }
-            matrix[i][j]=sqrt(euclidean);
-            
+            matrix[i][j] = sqrt(euclidean);
         }
-       cout <<"for node "<<i <<"the distance from query is "<<matrix[i][0];
+        
+        
     }
-
 }
 
 

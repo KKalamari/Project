@@ -29,9 +29,9 @@ int main(int argc,char** argv){
         R=atoi(R_num);
         } 
     else {
-        k_neigh=50;
-        R=20;
-        a=1.0;
+        k_neigh=100;
+        R=16;
+        a=1.1;
     }
 
 
@@ -51,7 +51,7 @@ int main(int argc,char** argv){
     euclidean_distance_of_queries (vec,queries,querymatrix); //cal
 
     cout <<"I am aftet the calculation"<<endl;
-    int L_sizelist=100; 
+    int L_sizelist=150; 
     int medoid_node;
     map <int,list<int>> graph=vamana_index_algorithm(vec,R,medoid_node,L_sizelist,a,vecmatrix,querymatrix);
     int s =medoid_node;
@@ -69,7 +69,7 @@ int main(int argc,char** argv){
             if(setV.count(value) > 0)
             count++;
         }
-        if (k>= 90) 
+        if (count>= 90) 
             k++;
         cout<<count<<endl;
     }
