@@ -9,7 +9,7 @@
 #include "reading.h"
 using namespace std;
 
-
+//giving an instance of a graph with nodes and its distances. Giving the 3rd node as the starting node to find its 3-nearest neighbors.
 void test_greedyseach(){
 
     vector <vector<float>> vec {
@@ -33,11 +33,13 @@ void test_greedyseach(){
     graph[4] = {1,2,3};
     cout <<"xqsize is "<<xq.size()<<endl;
     vector<vector<double>> queries(vec.size(),vector<double>(xq.size()));
-    euclidean_distance_of_queries(vec,xq,queries);
+
+    euclidean_distance_of_queries(vec,xq,queries); //first we need to know the distances
+
     int s=3;
     map <int,double>distances;
     pair <set <int>,set<int>> pairSet;
-    int q=0;
+    int q=0; //vector<vector<float>> contains only 1 element so index q will be zero
     pairSet = greedysearch( vec,graph,s,q, k_neigh, L_sizelist,queries);
     set <int> L=pairSet.first;
     TEST_CHECK(int(L.size())==k_neigh);

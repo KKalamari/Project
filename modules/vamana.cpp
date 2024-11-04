@@ -19,7 +19,7 @@ int medoid(vector<vector<float>>& vec) {
     //compute pairwise distances once and accumulate them in summ_of_distances
     for (int i = 0; i < number_of_nodes; i++) {
         for (int j = i + 1; j < number_of_nodes; j++) {
-            double distance = euclidean_distance(vec[i], vec[j]);
+            double distance = euclidean_distance(vec[i], vec[j]); //we use squared euclidean distance.(supposed to be faster)
             summ_of_distances[i] += distance;
             summ_of_distances[j] += distance;
         }
@@ -38,9 +38,10 @@ int medoid(vector<vector<float>>& vec) {
 
     return returning_node;
 }
+//vec contains the dimensions of each node.
 
 map <int, list<int>> vamana_index_algorithm(vector<vector<float>>& vec, int& R,int& medoid_node,int &L_sizelist,int& a,
-vector<vector<double>>& vecmatrix,vector<vector<double>>& querymatrix){
+vector<vector<double>>& vecmatrix){
 
     int number_of_nodes=vec.size();
     map <int, list<int>> graph = graph_creation(vec,R); //graph that contains each node with its neghbors
@@ -59,9 +60,9 @@ vector<vector<double>>& vecmatrix,vector<vector<double>>& querymatrix){
     for(int i=0;i<number_of_nodes;i++){
         pair < set<int>,set<int>> pairSet;
         int k=1;
-        pairSet= greedysearch(vec,graph,medoid_node,nodes[i],k,L_sizelist,vecmatrix);
+        pairSet= greedysearch(graph,medoid_node,nodes[i],k,L_sizelist,vecmatrix);
         set <int>  setV= pairSet.second;
-        RobustPrune(graph,nodes[i],vec,setV,a,R,vecmatrix);
+        RobustPrune(graph,nodes[i],setV,a,R,vecmatrix);
             
         for(list <int> ::iterator outNeighbors=graph[nodes[i]].begin();outNeighbors!=graph[nodes[i]].end();outNeighbors++){
             if(int(graph[*outNeighbors].size())+1>R){
@@ -74,7 +75,7 @@ vector<vector<double>>& vecmatrix,vector<vector<double>>& querymatrix){
                     
                 }
                 
-                RobustPrune(graph,*outNeighbors,vec,setV,a,R,vecmatrix);
+                RobustPrune(graph,*outNeighbors,setV,a,R,vecmatrix);
 
             }
             else{

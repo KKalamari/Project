@@ -11,9 +11,8 @@
 
 using namespace std;
 using namespace chrono;
-// the syntax for execution  is: ./main k_num R_num
+// the syntax for execution  is: ./main k_num R_num a_num l_num
 
-// k r a l
 int main(int argc,char** argv){
     auto start = high_resolution_clock::now();
     const char* filename="siftsmall_base.fvecs";
@@ -22,7 +21,7 @@ int main(int argc,char** argv){
     int k_neigh = 100; //the k nearest neighbors we want to find.
     int R = 16; //The number which defines the random neighbors each node is going to have
     int a=1.1;
-    int L_sizelist=120;
+    int L_sizelist=150;
     if(argc>1) //if the user has provided k and R values then use them, else use some default
         k_neigh= atoi(argv[1]);
     if(argc>2) 
@@ -32,7 +31,7 @@ int main(int argc,char** argv){
     if(argc>4) 
         L_sizelist = atoi(argv[4]);           
 
-    cout<<"k is "<< k_neigh <<"\n R is "<<R<<"\n a is " <<a <<"L is " <<L_sizelist<<endl; 
+    cout<<" k is "<< k_neigh <<"\n R is "<<R<<"\n a is " <<a <<endl<<" L is " <<L_sizelist<<endl; 
     vector <vector <float>> queries;
 
     
@@ -51,7 +50,7 @@ int main(int argc,char** argv){
     cout <<"I am aftet the calculation"<<endl;
 
     int medoid_node;
-    map <int,list<int>> graph=vamana_index_algorithm(vec,R,medoid_node,L_sizelist,a,vecmatrix,querymatrix);
+    map <int,list<int>> graph=vamana_index_algorithm(vec,R,medoid_node,L_sizelist,a,vecmatrix);
     int s =medoid_node;
     map<int,double> distances;
     vector <vector <int>> ground;
@@ -60,10 +59,10 @@ int main(int argc,char** argv){
     int k =0;
     for(int i =0; i<100; i++) { //testing all the queries to see how much accuracy we have
         vector<int> comp = ground[i];
-        pair<set <int>, set<int>> L = greedysearch (vec,graph,s,i,k_neigh,L_sizelist,querymatrix);
+        pair<set <int>, set<int>> L = greedysearch (graph,s,i,k_neigh,L_sizelist,querymatrix);
         set <int> setV = L.first;
         int count = 0 ;
-        for(const float& value : comp) {
+        for(const int& value : comp) {
             if(setV.count(value) > 0)
             count++;
         }

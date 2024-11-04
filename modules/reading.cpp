@@ -28,9 +28,8 @@ using namespace std;
 
     int printed_vectors=boundb-bounda+1;
     fseek(fd,(bounda-1)*fvector_size,SEEK_SET); //back at the start of the vector which is bounded by bounda
-    cout<< "printed_vectors are :" << printed_vectors << "\n";
+    cout<< "vectors that got read are :" << printed_vectors << "\n";
     vector<vector<float>> vec(printed_vectors);
-    cout << "I am before the for"<<endl;
     for(int i=0;i<printed_vectors;i++){
         vec[i].resize(vector_size);
         fseek(fd,4,SEEK_CUR);
@@ -38,9 +37,7 @@ using namespace std;
 
     }
 
-    cout << " I am before closing"<< endl;
     fclose(fd);
-    cout<< " I am before returning"<< endl;
     return vec;
 }
 

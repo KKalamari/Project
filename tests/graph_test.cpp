@@ -11,6 +11,7 @@
 
 using namespace std;
 
+//proving that graph has R nodes, only unique neighbors and each node has never itself as a neighbor.
 void test_graph_creation(void) {
     vector<vector<float>> vec;
     vec={{4.5,6.3},{6.2,8.9},{2.0,3.6},{5.4,12.4}};
