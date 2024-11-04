@@ -1,28 +1,17 @@
 #include "robust_ext.h"
-#include <cmath>
-#include <iostream>
-#include <set>
-#include "greedysearch.h"
 using namespace std;
 
 
 void euclidean_distance(set <int> &candidate_set, int point,vector<vector<float>>&vec,map<pair <int,int>,float>&distances) 
 {
-    int counter=0;
+   
     for(set <int> ::iterator setIt=candidate_set.begin();setIt!=candidate_set.end();setIt++){
-        if(counter>int(candidate_set.size()/2)+1)
-            break;
-
         double euclidean=0.0;
-        if (distances.find({*setIt,point}) != distances.end()) {
-            continue;  // if it already exists we don't calculate it again.
-        }
         for(int i=0;i<int(vec[*setIt].size());i++)
             euclidean+=pow(vec[*setIt][i] - vec[point][i], 2);
     
         distances[make_pair(*setIt,point)]=sqrt(euclidean);
         distances[make_pair(point,*setIt)]=sqrt(euclidean);
-        counter++;
     }
 
 
@@ -57,7 +46,7 @@ void RobustPrune(
     map<int,list<int>>& graph,
     int point,
     vector<vector<float>> &vec, //distances
-    set<int>& candidateSet, //V
+    set<int>& candidateSet,
     double alpha,
     size_t R
 ) {
@@ -69,7 +58,7 @@ void RobustPrune(
     for (int neighbor : graph[point]) 
     {  
         if(neighbor!=point)
-            candidateSet.insert(neighbor); //Inserting all the neighbors of point in the candidate_set
+            candidateSet.insert(neighbor);//inserting all the neighbors of point in the candidate_set
     }
       // there is a possibily that V set contains point as an element which was causing a segmentation problem. When i added this it got fixed!
     set <int>::iterator exisiting_p=candidateSet.find(point);

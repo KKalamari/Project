@@ -19,11 +19,11 @@ void pickingP_test(){
     
     set<int> candidate_set;
 
-    // Iterate through vec using an index-based loop
+    //iterate vec using an index-based loop
     for (int i = 0; i < int(vec.size()); ++i) {
-        candidate_set.insert(i);  // Add the index to the candidate_set
+        candidate_set.insert(i);//add the index to the candidate_set
     }
-    int point=4; //current p
+    int point=4;//current p
     cout << " I am before vec"<<endl;
     vec.push_back({47.43,7.69});
 
@@ -51,10 +51,6 @@ void robust_prune_test(){
     
     set<int> candidate_set;
 
-    // // Iterate through vec using an index-based loop
-    // for (int i = 0; i < int(vec.size()); ++i) {
-    //     candidate_set.insert(i);  // Add the index to the candidate_set
-    // }
     int point=4; //current p
     cout << " I am before vec"<<endl;
     
@@ -71,7 +67,7 @@ void robust_prune_test(){
     double alpha=1;
     cout <<"I am behind RobustPrune"<<endl;
     RobustPrune(graph,point,vec,candidate_set,alpha,R);
-    list <int> checking ={1}; //In this example the pruned neighbors are actually <R. That's ok, we can have up to R so < is alo acceptible(θέλω να πιστεύω)
+    list <int> checking ={1};//in this example the pruned neighbors are actually <R. That's ok, we can have up to R so < is alo acceptible(θέλω να πιστεύω)
     cout <<"the graph[4] is: ";
     for(int pruned_neighbors : graph[4]){
         cout << pruned_neighbors;

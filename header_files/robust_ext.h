@@ -1,13 +1,15 @@
 
 #pragma once
-#include <set>
 #include <map>
 #include <vector>
 #include <list>
-#include <cmath>
 #include <iterator>
 #include <utility>
 #include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <set>
+#include "greedysearch.h"
 
 using namespace std;
 void euclidean_distance( set<int>& candidateSet, int point, vector<vector<float>>& vec, map<pair<int, int>, float>& distances);

@@ -1,6 +1,6 @@
 # Compiler and Flags
 CXX = g++
-CXXFLAGS = -Wall -Iheader_files  # Add the include path for header files
+CXXFLAGS =   -O3  -Wall  -Iheader_files # Add the include path for header files
 OUTPUT_DIR = output
 MODULES_DIR = modules
 TESTS_DIR = tests

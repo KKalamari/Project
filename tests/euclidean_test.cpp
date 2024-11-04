@@ -1,6 +1,6 @@
 #include <iostream>
 #include <algorithm>
-#include "acutest.h"  // Include Acutest
+#include "acutest.h" 
 #include <cstdlib>
 #include <algorithm>
 #include <vector>
@@ -26,5 +26,5 @@ void test_euclidean(){
 
 TEST_LIST = {
     {"test_euclidean", test_euclidean},
-    {NULL, NULL}  // Terminate the test list
+    {NULL, NULL} 
 };

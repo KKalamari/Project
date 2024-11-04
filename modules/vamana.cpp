@@ -1,13 +1,5 @@
-#include "robust_ext.h"
-#include "euclidean_distance.h"
-#include "graph_creation.h"
-#include "greedysearch.h"
-#include <unordered_set>
+
 #include "vamana.h"
-#include <algorithm>
-#include <random>
-#include <iostream>
-#include <set>
 using namespace std;
 
 
@@ -51,21 +43,20 @@ map <int, list<int>> vamana_index_algorithm(vector<vector<float>>& vec, int& R,i
     map <int, list<int>> graph = graph_creation(vec,R); //graph contains each node with its neghbors
     
     medoid_node = medoid(vec);
-    cout <<"medoid is" << medoid_node<<"!!!"<<endl;;
     //creating the random permutation
-    random_device rd; // Obtain a random number from hardware
-    mt19937 generator(rd()); // Seed the generator
+    random_device rd; //obtain a random number from hardware
+    mt19937 generator(rd());//seed the generator
     vector<int> nodes;
     for(int i=0;i<int(number_of_nodes);i++){
         nodes.push_back(i);
     }
-    shuffle(nodes.begin(),nodes.end(),generator); //random permutation of graph's nodes
+    shuffle(nodes.begin(),nodes.end(),generator);//random permutation of graph's nodes
     map <int,double>distances;
     for(int i=0;i<number_of_nodes;i++){
         pair < set<int>,set<int>> pairSet;
         pairSet= greedysearch(vec,graph,medoid_node,vec[nodes[i]],1,L_sizelist);//xσι=vec[nodes[i]],k_neigh,L_sizelist
         set <int>  setV= pairSet.second;
-        RobustPrune(graph,nodes[i],vec,setV,a,R);  //12=R,σ(ι)=nodes[i]
+        RobustPrune(graph,nodes[i],vec,setV,a,R);//12=R,σ(ι)=nodes[i]
             
         for(list <int> ::iterator outNeighbors=graph[nodes[i]].begin();outNeighbors!=graph[nodes[i]].end();outNeighbors++){
             if(int(graph[*outNeighbors].size())+1>R){

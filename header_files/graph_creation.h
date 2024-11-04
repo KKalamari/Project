@@ -1,7 +1,10 @@
-#include <vector>
 #include <iostream>
-#include <map>
+#include <string>
+#include <vector>
+#include "euclidean_distance.h"
 #include <list>
+#include <algorithm>
+#include <map>
 #include <set>
 #pragma once
 using namespace std;

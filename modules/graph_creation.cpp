@@ -1,11 +1,4 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include "euclidean_distance.h"
-#include <list>
-#include <algorithm>
-#include <map>
-#include <set>
+#include "graph_creation.h"
 using namespace std;
 
 
@@ -19,7 +12,7 @@ map <int, list<int>> graph_creation(vector<vector<float>>&vec, int R ){
     
     for(int i=0;i<int(vec.size());i++){
         for (int j=0;j<R;j++){
-            int random_number = rand() % (vec.size()); //generating numbers from 0 to vec->size 
+            int random_number = rand() % (vec.size());//generating numbers from 0 to vec->size 
             if (find(adj[i].begin(), adj[i].end(), random_number) == adj[i].end() && i!=random_number)  //not found nor i=R thus adding neighbor
                 adj[i].push_back(random_number);
             else{
@@ -31,14 +24,6 @@ map <int, list<int>> graph_creation(vector<vector<float>>&vec, int R ){
     }
     }
 
-    // cout << "Graph adjacency list:\n";
-    // for (const auto& node : adj) {
-    //     cout << "Node " << node.first << ": ";
-    //     for (const auto& neighbor : node.second) {
-    //         cout << neighbor << " ";
-    //     }
-    //     cout << endl;
-    // }
     return adj;
 }
 

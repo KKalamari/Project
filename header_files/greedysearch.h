@@ -1,8 +1,14 @@
-#include <map>
-#include <list>
 #include <iostream>
+#include <string>
 #include <vector>
-#include <set>
+#include <cmath>
+#include <algorithm>
+#include "graph_creation.h"
+#include "euclidean_distance.h"
+#include <reading.h>
+#include <list>
+#include <map>
+#include <utility>
 #pragma once
 using namespace std;
 

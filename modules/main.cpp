@@ -1,12 +1,8 @@
-#include <iostream>
-#include<vector>
+
 #include "reading.h"
 #include "graph_creation.h"
 #include "greedysearch.h"
-#include "euclidean_distance.h"
 #include "vamana.h"
-#include <list>
-#include <utility>
 #include <chrono>
 
 using namespace std;
@@ -30,31 +26,45 @@ int main(int argc,char** argv){
         } 
     else {
         k_neigh=100;
-        R=14;
-        a=1;
+        R=16;
+        a=1.1;
     }
-    int vector_size=int(vec.size());
-    int arr[vector_size][vector_size];
 
-    
+
     vector <vector <float>> query;
     const char* filename2="siftsmall_query.fvecs";
     query =reading_fvecs(filename2,1,100);
-    int L_sizelist=120; 
+    int L_sizelist=150; 
     int medoid_node;
     map <int,list<int>> graph=vamana_index_algorithm(vec,R,medoid_node,L_sizelist,a);
     int s =medoid_node;
     map<int,double> distances;
-    pair<set <int>,set <int>> pairset;
-    pairset = greedysearch(vec,graph,s,query[0],k_neigh,L_sizelist);
+    vector <vector <int>> ground;
+    const char* filename3 = "siftsmall_groundtruth.ivecs";
+    ground = reading_ivecs (filename3,1,100);
+    int k =0;
+    for(int i =0; i<100; i++) { //for loop that runs all the querys and counts how many common numbers there are
+        vector<int> comp = ground[i];
+        pair<set <int>, set<int>> L = greedysearch (vec,graph,s,query[i],k_neigh,L_sizelist);
+        set <int> setV = L.first;
+        int count = 0 ;
+        for(const float& value : comp) {
+            if(setV.count(value) > 0)
+            count++;
+        }
+        if (count>= 90) 
+            k++;
+
+        cout<<i<<"th query has "<< count<<"/100"<< endl;
+    }
+    cout<< k<< endl;
+
+    pair<set <int>,set <int>> pairset = greedysearch(vec,graph,s,query[0],k_neigh,L_sizelist);
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<minutes>(end - start);
     
     cout << "Execution time: " << duration.count() << " minutes" << endl;
     set <int> L=pairset.first;
-    cout <<"the k neighbors are: ";
-    for(set <int>::iterator k_neighbors =L.begin();k_neighbors!=L.end();k_neighbors++){
-        cout <<*k_neighbors<< ",";
-    }
+
     cout <<endl;
 }
