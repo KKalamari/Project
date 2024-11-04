@@ -20,7 +20,7 @@ int main(int argc,char** argv){
     vec=reading_fvecs(filename,1,10000);  
     int k_neigh = 100; //the k nearest neighbors we want to find.
     int R = 16; //The number which defines the random neighbors each node is going to have
-    int a=1.1;
+    double a=1.0;
     int L_sizelist=150;
     if(argc>1) //if the user has provided k and R values then use them, else use some default
         k_neigh= atoi(argv[1]);

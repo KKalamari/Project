@@ -40,7 +40,7 @@ void test_greedyseach(){
     map <int,double>distances;
     pair <set <int>,set<int>> pairSet;
     int q=0; //vector<vector<float>> contains only 1 element so index q will be zero
-    pairSet = greedysearch( vec,graph,s,q, k_neigh, L_sizelist,queries);
+    pairSet = greedysearch( graph,s,q, k_neigh, L_sizelist,queries);
     set <int> L=pairSet.first;
     TEST_CHECK(int(L.size())==k_neigh);
     cout << "the L set is:";

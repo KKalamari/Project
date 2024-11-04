@@ -40,7 +40,7 @@ int medoid(vector<vector<float>>& vec) {
 }
 //vec contains the dimensions of each node.
 
-map <int, list<int>> vamana_index_algorithm(vector<vector<float>>& vec, int& R,int& medoid_node,int &L_sizelist,int& a,
+map <int, list<int>> vamana_index_algorithm(vector<vector<float>>& vec, int& R,int& medoid_node,int &L_sizelist,double& a,
 vector<vector<double>>& vecmatrix){
 
     int number_of_nodes=vec.size();
