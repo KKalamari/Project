@@ -1,39 +1,14 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <cmath>
-#include <algorithm>
+
 #include "greedysearch.h"
-#include "graph_creation.h"
-#include "euclidean_distance.h"
-#include <reading.h>
-#include <list>
-#include <map>
-#include <utility>
-
-
 
 using namespace std;
-//Έχω λούσει λίγο με τη χρήση των lists, Θα ήταν αρκετά πιο αποδοτικό η χρήση sets, θα διορθωθεί στη 2η άσκηση, προχωράμε ελπίζω <3.
 
-
-//CUSTOM COMPARATOR, may be needed eventually.
-// struct CompareByDistance {
-//     map<int, float>& querymatrix;
-    
-//     CompareByDistance(map<int, float>& d) : querymatrix(d) {}
-    
-//     bool operator()(int a, int b) const {
-//         return querymatrix[a] < querymatrix[b];  // Order by ascending distance
-//     }
-// };
-
-//ensuring that L contains at leasτ one node which haven't been already explored.
+//function that ensures that L contains at leasτ one node which haven't been already explored.
 bool unexplored_nodes(list <int>L,list <int>visited){ 
     
-    for(list <int> :: iterator lit=L.begin();lit!=L.end();lit++){ //for every element there is in L
+    for(list <int> :: iterator lit=L.begin();lit!=L.end();lit++){//for every element there is in L
         bool found=0;
-        list <int> :: iterator vit=visited.begin(); // we iterate V list
+        list <int> :: iterator vit=visited.begin(); //we iterate V list
         for(vit=visited.begin();vit!=visited.end();vit++){
         if(*vit==*lit){ //if the current L element exist in V declare found=1 and break the loop, start checking on a new L element
             found=1;
@@ -41,7 +16,7 @@ bool unexplored_nodes(list <int>L,list <int>visited){
         }
     }
     if(found==0) //if we didn;t found a match, insantly return 1
-        return 1; //just found an unexplored node, return 1
+        return 1;//just found an unexplored node, return 1
     }
     return 0; //every node has been explored
 
@@ -49,13 +24,12 @@ bool unexplored_nodes(list <int>L,list <int>visited){
 
 //The same logic with the above just for a specific node
 bool unexplored_node(int node, const list<int> visited) { 
-    // Check if the node exists in the visited list
     for (auto vit = visited.begin(); vit != visited.end(); vit++) {
         if (*vit == node) {
-            return 0; //just found a match in visites list 
+            return 0;//just found a match in visites list 
         }
     }
-    return 1; // Node does not exist in the visited list
+    return 1; //node does not exist in the visited list
 }
 
 
@@ -63,16 +37,12 @@ bool unexplored_node(int node, const list<int> visited) {
 void addtoL(list <int> neighbors,list <int> &L,vector<vector<double>>&querymatrix,int Lsizelist,int s,vector<vector<float>>& vec,int& query){
     list <int>:: iterator nit;
     list <int>:: iterator lit;
-   // euclidean_distance(neighbors,vec,query,querymatrix);
     for(nit=neighbors.begin();nit!=neighbors.end();nit++){
 
         bool inserted=0; //POSSIBLE OVERTHINKING!!!
         if(unexplored_node(*nit,L)){ // if the node does not already exist in L
-            // cout<<"distance of neighbor  is "<<*nit<< " "<<querymatrix[*nit]<< "and distance of "<< *lit<<" is "<< querymatrix[*lit]<<endl;
             for(lit=L.begin();lit!=L.end();lit++){
-              //  cout<<"the distances are : "<<querymatrix[*nit][query]<<"<"<<querymatrix[*lit][query]<<endl;
                 if(querymatrix[*nit][query]<querymatrix[*lit][query]){
-                //    cout <<"we are inserting "<<*nit<<endl;
                     L.insert(lit,*nit);
                     if(int(L.size())>Lsizelist){
                         L.pop_back(); //erasing the last element,the one with the greater value,from set L
@@ -85,7 +55,6 @@ void addtoL(list <int> neighbors,list <int> &L,vector<vector<double>>&querymatri
         }
         if(inserted==0){
             if(int(L.size())<Lsizelist){
-              //  cout << "we are pushing back"<<*nit<<endl;
                 L.push_back(*nit);
             }
             
@@ -93,22 +62,15 @@ void addtoL(list <int> neighbors,list <int> &L,vector<vector<double>>&querymatri
             //so we're doing nothing!
             
         }
-        // cout<<"the L is: ";
-        // for(auto nodes : L){
-        //     cout <<nodes << " ";
-        // }
-        // cout <<endl;
     
     }
 }
 
 
-//s->starting node, xq->query point, k->result size, search_list_size->L >=k
+//function that implements the greedy algorithm 
 pair <set <int>,set <int>> greedysearch(vector<vector<float>> &vec, map <int, list<int>>& graph,int &s,int& query_point,int &k_neigh,int &L_sizelist,vector<vector<double>>&querymatrix){
-    list <int> L; //List L will contain the neighbors of each node we have traversed. It's initialized with S as the starting_node    
+    list <int> L; //list L will contain the neighbors of each node we have traversed. It's initialized with S as the starting_node    
     list<int> V; //list containing all the visited nodes we already traversed and searched their nεighbours
-
-    // euclidean_distance(graph[s],vec,query_point,querymatrix); //querymatrix[0],querymatrix[3],querymatrix[4]
     addtoL(graph[s],L,querymatrix,L_sizelist,s,vec,query_point); //passing the neighbors of s which will be added to L
    
     V.push_back(s); //it->first s traversed, we put it in the visited list
@@ -134,21 +96,13 @@ pair <set <int>,set <int>> greedysearch(vector<vector<float>> &vec, map <int, li
     
         
     }
-    // cout << "the k_neigh are"<<k_neigh <<endl;
-    // cout << "the L size is"<<L.size();
+
     while(int(L.size())>k_neigh)
         L.pop_back();
     
     
     set <int> Lset;
     set <int> Vset;
-    // cout <<"the L is ";
-    // for (list <int> :: iterator lit=L.begin();lit!=L.end();lit++){
-    //     cout<<*lit <<" ";
-    //     Lset.insert(*lit);
-    // } 
-    // cout<<endl;
-    
 
     for (list <int> :: iterator vit=V.begin();vit!=V.end();vit++){
         Vset.insert(*vit);

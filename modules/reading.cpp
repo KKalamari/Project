@@ -1,9 +1,6 @@
 //reading function for .fvecs files
 //reading_fvecs also returns the 2d vector which contains every vector with the fitted size as the dataset file defines.
-#include <iostream>
-#include <vector>
-#include <string>
-#include <cstring>
+#include "reading.h"
 using namespace std;
  vector<vector<float>> reading_fvecs(const char* filename,int bounda,int boundb){
    
@@ -41,15 +38,6 @@ using namespace std;
 
     }
 
-
-
-    // for(int i=0;i<printed_vectors;i++){
-    //     cout<< "Vector "<< (bounda)<< ":" ;
-    //     for(int j=0;j<vector_size;j++){
-    //         cout << (*vec)[i][j]<< ", ";
-    //     }
-    //     cout<< "\n \n";
-    // }
     cout << " I am before closing"<< endl;
     fclose(fd);
     cout<< " I am before returning"<< endl;
@@ -93,14 +81,6 @@ vector<vector<int>> reading_ivecs(const char* filename,int bounda,int boundb){
     }
 
 
-
-    // for(int i=0;i<printed_vectors;i++){
-    //     cout<< "Vector "<< (bounda)<< ":" ;
-    //     for(int j=0;j<vector_size;j++){
-    //         cout << (*vec)[i][j]<< ", ";
-    //     }
-    //     cout<< "\n \n";
-    // }
     cout << " I am before closing"<< endl;
     fclose(fd);
     cout<< " I am before returning"<< endl;

@@ -9,10 +9,12 @@
 #include <utility>
 #include <algorithm>
 #include "euclidean_distance.h"
-
 using namespace std;
-void euclidean_distance( set<int>& candidateSet, int point, vector<vector<float>>& vec, map<pair<int, int>, float>& distances);
-int pickingP(int point, std::set<int>& candidate_set, vector<vector<double>>& distances);
+//void euclidean_distance( set<int>& candidateSet, int point, vector<vector<float>>& vec, map<pair<int, int>, float>& distances);
+
+int pickingP(int point, std::set<int>& candidate_set, vector<vector<double>>& distances); //picks the closest p
+
+//implements robust prune
 void RobustPrune(
     std::map<int, std::list<int>>& graph,
     int point,

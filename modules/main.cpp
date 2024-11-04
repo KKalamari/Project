@@ -60,7 +60,7 @@ int main(int argc,char** argv){
     const char* filename3 = "siftsmall_groundtruth.ivecs";
     ground = reading_ivecs (filename3,1,100);
     int k =0;
-    for(int i =0; i<100; i++) {
+    for(int i =0; i<100; i++) { //testing all the queries to see how much accuracy we have
         vector<int> comp = ground[i];
         pair<set <int>, set<int>> L = greedysearch (vec,graph,s,i,k_neigh,L_sizelist,querymatrix);
         set <int> setV = L.first;
@@ -74,16 +74,9 @@ int main(int argc,char** argv){
         cout<<count<<endl;
     }
     cout<< k<< endl;
-    int i=0;
-    pair<set <int>,set <int>> pairset = greedysearch(vec,graph,s,i,k_neigh,L_sizelist,querymatrix);
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<minutes>(end - start);
     
     cout << "Execution time: " << duration.count() << " minutes" << endl;
-    set <int> L=pairset.first;
-    cout <<"the k neighbors are: ";
-    for(set <int>::iterator k_neighbors =L.begin();k_neighbors!=L.end();k_neighbors++){
-        cout <<*k_neighbors<< ",";
-    }
-    cout <<endl;
+
 }
