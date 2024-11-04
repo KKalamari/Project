@@ -13,8 +13,8 @@ MEDOID_TARGET = medoid_test
 # The source files
 READING_SRCS = reading_test.cpp  ./../modules/reading.cpp
 GRAPH_SRCS = graph_test.cpp ./../modules/graph_creation.cpp #include graph_creationg to the test
-ROBUST_EXT_SRCS = robust_ext_test.cpp ./../modules/robust_ext.cpp 
-EUCLIDEAN_SRCS = euclidean_test.cpp ./../modules/euclidean_distance.cpp
+ROBUST_EXT_SRCS = robust_ext_test.cpp ./../modules/robust_ext.cpp ./../modules/euclidean_distance.cpp
+EUCLIDEAN_SRCS = euclidean_test.cpp ./../modules/euclidean_distance.cpp 
 GREEDY_SRCS = greedysearch_test.cpp ./../modules/greedysearch.cpp ./../modules/euclidean_distance.cpp ./../modules/reading.cpp# Add graph_creation.cpp to MEDOID_SRCS to link with medoid_test
 MEDOID_SRCS = medoid_test.cpp ./../modules/vamana.cpp ./../modules/euclidean_distance.cpp ./../modules/graph_creation.cpp ./../modules/robust_ext.cpp ./../modules/greedysearch.cpp
 

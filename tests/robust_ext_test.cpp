@@ -6,6 +6,7 @@
 #include <utility>
 #include <list>
 #include "robust_ext.h"
+#include "euclidean_distance.h"
 using namespace std;
 
 //checking euclidean_distance and pickingP
@@ -27,16 +28,16 @@ void pickingP_test(){
     cout << " I am before vec"<<endl;
     vec.push_back({47.43,7.69});
 
-
-    map<pair <int,int>,float> distances;
+    vector <vector<double>> vecmatrix(vec.size(),vector<double>(vec.size()));
     cout << "I am before calling euclidean distance"<<endl;
-    euclidean_distance( candidate_set,point,vec,distances);
+    euclidean_distance_of_database(vec,vecmatrix);
     //we see it prints indeed the right value for each node
     for(int i=0;i<=3;i++){
-        cout << "the  euclidean distance from to cerrunt node of V is : "<< distances[make_pair(i,4)]<<endl;
+        cout << "the  euclidean distance from to cerrunt node of V is : "<< vecmatrix[i][4]<<endl;
     }
     int p;
-   p= pickingP( point, candidate_set,distances);
+    
+    p= pickingP( point, candidate_set,vecmatrix);
     TEST_CHECK(p==1);
     
 }
@@ -66,11 +67,13 @@ void robust_prune_test(){
     graph[2]={3,0,1};
     graph[3]={1,2,0};
     graph[4]={0,1,2};
+    vector<vector<double>> vecmatrix(vec.size(),vector<double>(vec.size()));
+    euclidean_distance_of_database(vec,vecmatrix);
 
     size_t R=2;
     double alpha=1;
     cout <<"I am behind RobustPrune"<<endl;
-    RobustPrune(graph,point,vec,candidate_set,alpha,R);
+    RobustPrune(graph,point,vec,candidate_set,alpha,R,vecmatrix);
     list <int> checking ={1}; //In this example the pruned neighbors are actually <R. That's ok, we can have up to R so < is alo acceptible(θέλω να πιστεύω)
     cout <<"the graph[4] is: ";
     for(int pruned_neighbors : graph[4]){

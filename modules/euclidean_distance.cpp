@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <list>
+#include "euclidean_distance.h"
 using namespace std;
 
 void euclidean_distance(list<int>& Pneighbors, vector<vector<float>>& vec, vector<float> query_point, map<int, double>& distances) { 
@@ -15,6 +16,41 @@ void euclidean_distance(list<int>& Pneighbors, vector<vector<float>>& vec, vecto
         distances[*lit] = sqrt(euclidean); // Storing the distance in the map
     }
 }
+
+
+void euclidean_distance_of_database(vector<vector<float>> &vec, vector<vector<double>> &matrix)
+{
+    for (int i = 0; i < int(vec.size()); i++) {
+        for (int j = i + 1; j < int(vec.size()); j++) {
+            double euclidean = 0;  // Reset for each new pair (i, j)
+
+            for (int k = 0; k < int(vec[k].size()); k++) {
+                euclidean += pow(vec[i][k] - vec[j][k], 2); // Use vec for both i and j
+            }
+
+            double dist = sqrt(euclidean);
+            matrix[i][j] = dist;
+            matrix[j][i] = dist; // Symmetric assignment
+        }
+    }
+}
+
+void euclidean_distance_of_queries(vector<vector<float>>& vec, vector<vector<float>> &queries , vector <vector<double>> &matrix){
+    for(int i=0;i<int(vec.size());i++){
+        double euclidean =0;
+        for(int j=0; j<int(queries.size());j++){
+            for(int k=0;k<int (vec[k].size());k++){
+                euclidean+= pow(vec[i][k]-queries[j][k],2 );
+            }
+            matrix[i][j]=sqrt(euclidean);
+            
+        }
+       cout <<"for node "<<i <<"the distance from query is "<<matrix[i][0];
+    }
+
+}
+
+
 
 // void euclidean_for_everything(vector<vector<float>>&vec,int**){
 //     int vector_size=int (vec.size());

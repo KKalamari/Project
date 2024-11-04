@@ -114,7 +114,7 @@ void test_greedyseach(){
     };
 
     map <int,list<int>>graph;
-    vector<float> xq={13.0,78.6,45.7,77.0,12.3,3.0,39.7,90.0,27.8,12.8};
+    vector <vector<float>> xq={{13.0,78.6,45.7,77.0,12.3,3.0,39.7,90.0,27.8,12.8}};
     int k_neigh=3;
     int L_sizelist=4;
 
@@ -123,11 +123,14 @@ void test_greedyseach(){
     graph[2] = {2,3,4};
     graph[3] = {0,3,4};
     graph[4] = {1,2,3};
-
+    cout <<"xqsize is "<<xq.size()<<endl;
+    vector<vector<double>> queries(vec.size(),vector<double>(xq.size()));
+    euclidean_distance_of_queries(vec,xq,queries);
     int s=3;
     map <int,double>distances;
     pair <set <int>,set<int>> pairSet;
-    pairSet = greedysearch( vec,graph,s,xq, k_neigh, L_sizelist);
+    int q=0;
+    pairSet = greedysearch( vec,graph,s,q, k_neigh, L_sizelist,queries);
     set <int> L=pairSet.first;
     TEST_CHECK(int(L.size())==k_neigh);
     cout << "the L set is:";

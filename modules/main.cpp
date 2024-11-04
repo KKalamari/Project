@@ -29,18 +29,31 @@ int main(int argc,char** argv){
         R=atoi(R_num);
         } 
     else {
-        k_neigh=100;
-        R=16;
-        a=1.1;
+        k_neigh=50;
+        R=20;
+        a=1.0;
     }
 
 
-    vector <vector <float>> query;
+    vector <vector <float>> queries;
+
+    
     const char* filename2="siftsmall_query.fvecs";
-    query =reading_fvecs(filename2,1,100);
-    int L_sizelist=150; 
+    queries =reading_fvecs(filename2,1,100);
+    int vector_number = int (vec.size());
+    int query_number = int (queries.size());
+
+    vector<vector<double>> vecmatrix(vector_number,vector<double>(vector_number));  //10000 *10000 matrix for the euclidean distance of every node between every node
+    vector <vector <double>> querymatrix(vector_number,vector<double>(query_number)); // 10000 *100 matrix which calculates the euclidean distance between database node and queries
+    cout <<"the matrix size is:"<<vecmatrix.size() <<endl;
+    euclidean_distance_of_database(vec,vecmatrix); //calculating the euclidean distances of the whole database of nodes with each other
+    cout<<"I am after calculating database "<< endl;
+    euclidean_distance_of_queries (vec,queries,querymatrix); //cal
+
+    cout <<"I am aftet the calculation"<<endl;
+    int L_sizelist=100; 
     int medoid_node;
-    map <int,list<int>> graph=vamana_index_algorithm(vec,R,medoid_node,L_sizelist,a);
+    map <int,list<int>> graph=vamana_index_algorithm(vec,R,medoid_node,L_sizelist,a,vecmatrix,querymatrix);
     int s =medoid_node;
     map<int,double> distances;
     vector <vector <int>> ground;
@@ -49,7 +62,7 @@ int main(int argc,char** argv){
     int k =0;
     for(int i =0; i<100; i++) {
         vector<int> comp = ground[i];
-        pair<set <int>, set<int>> L = greedysearch (vec,graph,s,query[i],k_neigh,L_sizelist);
+        pair<set <int>, set<int>> L = greedysearch (vec,graph,s,i,k_neigh,L_sizelist,querymatrix);
         set <int> setV = L.first;
         int count = 0 ;
         for(const float& value : comp) {
@@ -61,8 +74,8 @@ int main(int argc,char** argv){
         cout<<count<<endl;
     }
     cout<< k<< endl;
-
-    pair<set <int>,set <int>> pairset = greedysearch(vec,graph,s,query[0],k_neigh,L_sizelist);
+    int i=0;
+    pair<set <int>,set <int>> pairset = greedysearch(vec,graph,s,i,k_neigh,L_sizelist,querymatrix);
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<minutes>(end - start);
     

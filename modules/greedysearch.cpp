@@ -19,12 +19,12 @@ using namespace std;
 
 //CUSTOM COMPARATOR, may be needed eventually.
 // struct CompareByDistance {
-//     map<int, float>& distances;
+//     map<int, float>& querymatrix;
     
-//     CompareByDistance(map<int, float>& d) : distances(d) {}
+//     CompareByDistance(map<int, float>& d) : querymatrix(d) {}
     
 //     bool operator()(int a, int b) const {
-//         return distances[a] < distances[b];  // Order by ascending distance
+//         return querymatrix[a] < querymatrix[b];  // Order by ascending distance
 //     }
 // };
 
@@ -60,18 +60,18 @@ bool unexplored_node(int node, const list<int> visited) {
 
 
 //adding the neighbors of the node which P contains in a sorted way.Also prunes the nodes when overextending the L_sizelist.
-void addtoL(list <int> neighbors,list <int> &L,map <int,double>&distances,int Lsizelist,int s,vector<vector<float>>& vec,vector<float>& query){
+void addtoL(list <int> neighbors,list <int> &L,vector<vector<double>>&querymatrix,int Lsizelist,int s,vector<vector<float>>& vec,int& query){
     list <int>:: iterator nit;
     list <int>:: iterator lit;
-    euclidean_distance(neighbors,vec,query,distances);
- //   euclidean_distance(L,vec,query,distances);
+   // euclidean_distance(neighbors,vec,query,querymatrix);
     for(nit=neighbors.begin();nit!=neighbors.end();nit++){
 
         bool inserted=0; //POSSIBLE OVERTHINKING!!!
         if(unexplored_node(*nit,L)){ // if the node does not already exist in L
-            // cout<<"distance of neighbor  is "<<*nit<< " "<<distances[*nit]<< "and distance of "<< *lit<<" is "<< distances[*lit]<<endl;
+            // cout<<"distance of neighbor  is "<<*nit<< " "<<querymatrix[*nit]<< "and distance of "<< *lit<<" is "<< querymatrix[*lit]<<endl;
             for(lit=L.begin();lit!=L.end();lit++){
-                if(distances[*nit]<distances[*lit]){
+               // cout<<"the distances are : "<<querymatrix[*nit][query]<<"<"<<querymatrix[*lit][query];
+                if(querymatrix[*nit][query]<querymatrix[*lit][query]){
                     L.insert(lit,*nit);
                     if(int(L.size())>Lsizelist){
                         L.pop_back(); //erasing the last element,the one with the greater value,from set L
@@ -97,13 +97,12 @@ void addtoL(list <int> neighbors,list <int> &L,map <int,double>&distances,int Ls
 
 
 //s->starting node, xq->query point, k->result size, search_list_size->L >=k
-pair <set <int>,set <int>> greedysearch(vector<vector<float>> &vec, map <int, list<int>>& graph,int &s,vector<float> query_point,int k_neigh,int L_sizelist){
+pair <set <int>,set <int>> greedysearch(vector<vector<float>> &vec, map <int, list<int>>& graph,int &s,int& query_point,int k_neigh,int L_sizelist,vector<vector<double>>&querymatrix){
     list <int> L; //List L will contain the neighbors of each node we have traversed. It's initialized with S as the starting_node    
     list<int> V; //list containing all the visited nodes we already traversed and searched their nεighbours
 
-    map <int,double>distances;
-    euclidean_distance(graph[s],vec,query_point,distances); //distances[0],distances[3],distances[4]
-    addtoL(graph[s],L,distances,L_sizelist,s,vec,query_point); //passing the neighbors of s which will be added to L
+    // euclidean_distance(graph[s],vec,query_point,querymatrix); //querymatrix[0],querymatrix[3],querymatrix[4]
+    addtoL(graph[s],L,querymatrix,L_sizelist,s,vec,query_point); //passing the neighbors of s which will be added to L
    
     V.push_back(s); //it->first s traversed, we put it in the visited list
 
@@ -121,9 +120,8 @@ pair <set <int>,set <int>> greedysearch(vector<vector<float>> &vec, map <int, li
                 break; 
             }
         }
-     //   euclidean_distance(L,vec,query_point,distances);
-       // euclidean_distance(graph[p],vec,query_point,distances);
-        addtoL(graph[p],L,distances,L_sizelist,s,vec,query_point); //adding to L the neighbors of the current node we are in.
+   
+        addtoL(graph[p],L,querymatrix,L_sizelist,s,vec,query_point); //adding to L the neighbors of the current node we are in.
        
         V.push_back(p); //pushing back to V the traversed node.
     
@@ -136,10 +134,12 @@ pair <set <int>,set <int>> greedysearch(vector<vector<float>> &vec, map <int, li
     
     set <int> Lset;
     set <int> Vset;
-    
-    for (list <int> :: iterator lit=L.begin();lit!=L.end();lit++){
-        Lset.insert(*lit);
-    } 
+    // cout <<"the L is ";
+    // for (list <int> :: iterator lit=L.begin();lit!=L.end();lit++){
+    //     cout<<*lit <<" ";
+    //     Lset.insert(*lit);
+    // } 
+    // cout<<endl;
     
 
     for (list <int> :: iterator vit=V.begin();vit!=V.end();vit++){
