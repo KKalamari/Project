@@ -43,7 +43,6 @@ map <int, list<int>> vamana_index_algorithm(vector<vector<float>>& vec, int& R,i
     map <int, list<int>> graph = graph_creation(vec,R); //graph contains each node with its neghbors
     
     medoid_node = medoid(vec);
-    cout <<"medoid is" << medoid_node<<"!!!"<<endl;;
     //creating the random permutation
     random_device rd; //obtain a random number from hardware
     mt19937 generator(rd());//seed the generator
