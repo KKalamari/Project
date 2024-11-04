@@ -7,15 +7,6 @@
 #include "euclidean_distance.h"
 using namespace std;
 
-void euclidean_distance(list<int>& Pneighbors, vector<vector<float>>& vec, vector<float> query_point, map<int, double>& distances) { 
-    for (list<int>::iterator lit = Pneighbors.begin(); lit != Pneighbors.end(); lit++) { 
-        double euclidean = 0; 
-        for (int j = 0; j < int(vec[*lit].size()); j++) { // Calculating distance for each dimension
-            euclidean += pow(query_point[j] - vec[*lit][j], 2);
-        }
-        distances[*lit] = sqrt(euclidean); // Storing the distance in the map
-    }
-}
 
 
 void euclidean_distance_of_database(vector<vector<float>> &vec, vector<vector<double>> &matrix)

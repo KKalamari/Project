@@ -6,20 +6,6 @@
 using namespace std;
 
 
-// void euclidean_distance(set <int> &candidate_set, int point,vector<vector<float>>&vec,map<pair <int,int>,float>&distances) 
-// {
-   
-//     for(set <int> ::iterator setIt=candidate_set.begin();setIt!=candidate_set.end();setIt++){
-//         double euclidean=0.0;
-//         for(int i=0;i<int(vec[*setIt].size());i++)
-//             euclidean+=pow(vec[*setIt][i] - vec[point][i], 2);
-    
-//         distances[make_pair(*setIt,point)]=sqrt(euclidean);
-//         distances[make_pair(point,*setIt)]=sqrt(euclidean);
-//     }
-
-
-// }
 
 
 
