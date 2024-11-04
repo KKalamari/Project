@@ -1,8 +1,7 @@
-# Compiler and flags
 CXX = g++
-CXXFLAGS = -Wall -g  # Enable warnings and debugging symbols
+CXXFLAGS =  -g 
 
-# The target executable names
+# target executable names
 READING_TARGET = reading_test 
 GRAPH_TARGET = graph_test
 ROBUST_EXT_TARGET= robust_ext_test
@@ -10,7 +9,7 @@ EUCLIDEAN_TARGET= euclidean_test
 GREEDY_TARGET= greedysearch_test
 MEDOID_TARGET = medoid_test
 
-# The source files
+# source files
 READING_SRCS = reading_test.cpp  ./../modules/reading.cpp
 GRAPH_SRCS = graph_test.cpp ./../modules/graph_creation.cpp #include graph_creationg to the test
 ROBUST_EXT_SRCS = robust_ext_test.cpp ./../modules/robust_ext.cpp ./../modules/euclidean_distance.cpp
@@ -19,14 +18,14 @@ GREEDY_SRCS = greedysearch_test.cpp ./../modules/greedysearch.cpp ./../modules/e
 MEDOID_SRCS = medoid_test.cpp ./../modules/vamana.cpp ./../modules/euclidean_distance.cpp ./../modules/graph_creation.cpp ./../modules/robust_ext.cpp ./../modules/greedysearch.cpp
 
 # Acutest include directory
-ACUTEST_DIR = ./../header_files  # Path to the directory with header files
-ACUTEST_FLAGS = -I$(ACUTEST_DIR)  # Include Acutest header
-GRAPH_CREATION_DIR = ./../header_files  # Directory for graph_creation.h (and not only graph creation)
-EUCLIDEAN_DISTANCE_DIR = ./../header_files  # Directory for euclidean_distance.h
+ACUTEST_DIR = ./../header_files  #path to the directory with header files
+ACUTEST_FLAGS = -I$(ACUTEST_DIR)  #include Acutest header
+GRAPH_CREATION_DIR = ./../header_files  #directory for graph_creation.h (and not only graph creation)
+EUCLIDEAN_DISTANCE_DIR = ./../header_files  #directory for euclidean_distance.h
 ROBUST_EXT_DIR= ./../header_files 
 MEDOID_DIR=./../header_files
 
-# The target rule to build the executables
+#the target rule to build the executables
 all: $(GRAPH_TARGET) $(READING_TARGET) $(EUCLIDEAN_TARGET) $(GREEDY_TARGET) $(ROBUST_EXT_TARGET) $(MEDOID_TARGET) 
 
 $(GREEDY_TARGET): $(GREEDY_SRCS)
