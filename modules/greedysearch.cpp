@@ -64,7 +64,7 @@ void addtoL(list <int> neighbors,list <int> &L,map <int,double>&distances,int Ls
     list <int>:: iterator nit;
     list <int>:: iterator lit;
     euclidean_distance(neighbors,vec,query,distances);
-    euclidean_distance(L,vec,query,distances);
+ //   euclidean_distance(L,vec,query,distances);
     for(nit=neighbors.begin();nit!=neighbors.end();nit++){
 
         bool inserted=0; //POSSIBLE OVERTHINKING!!!
@@ -121,8 +121,8 @@ pair <set <int>,set <int>> greedysearch(vector<vector<float>> &vec, map <int, li
                 break; 
             }
         }
-        euclidean_distance(L,vec,query_point,distances);
-        euclidean_distance(graph[p],vec,query_point,distances);
+     //   euclidean_distance(L,vec,query_point,distances);
+       // euclidean_distance(graph[p],vec,query_point,distances);
         addtoL(graph[p],L,distances,L_sizelist,s,vec,query_point); //adding to L the neighbors of the current node we are in.
        
         V.push_back(p); //pushing back to V the traversed node.
