@@ -19,7 +19,7 @@ void test_euclidean(){
     map<int,double>distances ;
     float tolerance = 0.1;
 
-    euclidean_distance(Pneighbor,vec,query_point,distances);
+    real_euclidean_distance(Pneighbor,vec,query_point,distances);
     TEST_CHECK(fabs(distances[0] - real_euclidean_distance) < tolerance); //https://stackoverflow.com/questions/17333/how-do-you-compare-float-and-double-while-accounting-for-precision-loss
 }
 

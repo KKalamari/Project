@@ -14,7 +14,7 @@ using namespace std;
 
     //reading the size of the vector
     int vector_size;
-    fread(&vector_size,sizeof(int),1,fd); //the first number of the file shows the vector size
+    size_t p = fread(&vector_size,sizeof(int),1,fd); //the first number of the file shows the vector size
     int fvector_size=(vector_size + 1) * sizeof(float); //counting starts from 0 so we add 1
     fseek(fd,0,SEEK_END);
     long vector_num=ftell(fd) / fvector_size; //number of vectors=total size_of_the_file/the vector size
@@ -34,7 +34,7 @@ using namespace std;
     for(int i=0;i<printed_vectors;i++){
         vec[i].resize(vector_size);
         fseek(fd,4,SEEK_CUR);
-        fread(vec[i].data(), sizeof(float), vector_size, fd);
+        size_t s =fread(vec[i].data(), sizeof(float), vector_size, fd);
 
     }
 
@@ -56,7 +56,7 @@ vector<vector<int>> reading_ivecs(const char* filename,int bounda,int boundb){
 
     //reading the size of the vector
     int vector_size;
-    fread(&vector_size,sizeof(int),1,fd); //the first number of the file shows the vector size
+    size_t a = fread(&vector_size,sizeof(int),1,fd); //the first number of the file shows the vector size
     int fvector_size=(vector_size + 1) * sizeof(int); //counting starts from 0 so we add 1
     fseek(fd,0,SEEK_END);
     long vector_num=ftell(fd) / fvector_size; //number of vectors=total size_of_the_file/the vector size
@@ -76,7 +76,7 @@ vector<vector<int>> reading_ivecs(const char* filename,int bounda,int boundb){
     for(int i=0;i<printed_vectors;i++){
         vec[i].resize(vector_size);
         fseek(fd,4,SEEK_CUR);
-        fread(vec[i].data(), sizeof(int), vector_size, fd);
+        size_t o =fread(vec[i].data(), sizeof(int), vector_size, fd);
 
     }
 
