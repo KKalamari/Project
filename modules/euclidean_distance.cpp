@@ -1,9 +1,4 @@
-#include <utility>
-#include <iostream>
-#include <cmath>
-#include <vector>
-#include <map>
-#include <list>
+#include "euclidean_distance.h"
 using namespace std;
 
 void euclidean_distance(list<int>& Pneighbors, vector<vector<float>>& vec, vector<float> query_point, map<int, double>& distances) { 

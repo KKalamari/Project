@@ -1,13 +1,5 @@
-#include "robust_ext.h"
-#include "euclidean_distance.h"
-#include "graph_creation.h"
-#include "greedysearch.h"
-#include <unordered_set>
+
 #include "vamana.h"
-#include <algorithm>
-#include <random>
-#include <iostream>
-#include <set>
 using namespace std;
 
 

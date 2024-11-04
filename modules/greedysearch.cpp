@@ -1,15 +1,6 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <cmath>
-#include <algorithm>
+
 #include "greedysearch.h"
-#include "graph_creation.h"
-#include "euclidean_distance.h"
-#include <reading.h>
-#include <list>
-#include <map>
-#include <utility>
+
 
 
 

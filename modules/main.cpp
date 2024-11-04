@@ -1,12 +1,8 @@
-#include <iostream>
-#include<vector>
+
 #include "reading.h"
 #include "graph_creation.h"
 #include "greedysearch.h"
-#include "euclidean_distance.h"
 #include "vamana.h"
-#include <list>
-#include <utility>
 #include <chrono>
 
 using namespace std;

@@ -1,11 +1,4 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include "euclidean_distance.h"
-#include <list>
-#include <algorithm>
-#include <map>
-#include <set>
+#include "graph_creation.h"
 using namespace std;
 
 

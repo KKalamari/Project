@@ -44,7 +44,19 @@ void vamana_testing(){
     int R=2;
     int L = 10;
     int a =1;
-    vamana_index_algorithm(vec,R,medoid_test,L,a);
+    map <int, list<int>> wanted ;
+    map <int, list<int>> graph = vamana_index_algorithm(vec,R,medoid_test,L,a);
+
+    for (const auto& node : graph) {
+        int node_id = node.first;
+        const list<int>& neighbors = node.second;
+
+        cout << "Node " << node_id << ": ";
+        for (int neighbor : neighbors) {
+            cout << neighbor << " ";
+        }
+        cout << endl;
+    }
 
 }
 

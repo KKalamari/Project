@@ -1,8 +1,4 @@
 #include "robust_ext.h"
-#include <cmath>
-#include <iostream>
-#include <set>
-#include "greedysearch.h"
 using namespace std;
 
 
