@@ -9,7 +9,7 @@
 #include "euclidean_distance.h"
 using namespace std;
 
-//checking euclidean_distance and pickingP
+//checking euclidean_distance and pickingP function
 void pickingP_test(){ 
     
     vector<vector<float>>vec;       //calculated from https://www.wolframalpha.com/widgets/view.jsp?id=bf56e5c5eba0a8a7a5a6bb9ab5c0169b
@@ -41,6 +41,8 @@ void pickingP_test(){
     TEST_CHECK(p==1);
     
 }
+
+//checking if the pruning happens correctly.
 void robust_prune_test(){
 
     vector<vector<float>>vec;       //calculated from https://www.wolframalpha.com/widgets/view.jsp?id=bf56e5c5eba0a8a7a5a6bb9ab5c0169b
@@ -52,10 +54,7 @@ void robust_prune_test(){
     
     set<int> candidate_set;
 
-    // // Iterate through vec using an index-based loop
-    // for (int i = 0; i < int(vec.size()); ++i) {
-    //     candidate_set.insert(i);  // Add the index to the candidate_set
-    // }
+    
     int point=4; //current p
     cout << " I am before vec"<<endl;
     
@@ -73,8 +72,8 @@ void robust_prune_test(){
     size_t R=2;
     double alpha=1;
     cout <<"I am behind RobustPrune"<<endl;
-    RobustPrune(graph,point,vec,candidate_set,alpha,R,vecmatrix);
-    list <int> checking ={1}; //In this example the pruned neighbors are actually <R. That's ok, we can have up to R so < is alo acceptible(θέλω να πιστεύω)
+    RobustPrune(graph,point,candidate_set,alpha,R,vecmatrix);
+    list <int> checking ={1}; //In this example the pruned neighbors are actually <R. 
     cout <<"the graph[4] is: ";
     for(int pruned_neighbors : graph[4]){
         cout << pruned_neighbors;

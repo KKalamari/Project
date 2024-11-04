@@ -34,7 +34,7 @@ bool unexplored_node(int node, const list<int> visited) {
 
 
 //adding the neighbors of the node which P contains in a sorted way.Also prunes the nodes when overextending the L_sizelist.
-void addtoL(list <int> neighbors,list <int> &L,vector<vector<double>>&querymatrix,int Lsizelist,int s,vector<vector<float>>& vec,int& query){
+void addtoL(list <int> neighbors,list <int> &L,vector<vector<double>>&querymatrix,int Lsizelist,int& query){
     list <int>:: iterator nit;
     list <int>:: iterator lit;
     for(nit=neighbors.begin();nit!=neighbors.end();nit++){
@@ -67,11 +67,12 @@ void addtoL(list <int> neighbors,list <int> &L,vector<vector<double>>&querymatri
 }
 
 
-//function that implements the greedy algorithm 
-pair <set <int>,set <int>> greedysearch(vector<vector<float>> &vec, map <int, list<int>>& graph,int &s,int& query_point,int &k_neigh,int &L_sizelist,vector<vector<double>>&querymatrix){
+//firtsly accepts the random R-graph finally the vamana index graph,s=starting node,query_point is the node we want to find the nearest neighbors
+//querymatrix is a matrix of distances between every vec node we have read and the query points we also read.
+pair <set <int>,set <int>> greedysearch( map <int, list<int>>& graph,int &s,int& query_point,int &k_neigh,int &L_sizelist,vector<vector<double>>&querymatrix){
     list <int> L; //list L will contain the neighbors of each node we have traversed. It's initialized with S as the starting_node    
     list<int> V; //list containing all the visited nodes we already traversed and searched their nεighbours
-    addtoL(graph[s],L,querymatrix,L_sizelist,s,vec,query_point); //passing the neighbors of s which will be added to L
+    addtoL(graph[s],L,querymatrix,L_sizelist,query_point); //passing the neighbors of s which will be added to L
    
     V.push_back(s); //it->first s traversed, we put it in the visited list
 
@@ -90,7 +91,7 @@ pair <set <int>,set <int>> greedysearch(vector<vector<float>> &vec, map <int, li
             }
         }
    
-        addtoL(graph[p],L,querymatrix,L_sizelist,s,vec,query_point); //adding to L the neighbors of the current node we are in.
+        addtoL(graph[p],L,querymatrix,L_sizelist,query_point); //adding to L the neighbors of the current node we are in.
        
         V.push_back(p); //pushing back to V the traversed node.
     

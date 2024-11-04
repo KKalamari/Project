@@ -29,10 +29,10 @@ int pickingP(int point, set<int> &candidate_set, vector<vector<double>> &distanc
     return p;
 }
 
+//parameters are the random R-graph, point =p of the pseudocode, candidate_set=V,alpha,R, matrix of distances
 void RobustPrune(
     map<int,list<int>>& graph,
     int point,
-    vector<vector<float>> &vec, 
     set<int>& candidateSet, 
     double alpha,
     size_t R,
