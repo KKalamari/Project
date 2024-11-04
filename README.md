@@ -4,6 +4,9 @@ Project 2024-2025
 
 Κυριαή Καλαμάρη 1115202000255
 
+Την main την τρέχουμε με make στον αρχικό κατάλογο και μετά με ./output/main k r a l 
+Τα tests στον φάκελο test με make run 
+
 **Για greedysearch,Robust_ext και vamana**
 Δημιουργούμε 2 matrixes:
 
@@ -42,3 +45,5 @@ vamana_index_algorithm: Συναρτηση που φτιάχει τον γράφ
 Για α=1.1,k=100,L=150,R=16 τρέχει σε 5,30 λεπτά με πολύ καλό accuracy (σχεδόν όλα >95%)
 Για α=1, κ=50,L=100,R=20 τρέχει σε 2,30 λεπτά με recall=1 (και τα neighbors ανήκουν στο groundtruth)
 Για k=100,R=14,a=1.2, L_sizelist=120 2 λεπτά με καλό accuracy ( από τα 100 queries τα 95 είχαν παραπάνω από 90 κοινά στοιχεία)
+
+

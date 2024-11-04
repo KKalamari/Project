@@ -1,6 +1,6 @@
 #include <iostream>
 #include <algorithm>
-#include "acutest.h"  // Include Acutest
+#include "acutest.h" 
 #include <cstdlib>
 #include <algorithm>
 #include <vector>
@@ -27,5 +27,5 @@ void test_reading(void) {
 
 TEST_LIST = {
     {"test_reading", test_reading},
-    {NULL, NULL}  // Terminate the test list
+    {NULL, NULL} 
 };
