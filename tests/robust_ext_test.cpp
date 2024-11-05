@@ -9,7 +9,7 @@
 #include "euclidean_distance.h"
 using namespace std;
 
-//checking euclidean_distance and pickingP function
+///checking euclidean_distance and pickingP function
 void pickingP_test(){ 
     
     vector<vector<float>>vec;       //calculated from https://www.wolframalpha.com/widgets/view.jsp?id=bf56e5c5eba0a8a7a5a6bb9ab5c0169b
