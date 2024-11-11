@@ -25,4 +25,4 @@ jobs:
       working-directory: v.1/tests/
       run: |
         make       # Runs the default target in the Makefile, assuming it compiles the tests
-        make test  # Runs a specific 'test' target if available, or replace with the appropriate target name
+        make run  # Runs a specific 'test' target if available, or replace with the appropriate target name
