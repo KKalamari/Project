@@ -1,0 +1,28 @@
+name: Run C++ Tests in v.1
+
+on:
+  push:
+    branches:
+      - main    # Adjust as needed for branches to trigger on
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the repository
+      uses: actions/checkout@v3
+
+    - name: Set up C++ environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y make g++  # Install make and g++ if needed
+
+    - name: Run Makefile to build and test
+      working-directory: v.1/tests/specific_tests
+      run: |
+        make       # Runs the default target in the Makefile, assuming it compiles the tests
+        make test  # Runs a specific 'test' target if available, or replace with the appropriate target name
