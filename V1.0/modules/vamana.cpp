@@ -64,6 +64,9 @@ vector<vector<double>>& vecmatrix){
         set <int>  setV= pairSet.second;
         RobustPrune(graph,nodes[i],setV,a,R,vecmatrix);
             
+        //if a node exceeds the R limit while making a node directed
+        //then fill a set with the nodes of its neighbors + the extra one we  want to add
+        //and call robust prune.
         for(list <int> ::iterator outNeighbors=graph[nodes[i]].begin();outNeighbors!=graph[nodes[i]].end();outNeighbors++){
             if(int(graph[*outNeighbors].size())+1>R){
                 setV.clear(); 
@@ -78,7 +81,7 @@ vector<vector<double>>& vecmatrix){
                 RobustPrune(graph,*outNeighbors,setV,a,R,vecmatrix);
 
             }
-            else{
+            else{ //else just add the extra neighbor
                 graph[*outNeighbors].push_back(nodes[i]);
             }
         }

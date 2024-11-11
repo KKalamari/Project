@@ -7,7 +7,7 @@ using namespace std;
 
 int pickingP(int point, set<int> &candidate_set, vector<vector<double>> &distances)
 {
-    int p; //the nearest neigh
+    int p; //the nearest neighbor
     float mindist;//min distance
     auto it = candidate_set.begin();
     advance(it, 1);  //we begin from the second element
@@ -47,14 +47,14 @@ void RobustPrune(
       // there is a possibily that V set contains point as an element which was causing a segmentation problem. When i added this it got fixed!
     set <int>::iterator exisiting_p=candidateSet.find(point);
     if(exisiting_p!=candidateSet.end())
-        candidateSet.erase(point);
+        candidateSet.erase(point);  //V=P/{p}
     graph[point].clear();
     
     
     int p; //p will contain the nearest neighbor.Initialized with -1 to ensure it starts as empty 
 
     while (candidateSet.empty()!=1){
-        p=pickingP(point,candidateSet,vecmatrix); //choosing the node from the candidate set with the smallest distance from corrent point and adressing it to p
+        p=pickingP(point,candidateSet,vecmatrix); //choosing the node from the candidate set with the smallest distance from current point and adressing it to p
        
         graph[point].push_back(p);  
         if(graph[point].size()==R ) 
