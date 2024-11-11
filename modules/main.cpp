@@ -27,7 +27,7 @@ int main(int argc,char** argv){
     if(argc>2) 
         R = atoi(argv[2]);
     if(argc>3)
-        a = atoi(argv[3]);
+        a = atof(argv[3]);
     if(argc>4) 
         L_sizelist = atoi(argv[4]);           
 
