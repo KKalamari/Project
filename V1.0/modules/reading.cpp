@@ -69,7 +69,6 @@ vector<vector<int>> reading_ivecs(const char* filename,int bounda,int boundb){
     fseek(fd,(bounda-1)*fvector_size,SEEK_SET); //back at the start of the vector which is bounded by bounda
     cout<< "printed_vectors are :" << printed_vectors << "\n";
     vector<vector<int>> vec(printed_vectors);
-    cout << "I am before the for"<<endl;
     for(int i=0;i<printed_vectors;i++){
         vec[i].resize(vector_size);
         fseek(fd,4,SEEK_CUR);
@@ -78,8 +77,6 @@ vector<vector<int>> reading_ivecs(const char* filename,int bounda,int boundb){
     }
 
 
-    cout << " I am before closing"<< endl;
     fclose(fd);
-    cout<< " I am before returning"<< endl;
     return vec;
 }
