@@ -1,0 +1,7 @@
+filename siftsmall_base.fvecs
+filename2 siftsmall_query.fvecs
+filename3 siftsmall_groundtruth.ivecs
+k_neigh 100
+R 16
+a 1.1
+L_sizelist 150

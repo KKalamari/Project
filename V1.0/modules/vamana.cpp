@@ -45,7 +45,7 @@ vector<vector<double>>& vecmatrix){
 
     int number_of_nodes=vec.size();
     map <int, list<int>> graph = graph_creation(vec,R); //graph that contains each node with its neghbors
-     
+    save_graph_to_binary(graph, "graph_data.bin");
     medoid_node = medoid(vec);
     cout <<"medoid is" << medoid_node<<"!!!"<<endl;;
     //creating the random permutation

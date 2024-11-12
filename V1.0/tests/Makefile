@@ -1,31 +1,27 @@
 CXX = g++
 CXXFLAGS =  -g 
 
-# target executable names
 READING_TARGET = reading_test 
 GRAPH_TARGET = graph_test
-ROBUST_EXT_TARGET= robust_ext_test
-EUCLIDEAN_TARGET= euclidean_test
-GREEDY_TARGET= greedysearch_test
+ROBUST_EXT_TARGET = robust_ext_test
+EUCLIDEAN_TARGET = euclidean_test
+GREEDY_TARGET = greedysearch_test
 MEDOID_TARGET = medoid_test
 
-# source files
 READING_SRCS = reading_test.cpp  ./../modules/reading.cpp
-GRAPH_SRCS = graph_test.cpp ./../modules/graph_creation.cpp #include graph_creationg to the test
+GRAPH_SRCS = graph_test.cpp ./../modules/graph_creation.cpp
 ROBUST_EXT_SRCS = robust_ext_test.cpp ./../modules/robust_ext.cpp ./../modules/euclidean_distance.cpp
 EUCLIDEAN_SRCS = euclidean_test.cpp ./../modules/euclidean_distance.cpp 
-GREEDY_SRCS = greedysearch_test.cpp ./../modules/greedysearch.cpp ./../modules/euclidean_distance.cpp ./../modules/reading.cpp# Add graph_creation.cpp to MEDOID_SRCS to link with medoid_test
+GREEDY_SRCS = greedysearch_test.cpp ./../modules/greedysearch.cpp ./../modules/euclidean_distance.cpp ./../modules/reading.cpp
 MEDOID_SRCS = medoid_test.cpp ./../modules/vamana.cpp ./../modules/euclidean_distance.cpp ./../modules/graph_creation.cpp ./../modules/robust_ext.cpp ./../modules/greedysearch.cpp
 
-# Acutest include directory
-ACUTEST_DIR = ./../header_files  #path to the directory with header files
-ACUTEST_FLAGS = -I$(ACUTEST_DIR)  #include Acutest header
-GRAPH_CREATION_DIR = ./../header_files  #directory for graph_creation.h (and not only graph creation)
-EUCLIDEAN_DISTANCE_DIR = ./../header_files  #directory for euclidean_distance.h
-ROBUST_EXT_DIR= ./../header_files 
-MEDOID_DIR=./../header_files
+ACUTEST_DIR = ./../header_files
+ACUTEST_FLAGS = -I$(ACUTEST_DIR)
+GRAPH_CREATION_DIR = ./../header_files
+EUCLIDEAN_DISTANCE_DIR = ./../header_files
+ROBUST_EXT_DIR = ./../header_files 
+MEDOID_DIR = ./../header_files
 
-#the target rule to build the executables
 all: $(GRAPH_TARGET) $(READING_TARGET) $(EUCLIDEAN_TARGET) $(GREEDY_TARGET) $(ROBUST_EXT_TARGET) $(MEDOID_TARGET) 
 
 $(GREEDY_TARGET): $(GREEDY_SRCS)
@@ -46,15 +42,21 @@ $(ROBUST_EXT_TARGET): $(ROBUST_EXT_SRCS)
 $(MEDOID_TARGET): $(MEDOID_SRCS)
 	$(CXX) $(CXXFLAGS) $(ACUTEST_FLAGS) -I$(MEDOID_DIR) -I$(GRAPH_CREATION_DIR) -o $(MEDOID_TARGET) $(MEDOID_SRCS)
 
-
-
 clean:
 	rm -f $(GRAPH_TARGET) $(READING_TARGET) $(EUCLIDEAN_TARGET) $(GREEDY_TARGET) $(ROBUST_EXT_TARGET) $(MEDOID_TARGET) 
 
-run: $(GRAPH_TARGET) $(READING_TARGET) $(EUCLIDEAN_TARGET) $(GREEDY_TARGET) $(ROBUST_EXT_TARGET) 
+run: $(GRAPH_TARGET) $(READING_TARGET) $(EUCLIDEAN_TARGET) $(GREEDY_TARGET) $(ROBUST_EXT_TARGET) $(MEDOID_TARGET)
 	./$(GRAPH_TARGET)
 	./$(READING_TARGET)
 	./$(EUCLIDEAN_TARGET)
 	./$(GREEDY_TARGET)
 	./$(ROBUST_EXT_TARGET)
 	./$(MEDOID_TARGET)
+
+valgrind: $(GRAPH_TARGET) $(READING_TARGET) $(EUCLIDEAN_TARGET) $(GREEDY_TARGET) $(ROBUST_EXT_TARGET) $(MEDOID_TARGET)
+	valgrind --leak-check=full --show-leak-kinds=all ./$(GRAPH_TARGET)
+	valgrind --leak-check=full --show-leak-kinds=all ./$(READING_TARGET)
+	valgrind --leak-check=full --show-leak-kinds=all ./$(EUCLIDEAN_TARGET)
+	valgrind --leak-check=full --show-leak-kinds=all ./$(GREEDY_TARGET)
+	valgrind --leak-check=full --show-leak-kinds=all ./$(ROBUST_EXT_TARGET)
+	valgrind --leak-check=full --show-leak-kinds=all ./$(MEDOID_TARGET)
