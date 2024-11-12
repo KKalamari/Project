@@ -8,6 +8,8 @@
 #include <random>
 #include <iostream>
 #include <set>
+#include "for_binary.h"
+
 
 #pragma once
 using namespace std;
