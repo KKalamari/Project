@@ -8,18 +8,26 @@ MODULES_DIR = modules
 
 #object files
 OBJS = $(OUTPUT_DIR)/reading.o \
-	   $(OUTPUT_DIR)/medoid.o
+	   $(OUTPUT_DIR)/medoid.o \
+	   $(OUTPUT_DIR)/euclidean_distance.o \
+	   $(OUTPUT_DIR)/FilteredGreedySearch.o 
 
 #main target
 all: $(OUTPUT_DIR)/main
 
 $(OUTPUT_DIR)/main: $(MODULES_DIR)/main.cpp $(OBJS) | $(OUTPUT_DIR)
-	$(CXX) $(CXXFLAGS) -o $@ $^  # Use $^ instead of $<
+	$(CXX) $(CXXFLAGS) -o $@ $^  
 
 $(OUTPUT_DIR)/reading.o: $(MODULES_DIR)/reading.cpp | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(OUTPUT_DIR)/medoid.o: $(MODULES_DIR)/medoid.cpp | $(OUTPUT_DIR)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+$(OUTPUT_DIR)/euclidean_distance.o: $(MODULES_DIR)/euclidean_distance.cpp | $(OUTPUT_DIR)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+$(OUTPUT_DIR)/FilteredGreedySearch.o: $(MODULES_DIR)/FilteredGreedySearch.cpp | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(OUTPUT_DIR):
