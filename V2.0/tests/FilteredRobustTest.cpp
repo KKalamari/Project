@@ -54,10 +54,7 @@ void FilteredRobustTest(){
 
     alpha=1; R=2;
     FilteredRobustPrune(graph,p,V4,alpha,R,vectormatrix,dataset);
-    cout<<"neighbors are:";
-    for(auto neighbors : graph[p]){
-        cout <<neighbors<< " ";
-    }
+   
     if(TEST_CHECK(*(graph[p].begin())==1))
         cout<<"test for an initialized graph succeded!!"<<endl;
 
