@@ -1,3 +1,5 @@
+[![Run tests](https://github.com/KKalamari/Project/actions/workflows/run-tests.yml/badge.svg)](https://github.com/KKalamari/Project/actions/workflows/run-tests.yml)
+
 Project 2024-2025
 
 Ισίδωρος Καλαμάρης 1115202000233 sdi2000233@di.uoa.gr
