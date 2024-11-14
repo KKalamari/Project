@@ -20,9 +20,9 @@ void pfinder(vector <int> &Rf,map<int,float>&T,int &p){
     }
 }
 
-
-map <int,float> FindMedoid(vector<vector<float>>DataNodes,int r,set <float>& category_attributes){
-    map<int,float> M;
+//returns the starting node for each filter.
+map <float,int> FindMedoid(vector<vector<float>>DataNodes,int r,set <float>& category_attributes){
+    map<float,int> M;
     map<int,float> T;
     map <float,vector<int>> Pf;//the first int is the filter and the vector is every node with the same filter
     vector <int> Rf; //randomly sampled data point ids from Pf
@@ -32,8 +32,9 @@ map <int,float> FindMedoid(vector<vector<float>>DataNodes,int r,set <float>& cat
     int Datasize= DataNodes.size();
     for(auto Filters : category_attributes){ //for every fitler there is
         for(int i=0;i<Datasize;i++){ //we iterate the whole dataset and find nodes with matchign filters
-            if(DataNodes[i][0]==Filters);
+            if(DataNodes[i][0]==Filters){
                 Pf[Filters].push_back(i); // Pf will contain every node with matching filter of the current index "Filters"
+            }
         }
         Rf=Pf[Filters]; //initializing vector Rf as the vector of all nodes with the specific filter index.
         shuffle(Rf.begin(),Rf.end(),generator); //randomizing rf
