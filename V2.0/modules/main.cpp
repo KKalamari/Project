@@ -32,14 +32,14 @@ int main(int argc, char **argv) {
     int num_query_dimensions = num_data_dimensions + 2;
     vector <vector<float>> queries;
     ReadBin(query_path, num_query_dimensions, queries);
-    // cout << "the dataset is:" << endl;
-    // for(int i=0;i<int(queries.size());i++){
-    //     cout<< endl<<"for node "<<i<<"the distances are: ";
-    //     for(vector<float> ::iterator datanodes=DataNodes[i].begin();datanodes!=DataNodes[i].end();datanodes++){
-    //         cout << *datanodes <<" ";
-    // }
+    cout << "the dataset is:" << endl;
+    for(int i=0;i<int(DataNodes.size());i++){
+        cout<< endl<<"for node "<<i<<"the distances are: ";
+        for(vector<float> ::iterator datanodes=DataNodes[i].begin();datanodes!=DataNodes[i].end();datanodes++){
+            cout << *datanodes <<" ";
+    }
 
-    // }
+    }
 
     int vector_number = int (DataNodes.size());
     int query_number = int (queries.size());

@@ -27,11 +27,11 @@ void FilteredTest(){
     // the euclidean distance for node 3, query 0 is: 8.06226
     // the euclidean distance for node 3, query 1 is: 5.09902
 
-    for(int i =0; i<int(querymatrix.size());i++){
+    //for(int i =0; i<int(querymatrix.size());i++){
         // for(auto distance : querymatrix[i]){
         //     cout <<"the euclidean distance for node " <<i <<" is: "<< distance <<endl;
         // }
-    }
+    //}
     vector<int> L;
     vector<int> V;
     pair <vector <int>,vector<int>> PairSet;
@@ -50,17 +50,17 @@ void FilteredTest(){
     //checking FilteredGreedySearch with an initialized graph
     graph[0]={1,3,5};
     graph[1]={0,3,5};
-    graph[3]={1,0,5};
+    graph[3]={4,1,0,5};
     graph[2]={4};
     graph[4]={2};
     graph[5]={1,3,0};
     knn=3;
     PairSet=FilteredGreedy(graph, xq, knn, L_sizelist,M,Fq,querymatrix,dataset);
     V=PairSet.second;
-    // cout<<"visited nodes are "<<endl;
-    // for(auto visited : V){
-    //     cout << visited <<" ";
-    // }
+    cout<<"visited nodes are "<<endl;
+    for(auto visited : V){
+        cout << visited <<" ";
+    }
     L=PairSet.first;
     cout<<"k neigbors are "<<endl;
     for(auto neighbors : L){
