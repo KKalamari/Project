@@ -25,7 +25,7 @@ void FilteredRobustPrune(map <int,list<int>>&graph,int &p,set<int,DistanceCompar
     int p_star;    
     while (V.empty()!=1){
         pickingp_star(p_star,p,vectormatrix,V);
-        cout <<"pushing back "<<p_star<<endl;
+        // cout <<"pushing back "<<p_star<<endl;
         graph[p].push_back(p_star);
         if(int(graph[p].size())>=R){
             break;
@@ -33,7 +33,7 @@ void FilteredRobustPrune(map <int,list<int>>&graph,int &p,set<int,DistanceCompar
         set<int> nodes_to_be_deleted;
         for(auto Vneighbors : V){
             if(dataset[p][0]==dataset[Vneighbors][0] && dataset[p_star][0]!=dataset[Vneighbors][0]){
-                cout<<"I am before continuing "<<endl;
+                // cout<<"I am before continuing "<<endl;
                 continue;
             }
             

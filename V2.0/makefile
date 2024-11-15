@@ -10,8 +10,9 @@ MODULES_DIR = modules
 OBJS = $(OUTPUT_DIR)/reading.o \
 	   $(OUTPUT_DIR)/medoid.o \
 	   $(OUTPUT_DIR)/euclidean_distance.o \
-	   $(OUTPUT_DIR)/FilteredGreedySearch.o 
-
+	   $(OUTPUT_DIR)/FilteredGreedySearch.o \
+	   $(OUTPUT_DIR)/FilteredRobustPrune.o \
+	   $(OUTPUT_DIR)/FilteredVamana.o
 #main target
 all: $(OUTPUT_DIR)/main
 
@@ -29,6 +30,14 @@ $(OUTPUT_DIR)/euclidean_distance.o: $(MODULES_DIR)/euclidean_distance.cpp | $(OU
 
 $(OUTPUT_DIR)/FilteredGreedySearch.o: $(MODULES_DIR)/FilteredGreedySearch.cpp | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+$(OUTPUT_DIR)/FilteredRobustPrune.o: $(MODULES_DIR)/FilteredRobustPrune.cpp | $(OUTPUT_DIR)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+$(OUTPUT_DIR)/FilteredVamana.o: $(MODULES_DIR)/FilteredVamana.cpp | $(OUTPUT_DIR)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+
 
 $(OUTPUT_DIR):
 	mkdir -p $(OUTPUT_DIR)

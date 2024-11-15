@@ -1,7 +1,10 @@
-#include <vector>
+#include <iostream>
 #include<map>
-#include<list>
-#include<set>
+#include <vector>
+#include <list>
+#include <set>
+#include <random>
+#include <algorithm>
 #pragma once
 using namespace std;
 

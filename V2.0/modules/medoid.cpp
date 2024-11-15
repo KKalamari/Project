@@ -1,13 +1,5 @@
-#include <iostream>
-#include<map>
-#include <vector>
-#include <list>
-#include <set>
+#include "medoid.h"
 #include <random>
-#include <algorithm>
-
-using namespace std;
-
 //chooses the node which has been used the least as a starting node
 void pfinder(vector <int> &Rf,map<int,float>&T,int &p){
     int min=T[*(Rf.begin())];
