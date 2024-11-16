@@ -5,6 +5,7 @@
 #include <queue>
 #include <algorithm>
 #include <cfloat>
+#include <list>
 #pragma once
 using namespace std;
 
@@ -13,8 +14,10 @@ struct DistanceComparator {
     vector<vector<double>> querymatrix;
     int query;
 
-    // Κατασκευαστής για αρχικοποίηση των μεταβλητών σύγκρισης
     DistanceComparator(const vector<vector<double>>& matrix, int q) : querymatrix(matrix), query(q) {}
+
+    // Ensure the compiler generates a copy constructor if needed.
+    DistanceComparator(const DistanceComparator& other) = default;
 
     bool operator()(int a, int b) const {
         return querymatrix[a][query] < querymatrix[b][query];
@@ -23,7 +26,7 @@ struct DistanceComparator {
 
 void pickingP(int &p,set <int,DistanceComparator>&L,set<int,DistanceComparator>&V,vector <vector <double>>querymatrix,int query);
 
-pair <vector<int>,vector<int>> FilteredGreedy(map<int,vector<int>>&graph,int xq,int knn,int L_sizelist,map <float,int> &M,vector<float>&Fq,vector<vector<double>> querymatrix,vector<vector<float>>&dataset);
+pair <vector<int>,vector<int>> FilteredGreedy(map<int,list<int>>&graph,int xq,int knn,int L_sizelist,map <float,int> &M,vector<float>&Fq,vector<vector<double>> querymatrix,vector<vector<float>>&dataset);
 
 
 

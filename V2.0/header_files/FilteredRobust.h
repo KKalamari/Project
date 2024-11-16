@@ -5,6 +5,7 @@
 #include <list>
 #include <cfloat>
 #include "FilteredGreedySearch.h"
+#pragma once
 using namespace std;
 
 void pickingp_star(int& p_star,int&p,vector<vector<double>> vecmatrix,set<int,DistanceComparator> &V);

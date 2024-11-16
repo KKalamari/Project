@@ -12,7 +12,7 @@ void pickingP(int &p,set <int,DistanceComparator>&L,set<int,DistanceComparator>&
 
 //Distance comparator is defined in the header file of FilteredGreedySearch
 
-pair <vector<int>,vector<int>> FilteredGreedy(map<int,vector<int>>&graph,int xq,int knn,int L_sizelist,map <float,int> &M,vector<float>&Fq,vector<vector<double>> querymatrix,vector<vector<float>>&dataset){
+pair <vector<int>,vector<int>> FilteredGreedy(map<int,list<int>>&graph,int xq,int knn,int L_sizelist,map <float,int> &M,vector<float>&Fq,vector<vector<double>> querymatrix,vector<vector<float>>&dataset){
     DistanceComparator comp(querymatrix, xq);
     set<int, DistanceComparator> L(comp); // τα κοντινότερα γειτονικά στοιχεία
     set<int, DistanceComparator> V(comp); // τα επισκέψιμα στοιχεία
@@ -32,13 +32,13 @@ pair <vector<int>,vector<int>> FilteredGreedy(map<int,vector<int>>&graph,int xq,
                 V.insert(i);
             }
         }
-        if(L.size()>L_sizelist){
-            set<int>::iterator Lit=L.begin();
-            advance(Lit,L_sizelist);
-            L.erase(Lit,L.end());
-            Lit=L.begin();
-            V.insert(Lit,L.end());
-        }
+        // if(L.size()>L_sizelist){
+        //     set<int>::iterator Lit=L.begin();
+        //     advance(Lit,L_sizelist);
+        //     L.erase(Lit,L.end());
+        //     Lit=L.begin();
+        //     V.insert(Lit,L.end());
+        // }
     }
 
     else{
@@ -56,9 +56,8 @@ pair <vector<int>,vector<int>> FilteredGreedy(map<int,vector<int>>&graph,int xq,
         }
     }
     }
-    vector <int> Lvector(L.begin(),L.end());
-    vector<int> Vvector(V.begin(),V.end());
-
+    vector<int> Lvector(L.begin(),L.end());
+    vector <int> Vvector(V.begin(),V.end());
     return make_pair(Lvector,Vvector);
 
 }   

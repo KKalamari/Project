@@ -4,7 +4,7 @@
 #include"acutest.h"
 
 void FilteredRobustTest(){
-    vector<vector<float>>dataset={{6,5,1,4},{1,5,5,3},{6,5,3,4},{6,5,6,1},{1,3,4,2},{6,1,2,2}};
+    vector<vector<float>>dataset={{6,5,1,4},{1,5,5,3},{1,5,3,4},{6,5,6,1},{6,3,4,2},{6,1,2,2}};
     map<int,list<int>> graph;
    
 
@@ -22,7 +22,7 @@ void FilteredRobustTest(){
 
     FilteredRobustPrune(graph,p,V1,alpha,R,vectormatrix,dataset);
     //testing for alpha=1 R=1
-    if(TEST_CHECK(find(graph[p].begin(), graph[p].end(), 5) != graph[p].end())==1) //5 is the nearest neighbor.
+    if(TEST_CHECK(find(graph[p].begin(), graph[p].end(), 5) != graph[p].end()))//5 is the nearest neighbor.
         cout<<"test for alpha=1 succeded!"<<endl;
     //testing for alpha=1 R=2. The result should be the same as before because even though the threshold increased the alpha remained the same.
     R=2;
@@ -45,24 +45,20 @@ void FilteredRobustTest(){
 
     graph[0]={1,3,5};
     graph[1]={0,3,5};
-    graph[3]={1,4,0,5};
+    graph[3]={4,0,5};
     graph[2]={4};
     graph[4]={2};
     graph[5]={1,3,0};
     
     set<int,DistanceComparator>V4({5, 0, 3}, comp);
 
-    alpha=1; R=2;
+    alpha=3; R=2;
     FilteredRobustPrune(graph,p,V4,alpha,R,vectormatrix,dataset);
-    cout<<"neighbors are:";
-    for(auto neighbors : graph[p]){
-        cout <<neighbors<< " ";
-    }
-    if(TEST_CHECK(*(graph[p].begin())==1))
-        cout<<"test for an initialized graph succeded!!"<<endl;
-
-    
-
+    list<int> ::iterator lit=graph[p].begin();
+    TEST_CHECK(*lit==4);
+    lit++;
+    if(TEST_CHECK(*lit==5))
+        cout<<"testing for pruning an initilized graph succeded"<<endl;
 }
 
 
