@@ -3,7 +3,10 @@
 #include <vector>
 #include "reading.h"
 #include <set>
+#include <map>
 #include "euclidean_distance.h"
+#include "FilteredVamana.h"
+#include "FilteredGreedySearch.h"
 
 using namespace std;
 int main(int argc, char **argv) {
@@ -32,14 +35,14 @@ int main(int argc, char **argv) {
     int num_query_dimensions = num_data_dimensions + 2;
     vector <vector<float>> queries;
     ReadBin(query_path, num_query_dimensions, queries);
-    cout << "the dataset is:" << endl;
-    for(int i=0;i<int(DataNodes.size());i++){
-        cout<< endl<<"for node "<<i<<"the distances are: ";
-        for(vector<float> ::iterator datanodes=DataNodes[i].begin();datanodes!=DataNodes[i].end();datanodes++){
-            cout << *datanodes <<" ";
-    }
+    // cout << "the dataset is:" << endl;
+    // for(int i=0;i<int(DataNodes.size());i++){
+    //     cout<< endl<<"for node "<<i<<"the distances are: ";
+    //     for(vector<float> ::iterator datanodes=DataNodes[i].begin();datanodes!=DataNodes[i].end();datanodes++){
+    //         cout << *datanodes <<" ";
+    // }
 
-    }
+    // }
 
     int vector_number = int (DataNodes.size());
     int query_number = int (queries.size());
@@ -48,5 +51,24 @@ int main(int argc, char **argv) {
     vector <vector <double>> querymatrix(vector_number,vector<double>(query_number)); // 10000 *100 matrix which calculates the euclidean distance between database node and queries
     euclidean_distance_of_database(DataNodes,vecmatrix); //calculating the euclidean distances of the whole database of nodes with each other
     euclidean_distance_of_queries (DataNodes,queries,querymatrix); //calculating the euclidean distances between the nodes of database and each querie vector
+    cout<<" I am after calculating euclidean distances"<<endl;
 
+
+    int alpha=1;
+    int R=14;
+    int knn=100;
+    int L_sizelist=120;
+    map<int,list<int>> Vamana_graph = FilteredVamanaIndex(vecmatrix,DataNodes,alpha,R,category_attributes);
+    cout <<"I am after Vamana?!?!?!"<<endl;
+    map<float,int> M =FindMedoid(DataNodes,1,category_attributes); //r=1;
+    vector <float> Fq= {queries[0][1]};
+    pair <vector<int>,vector<int>> PairVector;
+    PairVector = FilteredGreedy(Vamana_graph,0,knn,L_sizelist,M,Fq,querymatrix,DataNodes);
+    vector<int> K_neighbors= PairVector.first;
+    cout<<"neighbors for query[0] are:";
+    for(auto neighbors : K_neighbors){
+        cout<< neighbors <<" ";
+    }
+    cout <<endl;
+    
 }

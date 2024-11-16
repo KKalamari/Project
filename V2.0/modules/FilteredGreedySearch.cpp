@@ -42,7 +42,6 @@ pair <vector<int>,vector<int>> FilteredGreedy(map<int,list<int>>&graph,int xq,in
     }
 
     else{
-        cout<<"P is "<< p <<endl;
         for(auto CandidatesOutNeighbors: graph[p] ){
             if (find(Fq.begin(), Fq.end(),dataset[CandidatesOutNeighbors][0])!=Fq.end() && find(V.begin(), V.end(),CandidatesOutNeighbors)==V.end() ) {
                 L.insert(CandidatesOutNeighbors);
