@@ -9,20 +9,23 @@
 #pragma once
 using namespace std;
 
-// Comparator για το set που συγκρίνει τα στοιχεία με βάση την απόσταση τους από το query
 struct DistanceComparator {
-    vector<vector<double>> querymatrix;
+    const vector<vector<double>>& querymatrix; 
     int query;
 
-    DistanceComparator(const vector<vector<double>>& matrix, int q) : querymatrix(matrix), query(q) {}
+    // Constructor that accepts a reference to the matrix
+    DistanceComparator(const vector<vector<double>>& matrix, int q) 
+        : querymatrix(matrix), query(q) {}
 
-    // Ensure the compiler generates a copy constructor if needed.
-    DistanceComparator(const DistanceComparator& other) = default;
 
     bool operator()(int a, int b) const {
+        if (a >= querymatrix.size() || b >= querymatrix.size() || query >= querymatrix[0].size()) {
+            throw std::out_of_range("Index out of bounds in DistanceComparator.");
+        }
         return querymatrix[a][query] < querymatrix[b][query];
     }
 };
+
 
 void pickingP(int &p,set <int,DistanceComparator>&L,set<int,DistanceComparator>&V,vector <vector <double>>querymatrix,int query);
 

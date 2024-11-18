@@ -18,9 +18,10 @@ map <int,list<int>> FilteredVamanaIndex(vector<vector<double>>&vectormatrix,vect
     vector<int> randomized_nodes(DataNodes.size());
     iota(randomized_nodes.begin(),randomized_nodes.end(),0);
     shuffle(randomized_nodes.begin(),randomized_nodes.end(),generator);//let σ be a random permutation of n
-    int knn=0;
-    int L_sizelist=100;
+    int knn=1;
+    int L_sizelist=120;
     for(auto sigma : randomized_nodes){
+        cout<<"sigma is currently "<<sigma << endl;
         DistanceComparator comp(vectormatrix, sigma);
         vector<float> Filterset={DataNodes[sigma][0]};
         pair <vector<int>,vector<int>>queuepair;

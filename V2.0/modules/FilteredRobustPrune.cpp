@@ -16,6 +16,7 @@ void pickingp_star(int& p_star,int&p,vector<vector<double>> vecmatrix,set<int,Di
 
 
 void FilteredRobustPrune(map <int,list<int>>&graph,int &p,set<int,DistanceComparator> &V,int &alpha,int&R,vector<vector<double>> &vectormatrix,vector<vector<float>>&dataset){
+    cout<<"I am inside robust"<<endl;
        for(auto OutNeighbors : graph[p]){
         V.insert(OutNeighbors);
     }
