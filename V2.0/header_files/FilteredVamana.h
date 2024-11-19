@@ -8,6 +8,5 @@
 #include "FilteredRobust.h"
 #include <random>
 #pragma once
-using namespace std;
 
-map <int,list<int>> FilteredVamanaIndex(vector<vector<double>>&vectormatrix,vector<vector<float>>&DataNodes,int &alpha,int& R,set<float>&category_attributes);
+map <int,list<int>> FilteredVamanaIndex(vector<vector<double>>&vectormatrix,vector<vector<float>>&DataNodes,double &alpha,int& R,set<float>&category_attributes,map<float,int>&medoids);

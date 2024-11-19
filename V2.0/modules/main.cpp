@@ -54,13 +54,21 @@ int main(int argc, char **argv) {
     cout<<" I am after calculating euclidean distances"<<endl;
 
 
-    int alpha=1;
+    double alpha=1;
     int R=14;
     int knn=100;
     int L_sizelist=120;
-    map<int,list<int>> Vamana_graph = FilteredVamanaIndex(vecmatrix,DataNodes,alpha,R,category_attributes);
-    cout <<"I am after Vamana?!?!?!"<<endl;
     map<float,int> M =FindMedoid(DataNodes,1,category_attributes); //r=1;
+    map<int,list<int>> Vamana_graph = FilteredVamanaIndex(vecmatrix,DataNodes,alpha,R,category_attributes,M);
+    cout <<"I am after Vamana?!?!?!"<<endl;
+    cout <<"vamana graph size is: "<< Vamana_graph.size()<<endl;
+    int counter=0;
+    for(int i =0;i<Vamana_graph.size();i++){
+        cout <<"the neighbors of node "<< i <<"are: ";
+        for(list<int>:: iterator mit=Vamana_graph[i].begin();mit!=Vamana_graph[i].end();mit++){
+            cout<<*mit<<" ";
+        }
+    }
     vector <float> Fq= {queries[0][1]};
     pair <vector<int>,vector<int>> PairVector;
     PairVector = FilteredGreedy(Vamana_graph,0,knn,L_sizelist,M,Fq,querymatrix,DataNodes);

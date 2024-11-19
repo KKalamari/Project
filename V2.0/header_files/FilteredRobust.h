@@ -8,5 +8,5 @@
 #pragma once
 using namespace std;
 
-void pickingp_star(int& p_star,int&p,vector<vector<double>> vecmatrix,set<int,DistanceComparator> &V);
-void FilteredRobustPrune(map <int,list<int>>&graph,int &p,set<int,DistanceComparator> &V,int &alpha,int&R,vector<vector<double>> &vectormatrix,vector<vector<float>>&dataset);
+void pickingp_star(int& p_star,int&p,vector<vector<double>>& vecmatrix,set<int,DistanceComparator> &V);
+void FilteredRobustPrune(map <int,list<int>>&graph,int &p,set<int,DistanceComparator> &V,double &alpha,int&R,vector<vector<double>> &vectormatrix,vector<vector<float>>&dataset);

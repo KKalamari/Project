@@ -1,7 +1,7 @@
 
 #include"FilteredRobust.h"
-
-void pickingp_star(int& p_star,int&p,vector<vector<double>> vecmatrix,set<int,DistanceComparator> &V){
+#include <chrono>
+void pickingp_star(int& p_star,int&p,vector<vector<double>>& vecmatrix,set<int,DistanceComparator> &V){
     double mindist=DBL_MAX;
     for(auto Vneighbors : V){
         if(mindist>vecmatrix[p][Vneighbors]){
@@ -15,8 +15,7 @@ void pickingp_star(int& p_star,int&p,vector<vector<double>> vecmatrix,set<int,Di
 
 
 
-void FilteredRobustPrune(map <int,list<int>>&graph,int &p,set<int,DistanceComparator> &V,int &alpha,int&R,vector<vector<double>> &vectormatrix,vector<vector<float>>&dataset){
-    cout<<"I am inside robust"<<endl;
+void FilteredRobustPrune(map <int,list<int>>&graph,int &p,set<int,DistanceComparator> &V,double &alpha,int&R,vector<vector<double>> &vectormatrix,vector<vector<float>>&dataset){
        for(auto OutNeighbors : graph[p]){
         V.insert(OutNeighbors);
     }
@@ -35,14 +34,17 @@ void FilteredRobustPrune(map <int,list<int>>&graph,int &p,set<int,DistanceCompar
         for(auto Vneighbors : V){
             if(dataset[p][0]==dataset[Vneighbors][0] && dataset[p_star][0]!=dataset[Vneighbors][0]){
                 // cout<<"I am before continuing "<<endl;
+                cout<<"CONTINUING!!!-------------------------------------------------------------------------------------------------------------"<<endl;
                 continue;
             }
             
             if(alpha*vectormatrix[p_star][Vneighbors]<=vectormatrix[p][Vneighbors])
                 nodes_to_be_deleted.insert(Vneighbors);
         }
+        // cout<<"nodes to be deleted size is "<< nodes_to_be_deleted.size()<<endl;
         for(auto deletion_nodes :nodes_to_be_deleted){
             V.erase(deletion_nodes);
         }
     }
+    
 }
