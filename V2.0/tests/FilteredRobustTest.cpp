@@ -5,19 +5,15 @@
 
 void FilteredRobustTest(){
     vector<vector<float>>dataset={{6,5,1,4},{1,5,5,3},{1,5,3,4},{6,5,6,1},{6,3,4,2},{6,1,2,2}};
-    map<int,list<int>> graph;
-   
-
+    map<int,set<int>> graph;
     int p=3;
-    
-    int alpha=1;
+    double alpha=1;
     int R=1;
 
     vector<vector<double>> vectormatrix(dataset.size(),vector<double>(dataset.size())); //6 x 6 matrix
     euclidean_distance_of_database(dataset,vectormatrix);
   
-    DistanceComparator comp(vectormatrix, p);
-    set<int,DistanceComparator>V1({5, 0, 3}, comp);
+    set<int>V1({5, 0, 3});
     
 
     FilteredRobustPrune(graph,p,V1,alpha,R,vectormatrix,dataset);
@@ -26,20 +22,24 @@ void FilteredRobustTest(){
         cout<<"test for alpha=1 succeded!"<<endl;
     //testing for alpha=1 R=2. The result should be the same as before because even though the threshold increased the alpha remained the same.
     R=2;
-    set<int,DistanceComparator>V2({5, 0, 3}, comp);
+    set<int>V2({5, 0, 3});
 
     FilteredRobustPrune(graph,p,V2,alpha,R,vectormatrix,dataset);
     if(TEST_CHECK(find(graph[p].begin(), graph[p].end(), 5) != graph[p].end()))
         cout <<"test for alpha=1,R=2 succeded!"<<endl;
+
+
     alpha=6; R=2;
-        set<int,DistanceComparator>V3({5, 0, 3}, comp);
+    set<int>V3({5, 0, 3});
 
     FilteredRobustPrune(graph,p,V3,alpha,R,vectormatrix,dataset);
 
     //testing for alpha=3 R=2. Now the neighbors of p should be 2 nodes instead of just 1. First the node 5 as the nearest one, then node 0.
-    list<int>::iterator Vit=graph[p].begin();
+    set<int>::iterator Vit=graph[p].begin();
+    cout <<"the first neighbor is: "<<*Vit;
     TEST_CHECK(*Vit==5);
     Vit++;
+    cout<<"The second neighbor is "<< *Vit;
     if(TEST_CHECK(*Vit==0))
         cout<<"testing for bigger alpha and R=2 succeded!"<<endl;
 
@@ -50,11 +50,11 @@ void FilteredRobustTest(){
     graph[4]={2};
     graph[5]={1,3,0};
     
-    set<int,DistanceComparator>V4({5, 0, 3}, comp);
+    set<int>V4({5, 0, 3});
 
     alpha=3; R=2;
     FilteredRobustPrune(graph,p,V4,alpha,R,vectormatrix,dataset);
-    list<int> ::iterator lit=graph[p].begin();
+    set<int> ::iterator lit=graph[p].begin();
     TEST_CHECK(*lit==4);
     lit++;
     if(TEST_CHECK(*lit==5))

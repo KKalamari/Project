@@ -59,13 +59,13 @@ int main(int argc, char **argv) {
     int knn=100;
     int L_sizelist=120;
     map<float,int> M =FindMedoid(DataNodes,1,category_attributes); //r=1;
-    map<int,list<int>> Vamana_graph = FilteredVamanaIndex(vecmatrix,DataNodes,alpha,R,category_attributes,M);
+    map<int,set<int>> Vamana_graph = FilteredVamanaIndex(vecmatrix,DataNodes,alpha,R,category_attributes,M);
     cout <<"I am after Vamana?!?!?!"<<endl;
     cout <<"vamana graph size is: "<< Vamana_graph.size()<<endl;
     int counter=0;
     for(int i =0;i<Vamana_graph.size();i++){
         cout <<"the neighbors of node "<< i <<"are: ";
-        for(list<int>:: iterator mit=Vamana_graph[i].begin();mit!=Vamana_graph[i].end();mit++){
+        for(set<int>:: iterator mit=Vamana_graph[i].begin();mit!=Vamana_graph[i].end();mit++){
             cout<<*mit<<" ";
         }
     }
@@ -73,9 +73,28 @@ int main(int argc, char **argv) {
     pair <set<pair<double,int>>,set<int>> PairVector;
     PairVector = FilteredGreedy(Vamana_graph,0,knn,L_sizelist,M,Fq,querymatrix,DataNodes);
     set<pair<double,int>> K_neighbors= PairVector.first;
+    cout<<"K_neighbors are: "<<K_neighbors.size();
     cout<<"neighbors for query[0] are:";
     for(auto neighbors : K_neighbors){
         cout<< neighbors.second <<" "; //printing the int node
+    }
+
+    // cout<<"the queries are:"<<endl;
+    // for(int i=0;i<int(queries.size());i++){
+    //     cout<<"for query "<<i;
+    //     for(auto nodes : queries[i]){
+    //         cout<<nodes<<" ";
+    //     }
+    //     cout<<endl;
+    // }
+    
+    cout << "the dataset is:" << endl;
+    for(int i=0;i<int(DataNodes.size());i++){
+        cout<< endl<<"for node "<<i<<"the distances are: ";
+        for(vector<float> ::iterator datanodes=DataNodes[i].begin();datanodes!=DataNodes[i].end();datanodes++){
+            cout << *datanodes <<" ";
+    }
+
     }
     cout <<endl;
     
