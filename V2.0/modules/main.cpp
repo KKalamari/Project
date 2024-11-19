@@ -70,12 +70,12 @@ int main(int argc, char **argv) {
         }
     }
     vector <float> Fq= {queries[0][1]};
-    pair <vector<int>,vector<int>> PairVector;
+    pair <set<pair<double,int>>,set<int>> PairVector;
     PairVector = FilteredGreedy(Vamana_graph,0,knn,L_sizelist,M,Fq,querymatrix,DataNodes);
-    vector<int> K_neighbors= PairVector.first;
+    set<pair<double,int>> K_neighbors= PairVector.first;
     cout<<"neighbors for query[0] are:";
     for(auto neighbors : K_neighbors){
-        cout<< neighbors <<" ";
+        cout<< neighbors.second <<" "; //printing the int node
     }
     cout <<endl;
     

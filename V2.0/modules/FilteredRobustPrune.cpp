@@ -1,7 +1,7 @@
 
 #include"FilteredRobust.h"
 #include <chrono>
-void pickingp_star(int& p_star,int&p,vector<vector<double>>& vecmatrix,set<int,DistanceComparator> &V){
+void pickingp_star(int& p_star,int&p,vector<vector<double>>& vecmatrix,set<int> &V){
     double mindist=DBL_MAX;
     for(auto Vneighbors : V){
         if(mindist>vecmatrix[p][Vneighbors]){
@@ -15,7 +15,7 @@ void pickingp_star(int& p_star,int&p,vector<vector<double>>& vecmatrix,set<int,D
 
 
 
-void FilteredRobustPrune(map <int,list<int>>&graph,int &p,set<int,DistanceComparator> &V,double &alpha,int&R,vector<vector<double>> &vectormatrix,vector<vector<float>>&dataset){
+void FilteredRobustPrune(map <int,list<int>>&graph,int &p,set<int> &V,double &alpha,int&R,vector<vector<double>> &vectormatrix,vector<vector<float>>&dataset){
        for(auto OutNeighbors : graph[p]){
         V.insert(OutNeighbors);
     }

@@ -24,21 +24,20 @@ map <int,list<int>> FilteredVamanaIndex(vector<vector<double>>&vectormatrix,vect
         cout<<"I am in the "<<counter << " node";
         counter++;
         // cout<<"we are on the "<<counter <<" iteration"<< endl;
-        DistanceComparator comp(vectormatrix, sigma);
         vector<float> Filterset={DataNodes[sigma][0]};
-        pair <vector<int>,vector<int>>queuepair;
+        pair <set<pair<double,int>>,set<int>> queuepair;
         queuepair = FilteredGreedy(graph,sigma,knn,L_sizelist,medoids,Filterset,vectormatrix,DataNodes);
         //DistanceComparator comp(vectormatrix, sigma);
-        vector<int> V=queuepair.second;
-        V.push_back(sigma); //PERFORMANCE HIT
-        set<int,DistanceComparator>orderedV(V.begin(),V.end(),comp);
+        set<int> V=queuepair.second;
+        V.insert(sigma); //PERFORMANCE HIT
         // cout<<"the size of V that goes to robust is:"<<orderedV.size();
-        FilteredRobustPrune(graph,sigma,orderedV,alpha,R,vectormatrix,DataNodes);
+        FilteredRobustPrune(graph,sigma,V,alpha,R,vectormatrix,DataNodes);
 
         for(auto J : graph[sigma]){
             graph[J].push_back(sigma);
             if(int(graph[sigma].size())>R){
-                set<int,DistanceComparator>JoutN(graph[J].begin(),graph[J].end(),comp);
+                set<int>JoutN(graph[J].begin(),graph[J].end());
+                JoutN.insert(sigma);
                 FilteredRobustPrune(graph,J,JoutN,alpha,R,vectormatrix,DataNodes);
             }
         }

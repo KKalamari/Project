@@ -1,13 +1,13 @@
 #include "FilteredGreedySearch.h"
 
 
-void pickingP(int &p,set <int,DistanceComparator>&L,set<int,DistanceComparator>&V,vector <vector <double>>&querymatrix,int query){
-    double mindist=__DBL_MAX__;
+void pickingP(int &p,set <pair<double,int>>&L,set<int>&V,vector <vector <double>>&querymatrix,int query){
+    double mindist=std::numeric_limits<double>::max();
     for(auto Lnode : L){
-        if (V.find(Lnode) == V.end()){//if the current node is not visited.
-            if(mindist>querymatrix[Lnode][query]){
-            mindist=querymatrix[Lnode][query];
-            p=Lnode;
+        if (V.find(Lnode.second) == V.end()){//if the current node is not visited.
+            if(mindist>querymatrix[Lnode.second][query]){
+            mindist=querymatrix[Lnode.second][query];
+            p=Lnode.second;
             }
         }
         }
@@ -16,34 +16,27 @@ void pickingP(int &p,set <int,DistanceComparator>&L,set<int,DistanceComparator>&
 
 
 //function that ensures that L contains at leasτ one node which haven't been already explored.
-bool unexplored_nodes(set<int, DistanceComparator>&L,set<int, DistanceComparator>&visited){ 
-    
-    for(set<int, DistanceComparator> :: iterator lit=L.begin();lit!=L.end();lit++){//for every element there is in L
-        bool found=0;
-        set<int, DistanceComparator> :: iterator vit=visited.begin(); //we iterate V list
-        for(vit=visited.begin();vit!=visited.end();vit++){
-        if(*vit==*lit){ //if the current L element exist in V declare found=1 and break the loop, start checking on a new L element
-            found=1;
-            break;
+bool unexplored_nodes(const set<pair<double, int>>& L, const set<int>& visited) { 
+    for (const auto& elem : L) { // Iterate through each element in L
+        if (visited.find(elem.second) == visited.end()) {
+            return true; // Found an unexplored node
         }
     }
-    if(found==0) //if we didn;t found a match, insantly return 1
-        return 1;//just found an unexplored node, return 1
-    }
-    return 0; //every node has been explored
-
+    return false; // All nodes in L have been explored
 }
+
 
 //Distance comparator is defined in the header file of FilteredGreedySearch
 
-pair <vector<int>,vector<int>> FilteredGreedy(map<int,list<int>>&graph,int xq,int knn,int L_sizelist,map <float,int> &M,vector<float>&Fq,vector<vector<double>>& querymatrix,vector<vector<float>>&dataset){
-    DistanceComparator comp(querymatrix, xq);
-    set<int, DistanceComparator> L(comp); // τα κοντινότερα γειτονικά στοιχεία
-    set<int, DistanceComparator> V(comp); // τα επισκέψιμα στοιχεία
+pair <set<pair<double,int>>,set<int>> FilteredGreedy(map<int,list<int>>&graph,int xq,int knn,int L_sizelist,map <float,int> &M,vector<float>&Fq,vector<vector<double>>& querymatrix,vector<vector<float>>&dataset){
+    set<pair<double,int>> L; //L set is going to be ordered by the euclidean distance
+    set <int> V;
+    pair<double,int>node; //nodes to be inserted in L set.
     //in our case it will be a singleton set but whatevs
     for(auto filter : Fq){ //because of medoid we already know that they have the same filters.
         int S=M[filter];
-        L.insert(S);
+        pair<double,int>node= make_pair(querymatrix[S][xq],S);
+        L.insert(node);
     }
     int p;
     // cout<< "The size of V is: "<<V.size()<<endl;
@@ -55,21 +48,21 @@ pair <vector<int>,vector<int>> FilteredGreedy(map<int,list<int>>&graph,int xq,in
         for(auto CandidatesOutNeighbors: graph[p] ){
             
             if ((*(Fq.begin())==dataset[CandidatesOutNeighbors][0]) && (find(V.begin(), V.end(),CandidatesOutNeighbors)==V.end() )) {
-                L.insert(CandidatesOutNeighbors);
+                node=make_pair(querymatrix[CandidatesOutNeighbors][xq],CandidatesOutNeighbors);
+                L.insert(node);
                 // cout<<"I HAVE FOUND NEIGHBORS "<<endl;
             }
         }
         if(knn>0){
         if(L.size()>knn){
-            set<int>::iterator Lit=L.begin();
+            set<pair<double,int>>::iterator Lit=L.begin();
             advance(Lit,knn);
             L.erase(Lit,L.end());
         }
         }
     }
-        vector<int> Lvector(L.begin(),L.end());
-        vector <int> Vvector(V.begin(),V.end());
-        return make_pair(Lvector,Vvector);
+       
+        return make_pair(L,V);
 
     }
     
