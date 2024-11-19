@@ -66,6 +66,7 @@ pair <set<pair<double,int>>,set<int>> FilteredGreedy(map<int,set<int>>&graph,int
 
     if(knn>0){
         cout<<"I AM REACHING MY LIMITSSSSS!!!!!!!!!!!!!!!!!"<<endl;
+        cout<<"the L size is:"<<L.size()<<endl;
         if(L.size()>knn){
             set<pair<double,int>>::iterator Lit=L.begin();
             advance(Lit,knn);

@@ -25,24 +25,17 @@ int main(int argc, char **argv) {
     vector <vector<float>> DataNodes;
     set <float> category_attributes;
     category_attributes= ReadBin(source_path, num_data_dimensions, DataNodes); //DataNode is the database, attributes is the set which have all the categories each vector can have)
-    cout <<"the categories are:";
     cout <<"the size of category attributes is "<<category_attributes.size()<<endl;
     for (set <float> ::iterator categories=category_attributes.begin();categories!=category_attributes.end();categories++){
         cout <<*categories << " ";
     }
+    cout<<"the size of category attributes are:"<<category_attributes.size();
     cout <<endl;
    // Read queries
     int num_query_dimensions = num_data_dimensions + 2;
     vector <vector<float>> queries;
     ReadBin(query_path, num_query_dimensions, queries);
-    // cout << "the dataset is:" << endl;
-    // for(int i=0;i<int(DataNodes.size());i++){
-    //     cout<< endl<<"for node "<<i<<"the distances are: ";
-    //     for(vector<float> ::iterator datanodes=DataNodes[i].begin();datanodes!=DataNodes[i].end();datanodes++){
-    //         cout << *datanodes <<" ";
-    // }
-
-    // }
+    
 
     int vector_number = int (DataNodes.size());
     int query_number = int (queries.size());
@@ -60,42 +53,58 @@ int main(int argc, char **argv) {
     int L_sizelist=120;
     map<float,int> M =FindMedoid(DataNodes,1,category_attributes); //r=1;
     map<int,set<int>> Vamana_graph = FilteredVamanaIndex(vecmatrix,DataNodes,alpha,R,category_attributes,M);
-    cout <<"I am after Vamana?!?!?!"<<endl;
     cout <<"vamana graph size is: "<< Vamana_graph.size()<<endl;
-    int counter=0;
-    for(int i =0;i<Vamana_graph.size();i++){
-        cout <<"the neighbors of node "<< i <<"are: ";
-        for(set<int>:: iterator mit=Vamana_graph[i].begin();mit!=Vamana_graph[i].end();mit++){
-            cout<<*mit<<" ";
-        }
-    }
-    vector <float> Fq= {queries[0][1]};
+    vector <float> Fq= {queries[1][1]};
+    cout<<"the Fq is "<<queries[1][1]<<endl;
     pair <set<pair<double,int>>,set<int>> PairVector;
-    PairVector = FilteredGreedy(Vamana_graph,0,knn,L_sizelist,M,Fq,querymatrix,DataNodes);
+    PairVector = FilteredGreedy(Vamana_graph,1,knn,L_sizelist,M,Fq,querymatrix,DataNodes);
     set<pair<double,int>> K_neighbors= PairVector.first;
-    cout<<"K_neighbors are: "<<K_neighbors.size();
-    cout<<"neighbors for query[0] are:";
+    cout<<"K_neighbors are: "<<K_neighbors.size()<<endl;
+    cout<<"neighbors for query[1] are:";
     for(auto neighbors : K_neighbors){
-        cout<< neighbors.second <<" "; //printing the int node
+        cout<< neighbors.second <<", "; //printing the int node
     }
 
-    // cout<<"the queries are:"<<endl;
-    // for(int i=0;i<int(queries.size());i++){
-    //     cout<<"for query "<<i;
-    //     for(auto nodes : queries[i]){
-    //         cout<<nodes<<" ";
-    //     }
-    //     cout<<endl;
-    // }
-    
-    cout << "the dataset is:" << endl;
-    for(int i=0;i<int(DataNodes.size());i++){
-        cout<< endl<<"for node "<<i<<"the distances are: ";
-        for(vector<float> ::iterator datanodes=DataNodes[i].begin();datanodes!=DataNodes[i].end();datanodes++){
-            cout << *datanodes <<" ";
-    }
-
-    }
     cout <<endl;
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//     std::cout << "The queries are:" << std::endl;
+// for (size_t i = 0; i < queries.size(); i++) { // Use size_t for indices
+//     std::cout << "Query " << i << ": ";      // Better formatting
+//     for (const auto &node : queries[i]) {    // Use const auto& to avoid unnecessary copies
+//         std::cout << node << " ";
+//     }
+//     std::cout << std::endl;
+// }
+
+    
+    // cout << "the dataset is:" << endl;
+    // for(int i=0;i<int(DataNodes.size());i++){
+    //     cout<< endl<<"for node "<<i<<"the distances are: ";
+    //     for(vector<float> ::iterator datanodes=DataNodes[i].begin();datanodes!=DataNodes[i].end();datanodes++){
+    //         cout << *datanodes <<" ";
+    // }
+
+    // }
