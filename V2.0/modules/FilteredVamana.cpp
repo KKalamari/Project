@@ -2,41 +2,43 @@
 #include <map>
 #include <list>
 #include <vector>
-#include<set>
+#include <set>
 #include "FilteredGreedySearch.h"
 #include "medoid.h"
 #include "FilteredRobust.h"
 #include <random>
 using namespace std;
 
-map <int,list<int>> FilteredVamanaIndex(vector<vector<double>>&vectormatrix,vector<vector<float>>&DataNodes,int &alpha,int& R,set<float>&category_attributes){
+map <int,set<int>> FilteredVamanaIndex(vector<vector<double>>&vectormatrix,vector<vector<float>>&DataNodes,double &alpha,int& R,set<float>&category_attributes,map <float,int>&medoids){
     
-    map<int,list<int>>graph; //empty graph
-    map <float,int> medoids=FindMedoid(DataNodes,R,category_attributes);//return a map with every key being the filter and the value being the staring node
+    map<int,set<int>>graph; //empty graph
     random_device rd; //obtain a random number from hardware
     mt19937 generator(rd()); //seed the generator
     vector<int> randomized_nodes(DataNodes.size());
     iota(randomized_nodes.begin(),randomized_nodes.end(),0);
     shuffle(randomized_nodes.begin(),randomized_nodes.end(),generator);//let σ be a random permutation of n
     int knn=0;
-    int L_sizelist=100;
+    int L_sizelist=120;
+    int counter=0;
     for(auto sigma : randomized_nodes){
-        DistanceComparator comp(vectormatrix, sigma);
+        cout<<"I am in the "<<counter << " node";
+        counter++;
         vector<float> Filterset={DataNodes[sigma][0]};
-        pair <vector<int>,vector<int>>queuepair;
+        pair <set<pair<double,int>>,set<int>> queuepair;
         queuepair = FilteredGreedy(graph,sigma,knn,L_sizelist,medoids,Filterset,vectormatrix,DataNodes);
-        //DistanceComparator comp(vectormatrix, sigma);
-        vector<int> V=queuepair.second;
-        V.emplace(V.begin(),sigma); //PERFORMANCE HIT
-        set<int,DistanceComparator>orderedV(V.begin(),V.end(),comp);
-        FilteredRobustPrune(graph,sigma,orderedV,alpha,R,vectormatrix,DataNodes);
+        set<int> V=queuepair.second;
+       // V.insert(sigma); //PERFORMANCE HIT
+        // cout<<"the size of V that goes to robust is:"<<orderedV.size();
+        FilteredRobustPrune(graph,sigma,V,alpha,R,vectormatrix,DataNodes);
 
         for(auto J : graph[sigma]){
-            graph[J].push_back(sigma);
-            if(int(graph[sigma].size())>R){
-                set<int,DistanceComparator>JoutN(graph[J].begin(),graph[J].end(),comp);
+            if(int(graph[J].size()+1)>R){
+                set<int>JoutN(graph[J].begin(),graph[J].end());
+                JoutN.insert(sigma);
                 FilteredRobustPrune(graph,J,JoutN,alpha,R,vectormatrix,DataNodes);
             }
+            else
+                graph[J].insert(sigma);
         }
     }
 

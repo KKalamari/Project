@@ -9,24 +9,29 @@
 #pragma once
 using namespace std;
 
-// Comparator για το set που συγκρίνει τα στοιχεία με βάση την απόσταση τους από το query
 struct DistanceComparator {
-    vector<vector<double>> querymatrix;
+    const vector<vector<double>>& querymatrix; 
     int query;
 
-    DistanceComparator(const vector<vector<double>>& matrix, int q) : querymatrix(matrix), query(q) {}
+    // Constructor that accepts a reference to the matrix
+    DistanceComparator(const vector<vector<double>>& matrix, int q) 
+        : querymatrix(matrix), query(q) {}
 
-    // Ensure the compiler generates a copy constructor if needed.
-    DistanceComparator(const DistanceComparator& other) = default;
 
     bool operator()(int a, int b) const {
+        if (a >= querymatrix.size() || b >= querymatrix.size() || query >= querymatrix[0].size()) {
+            throw std::out_of_range("Index out of bounds in DistanceComparator.");
+        }
         return querymatrix[a][query] < querymatrix[b][query];
     }
 };
 
-void pickingP(int &p,set <int,DistanceComparator>&L,set<int,DistanceComparator>&V,vector <vector <double>>querymatrix,int query);
 
-pair <vector<int>,vector<int>> FilteredGreedy(map<int,list<int>>&graph,int xq,int knn,int L_sizelist,map <float,int> &M,vector<float>&Fq,vector<vector<double>> querymatrix,vector<vector<float>>&dataset);
+//void pickingP(int &p,set <pair<double,int>>&L,set<int>&V,vector <vector <double>>&querymatrix,int query);
+
+bool unexplored_nodes(const set<pair<double, int>>& L, const set<int>& visited);
+
+pair <set<pair<double,int>>,set<int>> FilteredGreedy(map<int,set<int>>&graph,int xq,int knn,int L_sizelist,map <float,int> &M,vector<float>&Fq,vector<vector<double>>& querymatrix,vector<vector<float>>&dataset);
 
 
 

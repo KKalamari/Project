@@ -4,8 +4,8 @@
 #pragma once
 using namespace std;
 
-set <float> ReadBin(const string &file_path,
+set<float>ReadBin(const string &file_path,
             int num_dimensions,
-            vector<vector<float>> &data);
+            std::vector<std::vector<float>> &data);
 
              

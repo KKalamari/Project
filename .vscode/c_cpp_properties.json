@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/root/Project/V1.0/header_files",
-                "/root/Project/V2.0/header_files"
+                "/root/Project/V2.0/header_files",
+                "${workspaceFolder}/V2.0/header_files"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

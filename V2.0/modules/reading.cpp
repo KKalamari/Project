@@ -33,4 +33,11 @@ set <float> ReadBin(const string &file_path,
             std::cout << "Finish Reading Data" << endl;
             return category_attributes;
             }
+
+            
+
+
+
+
+            
                         
