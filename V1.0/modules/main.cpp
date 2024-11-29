@@ -19,25 +19,22 @@ using json = nlohmann::json;
 using namespace std;
 using namespace chrono;
 
-// Function to read configuration from a file
-// Function to load configuration from a JSON file
+
 json readConfig(const string& config_filename) {
     json config_data;
 
-    // Open config.json file
     ifstream config_file(config_filename);
     
     if(!config_file.is_open())
         throw runtime_error("Unable to open config file.");
 
-    // Read JSON data
     config_file >> config_data;
 
-    // Close the file
     config_file.close();
 
     return config_data;
 }
+
 int main(int argc, char** argv) {
     auto start = high_resolution_clock::now();
 
@@ -49,7 +46,7 @@ json config_data;
         return 1;
     }
 
-    // Retrieve values from the config using the exact names
+    //retrieve values from the config using the exact names
     string filename = config_data.value("filename", "default_base.fvecs");
     string filename2 = config_data.value("filename2", "default_query.fvecs");
     string filename3 = config_data.value("filename3", "default_groundtruth.ivecs");
@@ -58,7 +55,7 @@ json config_data;
     double a = config_data.value("a", 0.0);
     int L_sizelist = config_data.value("L_sizelist", 0);
 
-    // Use values as needed
+    //use values as needed
     cout << "filename: " << filename << endl;
     cout << "filename2: " << filename2 << endl;
     cout << "filename3: " << filename3 << endl;

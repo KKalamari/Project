@@ -1,27 +1,56 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
-#include "reading.h"
 #include <set>
 #include <map>
+#include <chrono>
+#include "reading.h"
 #include "euclidean_distance.h"
 #include "FilteredVamana.h"
 #include "FilteredGreedySearch.h"
+#include "StitchedVamana.h"
+#include "json.hpp"
+
+//define the json from the nlohmann library
+using json = nlohmann::json;
 
 using namespace std;
+using namespace chrono;
+
+
+json readConfig(const string& config_filename) {
+    json config_data;
+
+    ifstream config_file(config_filename);
+    
+    if(!config_file.is_open())
+        throw runtime_error("Unable to open config file.");
+
+    config_file >> config_data;
+
+    config_file.close();
+
+    return config_data;
+}
 int main(int argc, char **argv) {
-    string source_path = "dummy-data.bin";
-    string query_path = "dummy-queries.bin";
 
-    // Also accept other path for source data
-    if (argc > 1) {
-    source_path = string(argv[1]);
-    }
+    json config = readConfig("../../.vscode/config2.json");
 
-    int num_data_dimensions = 102;
-    float sample_proportion = 0.001;
+    //extract variables from configuration
+    string source_path = config["source_path"];
+    string query_path = config["query_path"];
+    int num_data_dimensions = config["num_data_dimensions"];
+    int num_query_dimensions = num_data_dimensions + static_cast<int>(config["num_query_dimensions_offset"]);
+    float sample_proportion = config["sample_proportion"];
+    double alpha = config["alpha"];
+    int R = config["R"];
+    int knn = config["knn"];
+    int L_sizelist = config["L_sizelist"];
+    int Rsmall = config["Rsmall"];
+    int Lsmall = config["Lsmall"];
+    int Rstitched = config["Rstitched"];
 
-    // Read data points
+    //read data points
     vector <vector<float>> DataNodes;
     set <float> category_attributes;
     category_attributes= ReadBin(source_path, num_data_dimensions, DataNodes); //DataNode is the database, attributes is the set which have all the categories each vector can have)
@@ -36,6 +65,16 @@ int main(int argc, char **argv) {
     vector <vector<float>> queries;
     ReadBin(query_path, num_query_dimensions, queries);
     
+    map<float,set<int>> labels;
+
+     for (auto category : category_attributes) {
+        for(int node=0;node< DataNodes.size();node++){
+            if(DataNodes[node][0]== category)
+                labels[category].insert(node);
+
+        }
+      
+    }
 
     int vector_number = int (DataNodes.size());
     int query_number = int (queries.size());
@@ -47,10 +86,7 @@ int main(int argc, char **argv) {
     cout<<" I am after calculating euclidean distances"<<endl;
 
 
-    double alpha=1;
-    int R=14;
-    int knn=100;
-    int L_sizelist=120;
+
     map<float,int> M =FindMedoid(DataNodes,1,category_attributes); //r=1;
     map<int,set<int>> Vamana_graph = FilteredVamanaIndex(vecmatrix,DataNodes,alpha,R,category_attributes,M);
     cout <<"vamana graph size is: "<< Vamana_graph.size()<<endl;
@@ -64,6 +100,26 @@ int main(int argc, char **argv) {
     for(auto neighbors : K_neighbors){
         cout<< neighbors.second <<", "; //printing the int node
     }
+    //   cout << "Running StitchedVamana..." << endl;
+
+    // auto start = chrono::high_resolution_clock::now(); // Start timing
+
+    // auto stitchedGraph = StitchedVamana(DataNodes, labels, alpha, Rsmall, Lsmall, Rstitched, vecmatrix);
+
+    // auto end = chrono::high_resolution_clock::now(); // End timing
+    // chrono::duration<double> elapsed = end - start;
+
+    // cout << "StitchedVamana completed in " << elapsed.count() << " seconds" << endl;
+
+    // // Print results
+    // cout << "Stitched graph size: " << stitchedGraph.size() << endl;
+    // for (const auto& [node, neighbors] : stitchedGraph) {
+    //     cout << "Node " << node << " -> Neighbors: ";
+    //     for (const auto& neighbor : neighbors) {
+    //         cout << neighbor << " ";
+    //     }
+    //     cout << endl;
+    // }
 
     cout <<endl;
     
