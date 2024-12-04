@@ -7,9 +7,11 @@
 #include "euclidean_distance.h"
 #include "FilteredVamana.h"
 #include "FilteredGreedySearch.h"
-
+#include "groundtruth.h"
+#include <chrono>
 using namespace std;
 int main(int argc, char **argv) {
+    auto start = std:: chrono::system_clock::now();
     string source_path = "dummy-data.bin";
     string query_path = "dummy-queries.bin";
 
@@ -39,13 +41,14 @@ int main(int argc, char **argv) {
 
     int vector_number = int (DataNodes.size());
     int query_number = int (queries.size());
-
     vector<vector<double>> vecmatrix(vector_number,vector<double>(vector_number));  //10000 *10000 matrix for the euclidean distance of every node between every node
     vector <vector <double>> querymatrix(vector_number,vector<double>(query_number)); // 10000 *100 matrix which calculates the euclidean distance between database node and queries
     euclidean_distance_of_database(DataNodes,vecmatrix); //calculating the euclidean distances of the whole database of nodes with each other
     euclidean_distance_of_queries (DataNodes,queries,querymatrix); //calculating the euclidean distances between the nodes of database and each querie vector
     cout<<" I am after calculating euclidean distances"<<endl;
-
+    
+    groundtruth(DataNodes,queries,vecmatrix,querymatrix); //uncomment only if you want calculate from scrath the groundtruth of a dataset
+    return 0;
 
     double alpha=1;
     int R=14;
@@ -64,6 +67,9 @@ int main(int argc, char **argv) {
     for(auto neighbors : K_neighbors){
         cout<< neighbors.second <<", "; //printing the int node
     }
+    auto end = std:: chrono::system_clock::now();
+    std::chrono::duration<double> elapsed_seconds = end - start;
+    cout<<"the elapsed time is "<<elapsed_seconds.count()<<endl;
 
     cout <<endl;
     

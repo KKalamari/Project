@@ -12,7 +12,8 @@ OBJS = $(OUTPUT_DIR)/reading.o \
 	   $(OUTPUT_DIR)/euclidean_distance.o \
 	   $(OUTPUT_DIR)/FilteredGreedySearch.o \
 	   $(OUTPUT_DIR)/FilteredRobustPrune.o \
-	   $(OUTPUT_DIR)/FilteredVamana.o
+	   $(OUTPUT_DIR)/FilteredVamana.o  \
+	   $(OUTPUT_DIR)/groundtruth.o
 #main target
 all: $(OUTPUT_DIR)/main
 
@@ -35,6 +36,9 @@ $(OUTPUT_DIR)/FilteredRobustPrune.o: $(MODULES_DIR)/FilteredRobustPrune.cpp | $(
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(OUTPUT_DIR)/FilteredVamana.o: $(MODULES_DIR)/FilteredVamana.cpp | $(OUTPUT_DIR)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+$(OUTPUT_DIR)/groundtruth.o: $(MODULES_DIR)/groundtruth.cpp | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 

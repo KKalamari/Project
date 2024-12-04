@@ -19,6 +19,7 @@ map <int,set<int>> FilteredVamanaIndex(vector<vector<double>>&vectormatrix,vecto
     shuffle(randomized_nodes.begin(),randomized_nodes.end(),generator);//let σ be a random permutation of n
     int knn=0;
     int L_sizelist=120;
+    int counter_for_robust=0;
     int counter=0;
     for(auto sigma : randomized_nodes){
         cout<<"I am in the "<<counter << " node";
@@ -29,7 +30,7 @@ map <int,set<int>> FilteredVamanaIndex(vector<vector<double>>&vectormatrix,vecto
         set<int> V=queuepair.second;
        // V.insert(sigma); //PERFORMANCE HIT
         // cout<<"the size of V that goes to robust is:"<<orderedV.size();
-        FilteredRobustPrune(graph,sigma,V,alpha,R,vectormatrix,DataNodes);
+       counter_for_robust+= FilteredRobustPrune(graph,sigma,V,alpha,R,vectormatrix,DataNodes);
 
         for(auto J : graph[sigma]){
             if(int(graph[J].size()+1)>R){
@@ -41,7 +42,7 @@ map <int,set<int>> FilteredVamanaIndex(vector<vector<double>>&vectormatrix,vecto
                 graph[J].insert(sigma);
         }
     }
-
+    cout<<"the counter of robust is "<<counter_for_robust<<endl;
     return graph;
 
 }
