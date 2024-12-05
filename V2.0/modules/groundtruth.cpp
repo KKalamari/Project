@@ -11,8 +11,8 @@ void groundtruth (vector<vector<float>>&DataNodes,vector<vector<float>>&queries,
 
     for(int i=0;i<query_size;i++){
 
-        if(queries[i][0]>1)
-            continue;    
+        // if(queries[i][0]>1)
+        //     continue;    
         int k=0;        
         vector<pair<double,int>> candidates_neighbors;
 
@@ -41,9 +41,9 @@ void groundtruth (vector<vector<float>>&DataNodes,vector<vector<float>>&queries,
     ofstream outfile("groundtruth.txt"); // Open a file named "neighbors.txt"
     if (outfile.is_open()) {
         for (int i =0; i <query_size; i++) {
-            outfile << "Nearest neighbors for query " << i  <<" with FQ =" <<queries[i][1]<< ": " ;
+            outfile << "Nearest neighbors for query " << i  <<" with FQ =" <<queries[i][1]<< " and query type  "<<queries[i][0]<< " :" ;
             for (const auto &node: neighbors[i]) {
-                outfile << node << " ";
+                outfile << node << ", ";
             }
             outfile << endl;
         }
