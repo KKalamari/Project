@@ -50,27 +50,43 @@ for(int i=0;i<query_number;i++){
 for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
     queries.erase(queries.begin() + queries_to_delete[i]);
 }
-
+    query_number = queries.size(); //updating the size of queries with the remaining elemtod of type 0 && 1
     vector<vector<double>> vecmatrix(vector_number,vector<double>(vector_number));  //10000 *10000 matrix for the euclidean distance of every node between every node
     vector <vector <double>> querymatrix(vector_number,vector<double>(query_number)); // 10000 *100 matrix which calculates the euclidean distance between database node and queries
     euclidean_distance_of_database(DataNodes,vecmatrix); //calculating the euclidean distances of the whole database of nodes with each other
     euclidean_distance_of_queries (DataNodes,queries,querymatrix); //calculating the euclidean distances between the nodes of database and each querie vector
     cout<<" I am after calculating euclidean distances"<<endl;
    
-    groundtruth(DataNodes,queries,vecmatrix,querymatrix); //uncomment only if you want calculate from scrath the groundtruth of a dataset
-    
+   // groundtruth(DataNodes,queries,vecmatrix,querymatrix); //uncomment only if you want calculate from scrath the groundtruth of a dataset
+
     double alpha=1;
-    int R=14;
+    int R=20;
     int knn=100;
-    int L_sizelist=120;
+    int L_sizelist=600;
     map<float,int> M =FindMedoid(DataNodes,1,category_attributes); //r=1;
     map<int,set<int>> Vamana_graph = FilteredVamanaIndex(vecmatrix,DataNodes,alpha,R,category_attributes,M);
     cout <<"vamana graph size is: "<< Vamana_graph.size()<<endl;
+    int xq=5010;
     vector <float> Fq= {queries[5010 ][1]};
     cout<<"the Fq is "<<queries[5010 ][1]<<endl;
-    cout<<"the query's type is: "<<queries[9850 ][0]<<endl;
+    vector<int>starting_nodes_for_unfiltered_search; 
     pair <set<pair<double,int>>,set<int>> PairVector;
-    PairVector = FilteredGreedy(Vamana_graph,5010 ,knn,L_sizelist,M,Fq,querymatrix,DataNodes);
+    map<float,int> new_M;
+    if(Fq[0]== - 1){
+        cout<<"OMG IT's Happening!!"<<endl;
+        for(auto filters :category_attributes){
+            vector<float>Fq_for_unfiltered = {filters};
+            PairVector = FilteredGreedy(Vamana_graph,xq,1,L_sizelist,M,Fq_for_unfiltered,querymatrix,DataNodes,category_attributes);
+            set<pair<double,int>> node = PairVector.first;
+            
+            auto node_to_insert = node.begin(); //iterating the pair in order to add the int node in starting_nodes
+            new_M[filters]= node_to_insert->second;
+        }
+    }
+    cout<<"the query's type is: "<<queries[5010 ][0]<<endl;
+
+   
+    PairVector = FilteredGreedy(Vamana_graph,5010 ,knn,L_sizelist,new_M,Fq,querymatrix,DataNodes,category_attributes);
     set<pair<double,int>> K_neighbors= PairVector.first;
     cout<<"K_neighbors are: "<<K_neighbors.size()<<endl;
     cout<<"neighbors for query[5010] are:";

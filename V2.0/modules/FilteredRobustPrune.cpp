@@ -38,7 +38,6 @@ vector<vector<float>>&dataset){
     int counter=0;
     while (V.empty()!=1){
         pickingp_star(p_star,p,vectormatrix,V);
-        // cout <<"pushing back "<<p_star<<endl;
         graph[p].insert(p_star);
         
         if(int(graph[p].size())>=R)
