@@ -2,53 +2,42 @@
 #include "GreedySearch.h"
 #include "Robust_ext.h"
 
-#include <iostream>
-#include <list>
-#include <map>
-#include <set>
-#include <vector>
-#include <cstdlib>
-#include <ctime>
-#include <algorithm>
-
-using namespace std;
 
 map<int, set<int>> graph_creation(list<int>& labeled_nodes, int R) {
+    int labeled_size = labeled_nodes.size();
     cout << "The vector size is: " << labeled_nodes.size() << "\n";
 
     map<int, set<int>> adj;
-    vector<int> nodes_vector(labeled_nodes.begin(), labeled_nodes.end());
+    // vector<int> nodes_vector(labeled_nodes.begin(), labeled_nodes.end());
     srand(time(0));
+    if(labeled_size>1){
+        for (int node : labeled_nodes) {
+            int neighbors_added = 0;
+            list<int> remaining_neighbors = labeled_nodes;
+            remaining_neighbors.remove(node); //erasing the node from the candidates neighbors so a node can't have its self for a neighbor
+            while (neighbors_added < R ) {
+                
+                //picking randomly a neighbor which has not been assigned as of yet(that's why we use remaining_neighbors)
+                int random_index = rand() % remaining_neighbors.size();
+                auto it = remaining_neighbors.begin();
+                advance(it, random_index);
+                int random_neighbor = *(it);
 
-    for (int node : labeled_nodes) {
-        int neighbors_added = 0;
-        int max_attempts = 100; // Limit to prevent infinite loop
-        int attempts = 0;
-
-        while (neighbors_added < R && attempts < max_attempts) {
-            attempts++;
-
-            if (nodes_vector.size() <= 1) 
-                break; // No valid neighbors possible.
-
-            int random_index = rand() % nodes_vector.size();
-            int random_neighbor = nodes_vector[random_index];
-
-            if (random_neighbor != node && adj[node].find(random_neighbor) == adj[node].end()) {
-                adj[node].insert(random_neighbor);
-                neighbors_added++;
+                //ensuring
+                if (random_neighbor != node && adj[node].find(random_neighbor) == adj[node].end()) {
+                    adj[node].insert(random_neighbor);
+                    remaining_neighbors.erase(it);
+                    neighbors_added++;
+                }
+                if(remaining_neighbors.empty()) 
+                    break;
             }
-        }
-
-        // If we can't find enough unique neighbors, just stop early.
-        if (neighbors_added < R) {
-            cout << "Warning: Could not assign " << R << " neighbors to node " << node 
-                 << ". Assigned " << neighbors_added << " neighbors.\n";
         }
     }
 
     return adj;
 }
+
 
 
 
@@ -77,7 +66,7 @@ map<float,int> M,int R,int L_sizelist){
         int k=1;
         pairSet= greedysearch(graph,medoid_node,nodes[i],k,L_sizelist,vecmatrix);
         set <int>  setV= pairSet.second;
-        RobustPrune(graph,nodes[i],setV,a,R,vecmatrix);
+        RobustPrune(graph,nodes[i],setV,a,R_small,vecmatrix);
             
         //if a node exceeds the R limit while making a node directed
         //then fill a set with the nodes of its neighbors + the extra one we  want to add
@@ -93,7 +82,7 @@ map<float,int> M,int R,int L_sizelist){
                     
                 }
                 
-                RobustPrune(graph,*outNeighbors,setV,a,R,vecmatrix);
+                RobustPrune(graph,*outNeighbors,setV,a,R_small,vecmatrix);
 
             }
             else{ //else just add the extra neighbor
