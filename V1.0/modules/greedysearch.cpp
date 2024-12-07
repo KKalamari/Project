@@ -1,5 +1,6 @@
 
 #include "greedysearch.h"
+
 using namespace std;
 
 //function that ensures that L contains at leasτ one node which haven't been already explored.
@@ -29,10 +30,6 @@ bool unexplored_node(int node, const list<int> visited) {
         }
     }
     return 1; //node does not exist in the visited list
-}
-
-void addtoL(list<int> neighbors, list<int> &L, vector<vector<double>> &querymatrix, int Lsizelist, int &query)
-{
 }
 
 
@@ -119,4 +116,3 @@ pair <set <int>,set <int>> greedysearch( map <int, list<int>>& graph,int &s,int&
     
     return make_pair(Lset,Vset); //returning L which contains the k nearest neighbors
 }
-
