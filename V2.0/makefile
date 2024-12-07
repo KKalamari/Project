@@ -13,7 +13,12 @@ OBJS = $(OUTPUT_DIR)/reading.o \
 	   $(OUTPUT_DIR)/FilteredGreedySearch.o \
 	   $(OUTPUT_DIR)/FilteredRobustPrune.o \
 	   $(OUTPUT_DIR)/FilteredVamana.o  \
-	   $(OUTPUT_DIR)/groundtruth.o
+	   $(OUTPUT_DIR)/groundtruth.o \
+	   $(OUTPUT_DIR)/Vamana.o \
+	   $(OUTPUT_DIR)/GreedySearch.o\
+	   $(OUTPUT_DIR)/Robust_ext.o\
+	   $(OUTPUT_DIR)/Stitched.o
+
 #main target
 all: $(OUTPUT_DIR)/main
 
@@ -39,6 +44,19 @@ $(OUTPUT_DIR)/FilteredVamana.o: $(MODULES_DIR)/FilteredVamana.cpp | $(OUTPUT_DIR
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(OUTPUT_DIR)/groundtruth.o: $(MODULES_DIR)/groundtruth.cpp | $(OUTPUT_DIR)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+
+$(OUTPUT_DIR)/Vamana.o: $(MODULES_DIR)/Vamana.cpp | $(OUTPUT_DIR)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+$(OUTPUT_DIR)/GreedySearch.o: $(MODULES_DIR)/GreedySearch.cpp | $(OUTPUT_DIR)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+$(OUTPUT_DIR)/Robust_ext.o: $(MODULES_DIR)/Robust_ext.cpp | $(OUTPUT_DIR)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+$(OUTPUT_DIR)/Stitched.o: $(MODULES_DIR)/Stitched.cpp | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 
