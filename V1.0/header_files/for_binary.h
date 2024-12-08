@@ -3,7 +3,7 @@
 #include <list>
 #include <iostream>
 using namespace std;
-
+#pragma once
 void save_graph_to_binary(const map<int, list<int>>& graph, const string& filename);
 
 

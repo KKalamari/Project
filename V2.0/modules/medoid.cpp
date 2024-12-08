@@ -1,5 +1,6 @@
 #include "medoid.h"
 #include <random>
+#include <iostream>
 //chooses the node which has been used the least as a starting node
 void pfinder(vector <int> &Rf,map<int,float>&T,int &p){
     int min=T[*(Rf.begin())];
@@ -22,6 +23,8 @@ map <float,int> FindMedoid(vector<vector<float>>DataNodes,int r,set <float>& cat
     mt19937 generator(rd()); //seed the generator
     int p; //argmin
     int Datasize= DataNodes.size();
+   
+
     for(auto Filters : category_attributes){ //for every fitler there is
         for(int i=0;i<Datasize;i++){ //we iterate the whole dataset and find nodes with matchign filters
             if(DataNodes[i][0]==Filters){

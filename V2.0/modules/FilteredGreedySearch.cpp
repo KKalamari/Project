@@ -1,19 +1,6 @@
 #include "FilteredGreedySearch.h"
 #include <limits>
 #include <chrono>
-// void pickingP(int &p,set <pair<double,int>>&L,set<int>&V,vector <vector <double>>&querymatrix,int query){
-//     double mindist=std::numeric_limits<double>::max();
-//     for(auto Lnode : L){
-//         if (V.find(Lnode.second) == V.end()){//if the current node is not visited.
-//             if(mindist>querymatrix[Lnode.second][query]){
-//             mindist=querymatrix[Lnode.second][query];
-//             p=Lnode.second;
-//             }
-//         }
-//         }
-//     }
-
-
 
 //function that ensures that L contains at leasτ one node which haven't been already explored.
 bool unexplored_nodes(const set<pair<double, int>>& L, const set<int>& visited) { 
@@ -27,17 +14,29 @@ bool unexplored_nodes(const set<pair<double, int>>& L, const set<int>& visited) 
 
 
 
-pair <set<pair<double,int>>,set<int>> FilteredGreedy(map<int,set<int>>&graph,int xq,int knn,int L_sizelist,map <float,int> &M,vector<float>&Fq,vector<vector<double>>& querymatrix,vector<vector<float>>&dataset){
+pair <set<pair<double,int>>,set<int>> FilteredGreedy(map<int,set<int>>&graph,int xq,int knn,int L_sizelist,map <float,int> &M,vector<float>&Fq,vector<vector<double>>& querymatrix,vector<vector<float>>&dataset,
+set <float> &category_attributes){
     auto starting_time =std::chrono::system_clock::now();
     set<pair<double,int>> L; //L set is going to be ordered by the euclidean distance
     set <int> V;
     pair<double,int>node; //nodes to be inserted in L set.
-    //in our case it will be a singleton set but whatevs
-    for(auto& filter : Fq){ //because of medoid we already know that they have the same filters.
+
+    if(Fq[0]==-1){
+        for(auto& filter : category_attributes){ //because of medoid we already know that they have the same filters.
+        cout<<"I AM INSIDE"<<endl;
         int S=M[filter];
         pair<double,int>node= make_pair(querymatrix[S][xq],S);
 
         L.insert(node);
+        }
+    }
+    else{
+        for(auto& filter : Fq){ //because of medoid we already know that they have the same filters.
+            int S=M[filter];
+            pair<double,int>node= make_pair(querymatrix[S][xq],S);
+
+            L.insert(node);
+        }
     }
     int p;
     while (unexplored_nodes(L,V)==1) {
@@ -50,7 +49,7 @@ pair <set<pair<double,int>>,set<int>> FilteredGreedy(map<int,set<int>>&graph,int
         }
         V.insert(p);
         for(auto& CandidatesOutNeighbors: graph[p] ){
-            if ((*(Fq.begin())==dataset[CandidatesOutNeighbors][0]) && (V.find(CandidatesOutNeighbors)==V.end() )) {
+            if ((*(Fq.begin())==dataset[CandidatesOutNeighbors][0] || *(Fq.begin())==-1.0) && (V.find(CandidatesOutNeighbors)==V.end() )) {
                 node=make_pair(querymatrix[CandidatesOutNeighbors][xq],CandidatesOutNeighbors);
                 L.insert(node);
             }
@@ -65,8 +64,6 @@ pair <set<pair<double,int>>,set<int>> FilteredGreedy(map<int,set<int>>&graph,int
     }
 
     if(knn>0){
-        cout<<"I AM REACHING MY LIMITSSSSS!!!!!!!!!!!!!!!!!"<<endl;
-        cout<<"the L size is:"<<L.size()<<endl;
         if(L.size()>knn){
             set<pair<double,int>>::iterator Lit=L.begin();
             advance(Lit,knn);
@@ -85,5 +82,16 @@ pair <set<pair<double,int>>,set<int>> FilteredGreedy(map<int,set<int>>&graph,int
 
 
 
-// while (std::any_of(L.begin(), L.end(), [&V](int node) { return V.find(node) == V.end(); })) {
-         //   if (find(Fq.begin(), Fq.end(),dataset[CandidatesOutNeighbors][0])!=Fq.end() && find(V.begin(), V.end(),CandidatesOutNeighbors)==V.end() ) {
+
+
+
+
+
+
+
+
+
+
+
+
+

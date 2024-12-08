@@ -3,13 +3,10 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
-#include "graph_creation.h"
-#include "euclidean_distance.h"
-#include <reading.h>
 #include <list>
 #include <map>
 #include <utility>
-
+#include <set>
 #pragma once
 using namespace std;
 
@@ -20,7 +17,7 @@ bool unexplored_nodes(list <int>L,list <int>visited);
 bool unexplored_node(int node, const list<int> visited);
 
 //adding the neighbors of the node which P contains in a sorted way.Also prunes the nodes when overextending the L_sizelist.
-void addtoL(list <int> neighbors,list <int> &L,vector<vector<double>>& vecmatrix,int Lsizelist,int&query);
+void addtoL(set <int> neighbors,list <int> &L,vector<vector<double>>& vecmatrix,int Lsizelist,int&query);
 
 //implements the greedy algorithm
-pair <set <int>,set <int>> greedysearch(map <int, list<int>>& graph,int &,int& query_point,int &k_neigh,int &L_sizelist,vector<vector<double>>& querymatrix);
+pair <set <int>,set <int>> greedysearch(map <int, set<int>>& graph,int &,int& query_point,int &k_neigh,int &L_sizelist,vector<vector<double>>& querymatrix);

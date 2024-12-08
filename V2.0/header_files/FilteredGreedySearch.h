@@ -31,7 +31,7 @@ struct DistanceComparator {
 
 bool unexplored_nodes(const set<pair<double, int>>& L, const set<int>& visited);
 
-pair <set<pair<double,int>>,set<int>> FilteredGreedy(map<int,set<int>>&graph,int xq,int knn,int L_sizelist,map <float,int> &M,vector<float>&Fq,vector<vector<double>>& querymatrix,vector<vector<float>>&dataset);
+pair <set<pair<double,int>>,set<int>> FilteredGreedy(map<int,set<int>>&graph,int xq,int knn,int L_sizelist,map <float,int> &M,vector<float>&Fq,vector<vector<double>>& querymatrix,vector<vector<float>>&dataset,set<float>&category_attribuytes);
 
 
 

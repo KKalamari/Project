@@ -8,7 +8,7 @@
 #include "euclidean_distance.h"
 #include "FilteredVamana.h"
 #include "FilteredGreedySearch.h"
-#include "StitchedVamana.h"
+#include "Stitched.h"
 #include "json.hpp"
 
 //define the json from the nlohmann library
@@ -46,11 +46,11 @@ int main(int argc, char **argv) {
     int R = config["R"];
     int knn = config["knn"];
     int L_sizelist = config["L_sizelist"];
-    int Rsmall = config["Rsmall"];
-    int Lsmall = config["Lsmall"];
-    int Rstitched = config["Rstitched"];
+    int R_small = config["Rsmall"];
+    int L_small = config["Lsmall"];
+    int R_stitched = config["Rstitched"];
 
-    //read data points
+    // Read data points
     vector <vector<float>> DataNodes;
     set <float> category_attributes;
     category_attributes= ReadBin(source_path, num_data_dimensions, DataNodes); //DataNode is the database, attributes is the set which have all the categories each vector can have)
@@ -61,65 +61,69 @@ int main(int argc, char **argv) {
     cout<<"the size of category attributes are:"<<category_attributes.size();
     cout <<endl;
    // Read queries
-    int num_query_dimensions = num_data_dimensions + 2;
+   
     vector <vector<float>> queries;
     ReadBin(query_path, num_query_dimensions, queries);
+
     
-    map<float,set<int>> labels;
-
-     for (auto category : category_attributes) {
-        for(int node=0;node< DataNodes.size();node++){
-            if(DataNodes[node][0]== category)
-                labels[category].insert(node);
-
-        }
-      
-    }
 
     int vector_number = int (DataNodes.size());
     int query_number = int (queries.size());
 
+    vector<int>queries_to_delete;
+for(int i=0;i<query_number;i++){
+    if(queries[i][0]>1)
+        queries_to_delete.push_back(i);
+}
+for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
+    queries.erase(queries.begin() + queries_to_delete[i]);
+}
+    query_number = queries.size(); //updating the size of queries with the remaining elemtod of type 0 && 1
     vector<vector<double>> vecmatrix(vector_number,vector<double>(vector_number));  //10000 *10000 matrix for the euclidean distance of every node between every node
     vector <vector <double>> querymatrix(vector_number,vector<double>(query_number)); // 10000 *100 matrix which calculates the euclidean distance between database node and queries
     euclidean_distance_of_database(DataNodes,vecmatrix); //calculating the euclidean distances of the whole database of nodes with each other
     euclidean_distance_of_queries (DataNodes,queries,querymatrix); //calculating the euclidean distances between the nodes of database and each querie vector
     cout<<" I am after calculating euclidean distances"<<endl;
 
+   // groundtruth(DataNodes,queries,vecmatrix,querymatrix); //uncomment only if you want calculate from scrath the groundtruth of a dataset
 
 
     map<float,int> M =FindMedoid(DataNodes,1,category_attributes); //r=1;
-    map<int,set<int>> Vamana_graph = FilteredVamanaIndex(vecmatrix,DataNodes,alpha,R,category_attributes,M);
-    cout <<"vamana graph size is: "<< Vamana_graph.size()<<endl;
-    vector <float> Fq= {queries[1][1]};
-    cout<<"the Fq is "<<queries[1][1]<<endl;
+    // map<int,set<int>> Vamana_graph = FilteredVamanaIndex(vecmatrix,DataNodes,alpha,R,category_attributes,M);
+    // cout <<"vamana graph size is: "<< Vamana_graph.size()<<endl;
+
+    map <int,set<int>> Vamana_graph = StitchedVamana( DataNodes, category_attributes,
+    alpha, L_small, R_small, R_stitched,vecmatrix,
+    M, L_sizelist);
+    int xq=0;
+    vector <float> Fq= {queries[0 ][1]};
+    cout<<"the Fq is "<<queries[0 ][1]<<endl;
+    vector<int>starting_nodes_for_unfiltered_search; 
     pair <set<pair<double,int>>,set<int>> PairVector;
-    PairVector = FilteredGreedy(Vamana_graph,1,knn,L_sizelist,M,Fq,querymatrix,DataNodes);
+    // if(Fq[0]== - 1){
+    //     cout<<"OMG IT's Happening!!"<<endl;
+    //     for(auto filters :category_attributes){
+    //         vector<float>Fq_for_unfiltered = {filters};
+    //         PairVector = FilteredGreedy(Vamana_graph,xq,1,L_sizelist,M,Fq_for_unfiltered,querymatrix,DataNodes,category_attributes);
+    //         set<pair<double,int>> node = PairVector.first;
+            
+    //         auto node_to_insert = node.begin(); //iterating the pair in order to add the int node in starting_nodes
+    //         M[filters]= node_to_insert->second;
+    //     }
+    // }
+    // cout<<"the query's type is: "<<queries[0 ][0]<<endl;
+
+   
+    PairVector = FilteredGreedy(Vamana_graph,0 ,knn,L_sizelist,M,Fq,querymatrix,DataNodes,category_attributes);
     set<pair<double,int>> K_neighbors= PairVector.first;
     cout<<"K_neighbors are: "<<K_neighbors.size()<<endl;
     cout<<"neighbors for query[1] are:";
     for(auto neighbors : K_neighbors){
         cout<< neighbors.second <<", "; //printing the int node
     }
-    //   cout << "Running StitchedVamana..." << endl;
-
-    // auto start = chrono::high_resolution_clock::now(); // Start timing
-
-    // auto stitchedGraph = StitchedVamana(DataNodes, labels, alpha, Rsmall, Lsmall, Rstitched, vecmatrix);
-
-    // auto end = chrono::high_resolution_clock::now(); // End timing
-    // chrono::duration<double> elapsed = end - start;
-
-    // cout << "StitchedVamana completed in " << elapsed.count() << " seconds" << endl;
-
-    // // Print results
-    // cout << "Stitched graph size: " << stitchedGraph.size() << endl;
-    // for (const auto& [node, neighbors] : stitchedGraph) {
-    //     cout << "Node " << node << " -> Neighbors: ";
-    //     for (const auto& neighbor : neighbors) {
-    //         cout << neighbor << " ";
-    //     }
-    //     cout << endl;
-    // }
+    auto end = std:: chrono::system_clock::now();
+    //std::chrono::duration<double> elapsed_seconds = end - start;
+    //cout<<"the elapsed time is "<<elapsed_seconds.count()<<endl;
 
     cout <<endl;
     

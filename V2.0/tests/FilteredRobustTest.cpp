@@ -3,6 +3,14 @@
 #include "euclidean_distance.h"
 #include"acutest.h"
 
+/*
+building the instance(Initializing dataset,p and graph. The filtered robust should keep the least distanced nodes and keep
+the nearest ones which it's actually happening in our example.)
+*/
+
+
+
+
 void FilteredRobustTest(){
     vector<vector<float>>dataset={{6,5,1,4},{1,5,5,3},{1,5,3,4},{6,5,6,1},{6,3,4,2},{6,1,2,2}};
     map<int,set<int>> graph;
@@ -14,18 +22,23 @@ void FilteredRobustTest(){
     euclidean_distance_of_database(dataset,vectormatrix);
   
     set<int>V1({5, 0, 3});
-    
+    graph[0]={1,3,5};
+    graph[1]={0,3,5};
+    graph[3]={4,0,5};
+    graph[2]={4};
+    graph[4]={2};
+    graph[5]={1,3,0};
 
     FilteredRobustPrune(graph,p,V1,alpha,R,vectormatrix,dataset);
     //testing for alpha=1 R=1
-    if(TEST_CHECK(find(graph[p].begin(), graph[p].end(), 5) != graph[p].end()))//5 is the nearest neighbor.
+    if(TEST_CHECK(find(graph[p].begin(), graph[p].end(), 4) != graph[p].end()))//5 is the nearest neighbor.
         cout<<"test for alpha=1 succeded!"<<endl;
     //testing for alpha=1 R=2. The result should be the same as before because even though the threshold increased the alpha remained the same.
     R=2;
     set<int>V2({5, 0, 3});
 
     FilteredRobustPrune(graph,p,V2,alpha,R,vectormatrix,dataset);
-    if(TEST_CHECK(find(graph[p].begin(), graph[p].end(), 5) != graph[p].end()))
+    if(TEST_CHECK(find(graph[p].begin(), graph[p].end(), 4) != graph[p].end()))
         cout <<"test for alpha=1,R=2 succeded!"<<endl;
 
 
@@ -36,29 +49,12 @@ void FilteredRobustTest(){
 
     //testing for alpha=3 R=2. Now the neighbors of p should be 2 nodes instead of just 1. First the node 5 as the nearest one, then node 0.
     set<int>::iterator Vit=graph[p].begin();
-    cout <<"the first neighbor is: "<<*Vit;
-    TEST_CHECK(*Vit==5);
+    TEST_CHECK(*Vit==4);
     Vit++;
-    cout<<"The second neighbor is "<< *Vit;
-    if(TEST_CHECK(*Vit==0))
+    if(TEST_CHECK(*Vit==5))
         cout<<"testing for bigger alpha and R=2 succeded!"<<endl;
 
-    graph[0]={1,3,5};
-    graph[1]={0,3,5};
-    graph[3]={4,0,5};
-    graph[2]={4};
-    graph[4]={2};
-    graph[5]={1,3,0};
-    
-    set<int>V4({5, 0, 3});
 
-    alpha=3; R=2;
-    FilteredRobustPrune(graph,p,V4,alpha,R,vectormatrix,dataset);
-    set<int> ::iterator lit=graph[p].begin();
-    TEST_CHECK(*lit==4);
-    lit++;
-    if(TEST_CHECK(*lit==5))
-        cout<<"testing for pruning an initilized graph succeded"<<endl;
 }
 
 

@@ -16,7 +16,7 @@ void pickingp_star(int& p_star,int&p,vector<vector<double>>& vecmatrix,set<int> 
 
 
 
-void FilteredRobustPrune(map <int,set<int>>&graph,
+int FilteredRobustPrune(map <int,set<int>>&graph,
 int &p,
 set<int> &V,
 double &alpha,
@@ -29,14 +29,15 @@ vector<vector<float>>&dataset){
         if(OutNeighbors!=p)
             V.insert(OutNeighbors);
     }
+    cout<<"the alpha in robust is:"<<alpha<<endl;
 
    
     graph[p].clear();
     V.erase(p);
     int p_star;    
+    int counter=0;
     while (V.empty()!=1){
         pickingp_star(p_star,p,vectormatrix,V);
-        // cout <<"pushing back "<<p_star<<endl;
         graph[p].insert(p_star);
         
         if(int(graph[p].size())>=R)
@@ -50,8 +51,10 @@ vector<vector<float>>&dataset){
                 continue;
             }
             
-            if(alpha*vectormatrix[p_star][Vneighbors]<=vectormatrix[p][Vneighbors])
+            if(alpha*vectormatrix[p_star][Vneighbors]<=vectormatrix[p][Vneighbors]){
+                counter++;
                 nodes_to_be_deleted.insert(Vneighbors);
+            }
         }
         // cout<<"nodes to be deleted size is "<< nodes_to_be_deleted.size()<<endl;
         for(auto& deletion_nodes :nodes_to_be_deleted){
@@ -63,5 +66,5 @@ vector<vector<float>>&dataset){
         std::chrono::duration<double> elapsed_seconds = end - starting_time;
         std::time_t end_time = std::chrono::system_clock::to_time_t(end);
        cout << " elapsed time in Filtered Robust : " << elapsed_seconds.count()<<endl;
-    
+    return counter;
 }
