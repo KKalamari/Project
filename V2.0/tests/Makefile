@@ -11,7 +11,7 @@ FILTERED_VAMANA_TARGET=FilteredVamanaTest
 MEDOID_SRCS = medoid_test.cpp ./../modules/medoid.cpp
 FILTERED_SRCS = FilteredGreedyTest.cpp ./../modules/FilteredGreedySearch.cpp ./../modules/euclidean_distance.cpp
 FILTERED_ROBUST_SRCS = FilteredRobustTest.cpp ./../modules/FilteredRobustPrune.cpp ./../modules/euclidean_distance.cpp ./../modules/FilteredGreedySearch.cpp
-FILTERED_VAMANA_SRCS = FilteredVamanaTest.cpp ./../modules/medoid.cpp ./../modules/euclidean_distance.cpp ./../modules/FilteredVamana.cpp ./../modules/FilteredRobustPrune.cpp ./../modules/FilteredGreedySearch.cpp
+FILTERED_VAMANA_SRCS = FilteredVamanaTest.cpp ./../modules/medoid.cpp ./../modules/euclidean_distance.cpp ./../modules/FilteredVamana.cpp ./../modules/FilteredRobustPrune.cpp ./../modules/FilteredGreedySearch.cpp ./../modules/Stitched.cpp ./../modules/Vamana.cpp ./../modules/GreedySearch.cpp ./../modules/Robust_ext.cpp
 
 
 # Acutest include directory
@@ -34,6 +34,10 @@ $(FILTERED_ROBUST_TARGET): $(FILTERED_ROBUST_SRCS)
 
 $(FILTERED_VAMANA_TARGET): $(FILTERED_VAMANA_SRCS)
 	$(CXX) $(CXXFLAGS) $(ACUTEST_FLAGS) -I$(MEDOID_DIR) -o $(FILTERED_VAMANA_TARGET) $(FILTERED_VAMANA_SRCS)
+
+
+
+
 
 clean:
 	rm -f $(MEDOID_TARGET) $(FILTERED_GREEDY_TARGET) $(FILTERED_ROBUST_TARGET) $(FILTERED_VAMANA_TARGET)

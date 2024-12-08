@@ -72,7 +72,7 @@ map<float,int> M,int R,int L_sizelist){
         //then fill a set with the nodes of its neighbors + the extra one we  want to add
         //and call robust prune.
         for(set <int> ::iterator outNeighbors=graph[nodes[i]].begin();outNeighbors!=graph[nodes[i]].end();outNeighbors++){
-            if(int(graph[*outNeighbors].size())+1>R){
+            if(int(graph[*outNeighbors].size())+1>R_small){
                 setV.clear(); 
                 setV.insert(i);
                 for(auto neighbors : graph[*outNeighbors]){
