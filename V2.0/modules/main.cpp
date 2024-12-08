@@ -43,6 +43,7 @@ int main(int argc, char **argv) {
 
     int vector_number = int (DataNodes.size());
     int query_number = int (queries.size());
+
     vector<int>queries_to_delete;
 for(int i=0;i<query_number;i++){
     if(queries[i][0]>1)
@@ -57,7 +58,7 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
     euclidean_distance_of_database(DataNodes,vecmatrix); //calculating the euclidean distances of the whole database of nodes with each other
     euclidean_distance_of_queries (DataNodes,queries,querymatrix); //calculating the euclidean distances between the nodes of database and each querie vector
     cout<<" I am after calculating euclidean distances"<<endl;
-   
+
    // groundtruth(DataNodes,queries,vecmatrix,querymatrix); //uncomment only if you want calculate from scrath the groundtruth of a dataset
 
     double alpha=1;

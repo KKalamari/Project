@@ -56,7 +56,10 @@ void FilteredTest(){
     graph[4]={1};
     graph[5]={1,3,2,0};
     knn=3;
-    PairSet=FilteredGreedy(graph, xq, knn, L_sizelist,M,Fq,querymatrix,dataset);
+    set <float> category_attributes;
+    category_attributes.insert(2.0);
+    category_attributes.insert(3.0);
+    PairSet=FilteredGreedy(graph, xq, knn, L_sizelist,M,Fq,querymatrix,dataset,category_attributes);
     V=PairSet.second;
     cout<<"visited nodes are "<<endl;
     for(auto visited : V){
@@ -76,6 +79,7 @@ void FilteredTest(){
     TEST_CHECK(neighbors->second==2);
 
 
+pair <set<pair<double,int>>,set<int>> FilteredGreedy(map<int,set<int>>&graph,int xq,int knn,int L_sizelist,map <float,int> &M,vector<float>&Fq,vector<vector<double>>& querymatrix,vector<vector<float>>&dataset,set<float>&category_attribuytes);
 
 }
      
