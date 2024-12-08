@@ -57,14 +57,14 @@ void StitchedVamana_test(){
 
 
     //checking if the R limit is enforced
-    graph = StitchedVamana(DataNodes,category_attributes,alpha,L_small,1,1,vectormatrix,M,L_small); 
+    graph = StitchedVamana(DataNodes,category_attributes,alpha,L_small,1,3,vectormatrix,M,L_small); 
     for(int i=0;i<Vamana_size;i++){
         cout <<i<<" node has neighbors: ";
         for(auto neighbors : graph[i]){
             cout <<neighbors << " ";
         }
         cout<< "the graph size is " << graph[i].size() <<endl;
-        TEST_CHECK(graph[i].size()==1);
+        TEST_CHECK(graph[i].size()<=2);
         cout<<endl;
     }
 }

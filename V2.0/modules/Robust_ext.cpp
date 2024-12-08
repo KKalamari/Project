@@ -52,13 +52,16 @@ void RobustPrune(
     
     
     int p; //p will contain the nearest neighbor.Initialized with -1 to ensure it starts as empty 
-
-    while (candidateSet.empty()!=1){
+    cout<<"THE R IS "<<R<<endl;
+    while (candidateSet.empty()!=1 && graph[point].size()<R){
         p=pickingP(point,candidateSet,vecmatrix); //choosing the node from the candidate set with the smallest distance from current point and adressing it to p
        
         graph[point].insert(p);  
-        if(graph[point].size()==R ) 
+
+        if(graph[point].size()>=R ) {
+            cout<< "I am here with graph" <<point<< "size being:"<< graph[point].size()<<endl;
             break;
+        }
     
         set <int> nodes_to_be_erased;
         for (auto candidate = candidateSet.begin(); candidate != candidateSet.end(); candidate++ ) {

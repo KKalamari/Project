@@ -14,27 +14,23 @@ std::vector<std::vector<float>> createTestDataset() {
     };
 }
 
-//Medoid is built randomly so the test cases are focused over edge cases with threshold and
+//medoid is built randomly so the test cases are focused over edge cases with threshold
 void MedoidTest() {
     set<float>categories={1,2,3,4};
-    // Test 1: Small dataset
     std::vector<std::vector<float>> dataset = createTestDataset();
-    int r = 3; // Random sampling size
+    int r = 3; 
     map<float, int> result = FindMedoid(dataset, r,categories);
-    
-    // Check that result contains expected keys (filter IDs)
-    // Here, we use assert to check expected values manually:
-    TEST_CHECK(!result.empty());
+    TEST_CHECK(!result.empty()); 
     TEST_MSG("Result should not be empty");
     
-    // Test 2: Edge case with an empty dataset
+    //test 2,checking an edge case with an empty dataset
     std::vector<std::vector<float>> emptyDataset;
     set<float>filters;
     result = FindMedoid(emptyDataset, r,filters);
     TEST_CHECK(result.empty());
     TEST_MSG("the size should be empty!!");
     
-    // Test 3: Edge case with τ larger than dataset size
+    //test3, checking an edge case with r larger than dataset size
     r = 10;
     result = FindMedoid(dataset, r,categories);
     TEST_CHECK(!result.empty());
@@ -43,7 +39,7 @@ void MedoidTest() {
         std::cout << "Filter " << entry.first << " maps to start node " << entry.second << std::endl;
     }
     
-    // Test 4: Single point dataset
+    // a singleton daaset case
     std::vector<std::vector<float>> singlePointDataset = {{5, 5}};
     filters={5};
     result = FindMedoid(singlePointDataset, r, filters);
