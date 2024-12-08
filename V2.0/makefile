@@ -1,12 +1,10 @@
-#compiler and Flags
 CXX = g++
-CXXFLAGS = -O3  -Iheader_files #add the include path for header files
+CXXFLAGS = -O3  -Iheader_files 
 OUTPUT_DIR = output
 MODULES_DIR = modules
 
-.PHONY: all clean run
+.PHONY: all clean run valgrind
 
-#object files
 OBJS = $(OUTPUT_DIR)/reading.o \
 	   $(OUTPUT_DIR)/medoid.o \
 	   $(OUTPUT_DIR)/euclidean_distance.o \
@@ -15,11 +13,11 @@ OBJS = $(OUTPUT_DIR)/reading.o \
 	   $(OUTPUT_DIR)/FilteredVamana.o  \
 	   $(OUTPUT_DIR)/groundtruth.o \
 	   $(OUTPUT_DIR)/Vamana.o \
-	   $(OUTPUT_DIR)/GreedySearch.o\
-	   $(OUTPUT_DIR)/Robust_ext.o\
-	   $(OUTPUT_DIR)/Stitched.o
+	   $(OUTPUT_DIR)/GreedySearch.o \
+	   $(OUTPUT_DIR)/Robust_ext.o \
+	   $(OUTPUT_DIR)/Stitched.o \
+	   $(OUTPUT_DIR)/for_binary.o
 
-#main target
 all: $(OUTPUT_DIR)/main
 
 $(OUTPUT_DIR)/main: $(MODULES_DIR)/main.cpp $(OBJS) | $(OUTPUT_DIR)
@@ -46,7 +44,6 @@ $(OUTPUT_DIR)/FilteredVamana.o: $(MODULES_DIR)/FilteredVamana.cpp | $(OUTPUT_DIR
 $(OUTPUT_DIR)/groundtruth.o: $(MODULES_DIR)/groundtruth.cpp | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-
 $(OUTPUT_DIR)/Vamana.o: $(MODULES_DIR)/Vamana.cpp | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
@@ -59,7 +56,8 @@ $(OUTPUT_DIR)/Robust_ext.o: $(MODULES_DIR)/Robust_ext.cpp | $(OUTPUT_DIR)
 $(OUTPUT_DIR)/Stitched.o: $(MODULES_DIR)/Stitched.cpp | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-
+$(OUTPUT_DIR)/for_binary.o: $(MODULES_DIR)/for_binary.cpp | $(OUTPUT_DIR)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(OUTPUT_DIR):
 	mkdir -p $(OUTPUT_DIR)

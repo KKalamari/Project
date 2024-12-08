@@ -26,7 +26,7 @@ map<float,int> M,int L_sizelist){
             }
         }
     }
-
+save_graph_to_binary_set(Gf, "graph_data_from_stitched.bin");
     return Gf;
 
 
