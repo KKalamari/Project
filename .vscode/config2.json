@@ -8,7 +8,7 @@
     "R": 14,
     "knn": 100,
     "L_sizelist": 120,
-    "R_small": 32,
-    "L_small": 120,
-    "R_stitched": 64
+    "Rsmall": 14,
+    "Lsmall": 120,
+    "Rstitched": 50
 }
