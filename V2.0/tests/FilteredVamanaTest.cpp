@@ -63,6 +63,7 @@ void StitchedVamana_test(){
         for(auto neighbors : graph[i]){
             cout <<neighbors << " ";
         }
+        cout<< "the graph size is " << graph[i].size() <<endl;
         TEST_CHECK(graph[i].size()==1);
         cout<<endl;
     }

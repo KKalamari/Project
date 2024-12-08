@@ -1,28 +1,54 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
-#include "reading.h"
 #include <set>
 #include <map>
+#include <chrono>
+#include "reading.h"
 #include "euclidean_distance.h"
 #include "FilteredVamana.h"
 #include "FilteredGreedySearch.h"
-#include "groundtruth.h"
 #include "Stitched.h"
-#include <chrono>
+#include "json.hpp"
+
+//define the json from the nlohmann library
+using json = nlohmann::json;
+
 using namespace std;
+using namespace chrono;
+
+
+json readConfig(const string& config_filename) {
+    json config_data;
+
+    ifstream config_file(config_filename);
+    
+    if(!config_file.is_open())
+        throw runtime_error("Unable to open config file.");
+
+    config_file >> config_data;
+
+    config_file.close();
+
+    return config_data;
+}
 int main(int argc, char **argv) {
-    auto start = std:: chrono::system_clock::now();
-    string source_path = "dummy-data.bin";
-    string query_path = "dummy-queries.bin";
 
-    // Also accept other path for source data
-    if (argc > 1) {
-    source_path = string(argv[1]);
-    }
+    json config = readConfig("../../.vscode/config2.json");
 
-    int num_data_dimensions = 102;
-    float sample_proportion = 0.001;
+    //extract variables from configuration
+    string source_path = config["source_path"];
+    string query_path = config["query_path"];
+    int num_data_dimensions = config["num_data_dimensions"];
+    int num_query_dimensions = num_data_dimensions + static_cast<int>(config["num_query_dimensions_offset"]);
+    float sample_proportion = config["sample_proportion"];
+    double alpha = config["alpha"];
+    int R = config["R"];
+    int knn = config["knn"];
+    int L_sizelist = config["L_sizelist"];
+    int R_small = config["Rsmall"];
+    int L_small = config["Lsmall"];
+    int R_stitched = config["Rstitched"];
 
     // Read data points
     vector <vector<float>> DataNodes;
@@ -35,7 +61,7 @@ int main(int argc, char **argv) {
     cout<<"the size of category attributes are:"<<category_attributes.size();
     cout <<endl;
    // Read queries
-    int num_query_dimensions = num_data_dimensions + 2;
+   
     vector <vector<float>> queries;
     ReadBin(query_path, num_query_dimensions, queries);
 
@@ -61,13 +87,7 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
 
    // groundtruth(DataNodes,queries,vecmatrix,querymatrix); //uncomment only if you want calculate from scrath the groundtruth of a dataset
 
-    double alpha=1;
-    int R=14;
-    int knn=100;
-    int L_sizelist=120;
-    int L_small = 100;
-    int R_small = 32;
-    int R_stitched=64;
+
     map<float,int> M =FindMedoid(DataNodes,1,category_attributes); //r=1;
     // map<int,set<int>> Vamana_graph = FilteredVamanaIndex(vecmatrix,DataNodes,alpha,R,category_attributes,M);
     // cout <<"vamana graph size is: "<< Vamana_graph.size()<<endl;
@@ -102,8 +122,8 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
         cout<< neighbors.second <<", "; //printing the int node
     }
     auto end = std:: chrono::system_clock::now();
-    std::chrono::duration<double> elapsed_seconds = end - start;
-    cout<<"the elapsed time is "<<elapsed_seconds.count()<<endl;
+    //std::chrono::duration<double> elapsed_seconds = end - start;
+    //cout<<"the elapsed time is "<<elapsed_seconds.count()<<endl;
 
     cout <<endl;
     

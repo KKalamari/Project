@@ -50,7 +50,7 @@ map<float,int> M,int R,int L_sizelist){
     int number_of_nodes=labeled_nodes[filters].size();
     map <int, set<int>> graph = graph_creation(labeled_nodes[filters],R_small); //graph that contains each node with its neghbors
     int medoid_node = M[filters];
-   save_graph_to_binary_set(graph, "graph_data.bin");
+   //save_graph_to_binary_set(graph, "graph_data.bin");
     //creating the random permutation
     random_device rd; //obtain a random number from hardware
     mt19937 generator(rd()); //seed the generator
