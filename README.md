@@ -1,10 +1,9 @@
 [![Run tests](https://github.com/KKalamari/Project/actions/workflows/run-tests.yml/badge.svg)](https://github.com/KKalamari/Project/actions/workflows/run-tests.yml)
-
 Project 2024-2025
 
 Ισίδωρος Καλαμάρης 1115202000233 sdi2000233@di.uoa.gr
 
-Κυριαή Καλαμάρη 1115202000255 sdi2000255@di.uoa.gr
+Κυριακή Καλαμάρη 1115202000255 sdi2000255@di.uoa.gr
 
 Την main την τρέχουμε με make στον αρχικό κατάλογο και μετά με ./output/main k_num r_num a_num l_num ή make και μετά ./main στο output directory.
 
