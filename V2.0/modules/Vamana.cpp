@@ -5,7 +5,7 @@
 
 map<int, set<int>> graph_creation(list<int>& labeled_nodes, int R) {
     int labeled_size = labeled_nodes.size();
-    cout << "The vector size is: " << labeled_nodes.size() << "\n";
+    // cout << "The vector size is: " << labeled_nodes.size() << "\n";
 
     map<int, set<int>> adj;
     // vector<int> nodes_vector(labeled_nodes.begin(), labeled_nodes.end());
@@ -45,8 +45,8 @@ map<int, set<int>> graph_creation(list<int>& labeled_nodes, int R) {
 
 map <int, set<int>> vamana_index_algorithm(map<float,list<int>>&labeled_nodes,float filters,double a,int& R_small,int &L_small,
 vector<vector<double>>& vecmatrix,
-map<float,int> M,int R,int L_sizelist){
-    cout<<"doing the "<<filters<<"iteration";
+map<float,int> M,int R_stitched){
+    // cout<<"doing the "<<filters<<"iteration";
     int number_of_nodes=labeled_nodes[filters].size();
     map <int, set<int>> graph = graph_creation(labeled_nodes[filters],R_small); //graph that contains each node with its neghbors
     int medoid_node = M[filters];
@@ -63,15 +63,15 @@ map<float,int> M,int R,int L_sizelist){
     for(int i=0;i<number_of_nodes;i++){
         pair < set<int>,set<int>> pairSet;
         int k=1;
-        pairSet= greedysearch(graph,medoid_node,nodes[i],k,L_sizelist,vecmatrix);
+        pairSet= greedysearch(graph,medoid_node,nodes[i],k,L_small,vecmatrix);
         set <int>  setV= pairSet.second;
-        RobustPrune(graph,nodes[i],setV,a,R_small,vecmatrix);
+        RobustPrune(graph,nodes[i],setV,a,R_stitched,vecmatrix);
             
         //if a node exceeds the R limit while making a node directed
         //then fill a set with the nodes of its neighbors + the extra one we  want to add
         //and call robust prune.
         for(set <int> ::iterator outNeighbors=graph[nodes[i]].begin();outNeighbors!=graph[nodes[i]].end();outNeighbors++){
-            if(int(graph[*outNeighbors].size())+1>R_small){
+            if(int(graph[*outNeighbors].size())+1>R_stitched){
                 setV.clear(); 
                 setV.insert(i);
                 for(auto neighbors : graph[*outNeighbors]){
@@ -81,7 +81,7 @@ map<float,int> M,int R,int L_sizelist){
                     
                 }
                 
-                RobustPrune(graph,*outNeighbors,setV,a,R_small,vecmatrix);
+                RobustPrune(graph,*outNeighbors,setV,a,R_stitched,vecmatrix);
 
             }
             else{ //else just add the extra neighbor

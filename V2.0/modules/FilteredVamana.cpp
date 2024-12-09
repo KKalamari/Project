@@ -18,18 +18,15 @@ map <int,set<int>> FilteredVamanaIndex(vector<vector<double>>&vectormatrix,vecto
     iota(randomized_nodes.begin(),randomized_nodes.end(),0);
     shuffle(randomized_nodes.begin(),randomized_nodes.end(),generator);//let σ be a random permutation of n
     int knn=0;
-    int L_sizelist=300;
+    int L_sizelist=300; //less than the L in FilterGreedy,because in main the greedysearch is going to be used way less so we can give it a bigger number. Here 300 is more than enough.
     int counter_for_robust=0;
-    int counter=0;
+
+    //permutating randomly each node
     for(auto sigma : randomized_nodes){
-        cout<<"I am in the "<<counter << " node";
-        counter++;
         vector<float> Filterset={DataNodes[sigma][0]};
         pair <set<pair<double,int>>,set<int>> queuepair;
         queuepair = FilteredGreedy(graph,sigma,knn,L_sizelist,medoids,Filterset,vectormatrix,DataNodes,category_attributes);
         set<int> V=queuepair.second;
-       // V.insert(sigma); //PERFORMANCE HIT
-        // cout<<"the size of V that goes to robust is:"<<orderedV.size();
        counter_for_robust+= FilteredRobustPrune(graph,sigma,V,alpha,R,vectormatrix,DataNodes);
 
         for(auto J : graph[sigma]){
@@ -42,7 +39,6 @@ map <int,set<int>> FilteredVamanaIndex(vector<vector<double>>&vectormatrix,vecto
                 graph[J].insert(sigma);
         }
     }
-    cout<<"the counter of robust is "<<counter_for_robust<<endl;
     return graph;
 
 }

@@ -39,7 +39,7 @@ void MedoidTest() {
         std::cout << "Filter " << entry.first << " maps to start node " << entry.second << std::endl;
     }
     
-    // a singleton daaset case
+    // a singleton dataset case
     std::vector<std::vector<float>> singlePointDataset = {{5, 5}};
     filters={5};
     result = FindMedoid(singlePointDataset, r, filters);
