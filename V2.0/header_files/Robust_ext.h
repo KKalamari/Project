@@ -6,6 +6,7 @@
 #include <iterator>
 #include <utility>
 #include <algorithm>
+#include <iostream>
 #pragma once
 using namespace std;
 //void euclidean_distance( set<int>& candidateSet, int point, vector<vector<float>>& vec, map<pair<int, int>, float>& distances);

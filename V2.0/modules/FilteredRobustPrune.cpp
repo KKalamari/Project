@@ -2,6 +2,8 @@
 #include"FilteredRobust.h"
 #include <chrono>
 #include <limits>
+
+//finding the mindist to  a node which exists in V from the p element
 void pickingp_star(int& p_star,int&p,vector<vector<double>>& vecmatrix,set<int> &V){
     double mindist=numeric_limits<double>::max();
     for(auto Vneighbors : V){
@@ -29,7 +31,6 @@ vector<vector<float>>&dataset){
         if(OutNeighbors!=p)
             V.insert(OutNeighbors);
     }
-    cout<<"the alpha in robust is:"<<alpha<<endl;
 
    
     graph[p].clear();
@@ -56,7 +57,6 @@ vector<vector<float>>&dataset){
                 nodes_to_be_deleted.insert(Vneighbors);
             }
         }
-        // cout<<"nodes to be deleted size is "<< nodes_to_be_deleted.size()<<endl;
         for(auto& deletion_nodes :nodes_to_be_deleted){
             V.erase(deletion_nodes);
         }
@@ -65,6 +65,6 @@ vector<vector<float>>&dataset){
         auto end =std:: chrono::system_clock::now();
         std::chrono::duration<double> elapsed_seconds = end - starting_time;
         std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-       cout << " elapsed time in Filtered Robust : " << elapsed_seconds.count()<<endl;
+    //    cout << " elapsed time in Filtered Robust : " << elapsed_seconds.count()<<endl;
     return counter;
 }

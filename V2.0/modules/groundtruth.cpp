@@ -2,7 +2,7 @@
 #include "groundtruth.h"
 #include <algorithm>
 
-void groundtruth (vector<vector<float>>&DataNodes,vector<vector<float>>&queries, vector<vector<double>> &datamatrix,vector<vector<double>>&querymatrix){
+void groundtruth (vector<vector<float>>&DataNodes,vector<vector<float>>&queries, vector<vector<double>> &datamatrix,vector<vector<double>>&querymatrix,vector<vector<int>>&ground){
     int query_size = queries.size();
     cout<<" the queries size is"<<query_size<<endl;
     int data_size = DataNodes.size();
@@ -10,9 +10,7 @@ void groundtruth (vector<vector<float>>&DataNodes,vector<vector<float>>&queries,
     
 
     for(int i=0;i<query_size;i++){
-
-        // if(queries[i][0]>1)
-        //     continue;    
+  
         int k=0;        
         vector<pair<double,int>> candidates_neighbors;
 
@@ -33,6 +31,7 @@ void groundtruth (vector<vector<float>>&DataNodes,vector<vector<float>>&queries,
         int count = min(100,int(candidates_neighbors.size()));
         for(int k =0;k<count;k++){
             neighbors[i].push_back(candidates_neighbors[k].second);
+            ground[i].push_back(candidates_neighbors[k].second);
         }
         
     }

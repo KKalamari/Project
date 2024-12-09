@@ -21,9 +21,8 @@ set <float> &category_attributes){
     set <int> V;
     pair<double,int>node; //nodes to be inserted in L set.
 
-    if(Fq[0]==-1){
+    if(Fq[0]==-1){ //if it's an unfiltered query we pass every medoid(which is actually the closest node of the filter) to L
         for(auto& filter : category_attributes){ //because of medoid we already know that they have the same filters.
-        cout<<"I AM INSIDE"<<endl;
         int S=M[filter];
         pair<double,int>node= make_pair(querymatrix[S][xq],S);
 
@@ -73,7 +72,7 @@ set <float> &category_attributes){
         auto end =std:: chrono::system_clock::now();
         std::chrono::duration<double> elapsed_seconds = end - starting_time;
         std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-       cout << " elapsed time in greedy search: " << elapsed_seconds.count()<<endl;
+    //    cout << " elapsed time in greedy search: " << elapsed_seconds.count()<<endl;
         return make_pair(L,V);
 
     }
