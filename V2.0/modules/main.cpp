@@ -158,16 +158,13 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
     int unfiltered_counter=0;
     float filtered_accuracy=0.0;
     float unfiltered_accuracy =0.0;
-    int flag;
     L_sizelist = 300;
     map<float,int> new_M;
     total_recall = 0;
     for(int j=0; j<query_number;j++){
         vector<float> Fq = {queries[j][1]};
-        flag=0;
         if(Fq[0]== - 1){
             for(auto filters :category_attributes){
-                flag=1;
                 vector<float>Fq_for_unfiltered = {filters};
                 PairVector = FilteredGreedy(Vamana_graph,j,1,L_sizelist,M,Fq_for_unfiltered,querymatrix,DataNodes,category_attributes);
                 set<pair<double,int>> node = PairVector.first;
@@ -193,7 +190,7 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
     float accuracy = float(counter) /100; //casting float because it was turning into an integer without it
     accuracyF[j].push_back(accuracy);
     total_recall+=accuracy;
-    if(flag == 1)
+    if(Fq[0] != -1)
         filtered_accuracy+=accuracy;
     else
         unfiltered_accuracy+=accuracy;
