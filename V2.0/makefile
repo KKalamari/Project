@@ -16,7 +16,8 @@ OBJS = $(OUTPUT_DIR)/reading.o \
 	   $(OUTPUT_DIR)/GreedySearch.o \
 	   $(OUTPUT_DIR)/Robust_ext.o \
 	   $(OUTPUT_DIR)/Stitched.o \
-	   $(OUTPUT_DIR)/for_binary.o
+	   $(OUTPUT_DIR)/for_binary.o \
+	   $(OUTPUT_DIR)/reading_groundtruth.o
 
 all: $(OUTPUT_DIR)/main
 
@@ -57,6 +58,9 @@ $(OUTPUT_DIR)/Stitched.o: $(MODULES_DIR)/Stitched.cpp | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(OUTPUT_DIR)/for_binary.o: $(MODULES_DIR)/for_binary.cpp | $(OUTPUT_DIR)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+$(OUTPUT_DIR)/reading_groundtruth.o: $(MODULES_DIR)/reading_groundtruth.cpp | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(OUTPUT_DIR):

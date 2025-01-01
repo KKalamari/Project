@@ -10,6 +10,7 @@
 #include "FilteredGreedySearch.h"
 #include "Stitched.h"
 #include "groundtruth.h"
+#include "reading_groundtruth.h"
 #include "json.hpp"
 
 //define the json from the nlohmann library
@@ -81,18 +82,24 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
     queries.erase(queries.begin() + queries_to_delete[i]);
 }
     query_number = queries.size(); //updating the size of queries with the remaining elemtod of type 0 && 1
-    vector<vector<int>> ground(query_number); //the groundtuth for each query node will be saved here
+     vector<vector<int>> ground; //the groundtuth for each query node will be saved here
 
     //calculating the euclidean distaances
     vector<vector<double>> vecmatrix(vector_number,vector<double>(vector_number));  //10000 *10000 matrix for the euclidean distance of every node between every node
     vector <vector <double>> querymatrix(vector_number,vector<double>(query_number)); // 10000 *100 matrix which calculates the euclidean distance between database node and queries
+
+
     euclidean_distance_of_database(DataNodes,vecmatrix); //calculating the euclidean distances of the whole database of nodes with each other
     euclidean_distance_of_queries (DataNodes,queries,querymatrix); //calculating the euclidean distances between the nodes of database and each querie vector
+    
     cout<<" I am after calculating euclidean distances"<<endl;
 
     //writing groundtruth into a txt file and giving values into ground vector in order to exctract recall later.
-    groundtruth(DataNodes,queries,vecmatrix,querymatrix,ground); //uncomment only if you want calculate from scrath the groundtruth of a dataset
+    //groundtruth(DataNodes,queries,vecmatrix,querymatrix,ground); //uncomment only if you want calculate from scrath the groundtruth of a dataset
+    
+    ground = reading_groundtruth();
 
+    
     //calculatin medoid
     map<float,int> M =FindMedoid(DataNodes,1,category_attributes); //r=1;
 
@@ -101,39 +108,39 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
     alpha, L_small, R_small, R_stitched,vecmatrix,
     M);
     
-    //initializing variables which are gonna be used in recall calclation
+    //initializing variables which are gonna be used in recall calculation
     vector<int>starting_nodes_for_unfiltered_search; 
     pair <set<pair<double,int>>,set<int>> PairVector;
     vector<vector<float>> accuracyS(query_number);
     vector<vector<float>>accuracyF(query_number);
     float total_recall=0;
     int stitched_filtered_count=0;
-        float stitched_unfiltered_accuracy=0;
-        float stitched_filtered_accuracy = 0;
-        float accuracy;
+    float stitched_unfiltered_accuracy=0;
+    float stitched_filtered_accuracy = 0;
+    float accuracy;
     //for every query, we find its recall then we add this value into a counter and we divide with the total_recall/queries.size()
     //resulting into the total_recall. We also calculate the sub-recalls specifically for filtered or unfiltered queries.
-        for(int j=0;j<query_number;j++){
-            vector <float> Fq= {queries[j ][1]};
-            
-            PairVector = FilteredGreedy(Vamana_graph,j ,knn,L_sizelist,M,Fq,querymatrix,DataNodes,category_attributes);
-            int counter=0;
-            for(set<pair<double,int>>::iterator Lit=PairVector.first.begin();Lit!=PairVector.first.end();Lit++){
-                    if(find(ground[j].begin(),ground[j].end(),Lit->second)!=ground[j].end())
-                        counter++;
-            }
-            accuracy = float(counter) /100; //casting float because it was turning into an integer without it
-            accuracyS[j].push_back(accuracy);
-            if(Fq[0]!=-1){
-                stitched_filtered_count++;
-                stitched_filtered_accuracy+=accuracy;
-            }
-            else{
-                stitched_unfiltered_accuracy++;
-            }
-            total_recall+=accuracy;
+    for(int j=0;j<query_number;j++){
+        vector <float> Fq= {queries[j ][1]};
+        
+        PairVector = FilteredGreedy(Vamana_graph,j ,knn,L_sizelist,M,Fq,querymatrix,DataNodes,category_attributes);
+        int counter=0;
+        for(set<pair<double,int>>::iterator Lit=PairVector.first.begin();Lit!=PairVector.first.end();Lit++){
+                if(find(ground[j].begin(),ground[j].end(),Lit->second)!=ground[j].end())
+                    counter++;
         }
-        float stitched_recall=total_recall/queries.size();
+        accuracy = float(counter) /100; //casting float because it was turning into an integer without it
+        accuracyS[j].push_back(accuracy);
+        if(Fq[0]!=-1){
+            stitched_filtered_count++;
+            stitched_filtered_accuracy+=accuracy;
+        }
+        else{
+            stitched_unfiltered_accuracy++;
+        }
+        total_recall+=accuracy;
+    }
+    float stitched_recall=total_recall/queries.size();
         
 
         //that was in oredr to print the recall for each node

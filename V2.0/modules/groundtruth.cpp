@@ -5,6 +5,7 @@
 void groundtruth (vector<vector<float>>&DataNodes,vector<vector<float>>&queries, vector<vector<double>> &datamatrix,vector<vector<double>>&querymatrix,vector<vector<int>>&ground){
     int query_size = queries.size();
     cout<<" the queries size is"<<query_size<<endl;
+    ground.resize(query_size);
     int data_size = DataNodes.size();
     vector <vector<int>> neighbors(query_size);
     
