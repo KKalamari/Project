@@ -61,7 +61,7 @@ map<float,int> M,int R_stitched){
     shuffle(nodes.begin(),nodes.end(),generator); //random permutation of graph's nodes
     map <int,double>distances;
     for(int i=0;i<number_of_nodes;i++){
-        pair < set<int>,set<int>> pairSet;
+        pair <set<pair<double,int>>,set<int>> pairSet;
         int k=1;
         pairSet= greedysearch(graph,medoid_node,nodes[i],k,L_small,vecmatrix);
         set <int>  setV= pairSet.second;

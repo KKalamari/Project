@@ -82,7 +82,7 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
     queries.erase(queries.begin() + queries_to_delete[i]);
 }
     query_number = queries.size(); //updating the size of queries with the remaining elemtod of type 0 && 1
-     vector<vector<int>> ground; //the groundtuth for each query node will be saved here
+    vector<vector<int>> ground; //the groundtuth for each query node will be saved here
 
     //calculating the euclidean distaances
     vector<vector<double>> vecmatrix(vector_number,vector<double>(vector_number));  //10000 *10000 matrix for the euclidean distance of every node between every node
@@ -92,12 +92,12 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
     euclidean_distance_of_database(DataNodes,vecmatrix); //calculating the euclidean distances of the whole database of nodes with each other
     euclidean_distance_of_queries (DataNodes,queries,querymatrix); //calculating the euclidean distances between the nodes of database and each querie vector
     
-    cout<<" I am after calculating euclidean distances"<<endl;
+    cout<<"I am after calculating euclidean distances"<<endl;
 
     //writing groundtruth into a txt file and giving values into ground vector in order to exctract recall later.
-    //groundtruth(DataNodes,queries,vecmatrix,querymatrix,ground); //uncomment only if you want calculate from scrath the groundtruth of a dataset
+    groundtruth(DataNodes,queries,vecmatrix,querymatrix,ground); //uncomment only if you want calculate from scrath the groundtruth of a dataset
     
-    ground = reading_groundtruth();
+    //ground = reading_groundtruth();
 
     
     //calculatin medoid
@@ -111,8 +111,8 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
     //initializing variables which are gonna be used in recall calculation
     vector<int>starting_nodes_for_unfiltered_search; 
     pair <set<pair<double,int>>,set<int>> PairVector;
-    vector<vector<float>> accuracyS(query_number);
-    vector<vector<float>>accuracyF(query_number);
+    vector<float> accuracyS;
+    vector<float>accuracyF;
     float total_recall=0;
     int stitched_filtered_count=0;
     float stitched_unfiltered_accuracy=0;
@@ -124,19 +124,19 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
         vector <float> Fq= {queries[j ][1]};
         
         PairVector = FilteredGreedy(Vamana_graph,j ,knn,L_sizelist,M,Fq,querymatrix,DataNodes,category_attributes);
-        int counter=0;
-        for(set<pair<double,int>>::iterator Lit=PairVector.first.begin();Lit!=PairVector.first.end();Lit++){
-                if(find(ground[j].begin(),ground[j].end(),Lit->second)!=ground[j].end())
-                    counter++;
-        }
+            int counter=0;
+            for(set<pair<double,int>>::iterator Lit=PairVector.first.begin();Lit!=PairVector.first.end();Lit++){
+                    if(find(ground[j].begin(),ground[j].end(),Lit->second)!=ground[j].end())
+                        counter++;
+            }
         accuracy = float(counter) /100; //casting float because it was turning into an integer without it
-        accuracyS[j].push_back(accuracy);
+        accuracyS.push_back(accuracy);
         if(Fq[0]!=-1){
             stitched_filtered_count++;
             stitched_filtered_accuracy+=accuracy;
         }
         else{
-            stitched_unfiltered_accuracy++;
+            stitched_unfiltered_accuracy+=accuracy;
         }
         total_recall+=accuracy;
     }
@@ -195,7 +195,7 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
             counter++;
     }
     float accuracy = float(counter) /100; //casting float because it was turning into an integer without it
-    accuracyF[j].push_back(accuracy);
+    accuracyF.push_back(accuracy);
     total_recall+=accuracy;
     if(Fq[0] != -1)
         filtered_accuracy+=accuracy;
@@ -217,17 +217,32 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
     
     cout<<endl<<"THE TOTAL RECALL FOR Filtered IS: "<<total_recall/queries.size()<<endl;
     cout<< "The recall for filtered queries is:"<<filtered_accuracy/filtered_counter;
-    int unfilter_count=int(queries.size())-filtered_counter;
-    cout<<"The recall for unfiltered queries in filteredVamana is"<<unfiltered_accuracy/unfilter_count<<endl;
+    cout<<"The recall for unfiltered queries in filteredVamana is"<<unfiltered_accuracy/unfiltered_counter<<endl;
+
+    
+    // int i=0;
+    // int belowninetyS=0;
+    // int belowninetyF=0;
+    // for(auto ratio : accuracyS ){
+    //     if(ratio<0.9)
+    //         belowninetyS++;
+    //     cout<<"query "<<i<< "has" <<ratio<<"ratio"<<endl;
+    //     i++;
+    // }
+    // for (auto ratio : accuracyF){
+    //     if(ratio<0.9){
+    //         belowninetyF++;
+    //     }
+    // }
+
 
     cout<<endl<<"THE TOTAL RECALL FOR STITCHED IS"<<stitched_recall<<endl;
-    unfilter_count= int(queries.size())-stitched_filtered_count;
-    cout<<"the recall for stitched unfiltered nodes is"<<stitched_unfiltered_accuracy/unfilter_count<<endl;;
+    unfiltered_counter= int(queries.size())-stitched_filtered_count;
+    cout<<"the recall for stitched unfiltered nodes is"<<float(stitched_unfiltered_accuracy/unfiltered_counter)<<endl;;
   
     cout<<"the recall for stitched filtered node is" <<stitched_filtered_accuracy/stitched_filtered_count<<endl;
-
-
-
+    // cout<< "The total nuber of queries under 90 for stitched accuracy is "<<belowninetyS;
+    // cout<< "The total nuber of queries under 90 for FILTERED accuracy is "<<belowninetyF;
 
     
     auto end = std:: chrono::system_clock::now();
