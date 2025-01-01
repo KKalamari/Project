@@ -55,11 +55,11 @@ set <float> &category_attributes){
             
         }
         
-            if(L.size()>L_sizelist){
-                set<pair<double,int>>::iterator Lit=L.begin();
-                advance(Lit,L_sizelist);
-                L.erase(Lit,L.end()); //deleting the last nodes when L-sizelist threshold is exceeded.
-            }
+        if(L.size()>L_sizelist){
+            set<pair<double,int>>::iterator Lit=L.begin();
+            advance(Lit,L_sizelist);
+            L.erase(Lit,L.end()); //deleting the last nodes when L-sizelist threshold is exceeded.
+        }
     }
 
     if(knn>0){
