@@ -7,9 +7,12 @@
 #include "medoid.h"
 #include "FilteredRobust.h"
 #include <random>
+#include "FilteredVamana.h"
 using namespace std;
 
-map <int,set<int>> FilteredVamanaIndex(vector<vector<double>>&vectormatrix,vector<vector<float>>&DataNodes,double &alpha,int& R,set<float>&category_attributes,map <float,int>&medoids){
+
+map <int,set<int>> FilteredVamanaIndex(vector<double>&vectormatrix,vector<vector<float>>&DataNodes,double &alpha,int& R,
+set<float>&category_attributes,map <float,int>&medoids){
     
     map<int,set<int>>graph; //empty graph
     random_device rd; //obtain a random number from hardware
@@ -25,7 +28,7 @@ map <int,set<int>> FilteredVamanaIndex(vector<vector<double>>&vectormatrix,vecto
     for(auto sigma : randomized_nodes){
         vector<float> Filterset={DataNodes[sigma][0]};
         pair <set<pair<double,int>>,set<int>> queuepair;
-        queuepair = FilteredGreedy(graph,sigma,knn,L_sizelist,medoids,Filterset,vectormatrix,DataNodes,category_attributes);
+        queuepair = FilteredGreedy_vec(graph,sigma,knn,L_sizelist,medoids,Filterset,vectormatrix,DataNodes,category_attributes);
         set<int> V=queuepair.second;
        counter_for_robust+= FilteredRobustPrune(graph,sigma,V,alpha,R,vectormatrix,DataNodes);
 
@@ -40,5 +43,4 @@ map <int,set<int>> FilteredVamanaIndex(vector<vector<double>>&vectormatrix,vecto
         }
     }
     return graph;
-
 }

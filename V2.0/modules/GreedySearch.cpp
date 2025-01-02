@@ -122,6 +122,8 @@
 #include <limits>
 #include <chrono>
 #include "GreedySearch.h"
+#include "Euclidean_distance.h"
+
 //function that ensures that L contains at leasτ one node which haven't been already explored.
 bool unexplored_nodes_in_greedy(const set<pair<double, int>>& L, const set<int>& visited) { 
     for (const auto& elem : L) { // Iterate through each element in L
@@ -133,12 +135,14 @@ bool unexplored_nodes_in_greedy(const set<pair<double, int>>& L, const set<int>&
 }
 
 
-pair <set<pair<double,int>>,set<int>> greedysearch( map <int, set<int>>& graph,int &s,int& query_point,int &k_neigh,int &L_sizelist,vector<vector<double>>&querymatrix){
+pair <set<pair<double,int>>,set<int>> greedysearch( map <int, set<int>>& graph,int &s,int& query_point,int &k_neigh,int &L_sizelist,vector<double>&querymatrix){
 
 set<pair<double,int>>L;
 set <int>V;
 pair <double,int>node; //node to be insteter in L set
-node = make_pair(querymatrix[s][query_point],s);
+
+int n = querymatrix.size(); //it's gonna be used for calculating the index for the triangular matrix
+node = make_pair(querymatrix[(matrix_to_triangular(s,query_point,n))],s);
 L.insert(node);
 int p;
 
@@ -151,7 +155,7 @@ while(unexplored_nodes_in_greedy(L,V)==1){
     }
     V.insert(p);
     for(auto Nout: graph[p]){
-        node= make_pair(querymatrix[Nout][query_point],Nout);
+        node= make_pair(querymatrix[matrix_to_triangular(Nout,query_point,n)],Nout);
         L.insert(node);
     }
     if(L.size()>L_sizelist){

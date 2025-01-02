@@ -2,13 +2,16 @@
 #include"FilteredRobust.h"
 #include <chrono>
 #include <limits>
+#include "Euclidean_distance.h"
+
 
 //finding the mindist to  a node which exists in V from the p element
-void pickingp_star(int& p_star,int&p,vector<vector<double>>& vecmatrix,set<int> &V){
+void pickingp_star(int& p_star,int&p,vector<double>& vecmatrix,set<int> &V){
     double mindist=numeric_limits<double>::max();
+    int n = vecmatrix.size();
     for(auto Vneighbors : V){
-        if(mindist>vecmatrix[p][Vneighbors]){
-            mindist=vecmatrix[p][Vneighbors];
+        if(mindist> vecmatrix[matrix_to_triangular(p,Vneighbors,n)]) {
+            mindist= vecmatrix[matrix_to_triangular(p,Vneighbors,n)];
             p_star=Vneighbors;
         }
     }
@@ -23,8 +26,9 @@ int &p,
 set<int> &V,
 double &alpha,
 int&R,
-vector<vector<double>>&vectormatrix,
+vector<double>&vectormatrix,
 vector<vector<float>>&dataset){
+    int n = vectormatrix.size();
     auto starting_time =std::chrono::system_clock::now();
 
     for(auto OutNeighbors : graph[p]){
@@ -45,14 +49,15 @@ vector<vector<float>>&dataset){
             break;
         
         set<int> nodes_to_be_deleted;
-        for(auto& Vneighbors : V){
+        for(auto Vneighbors : V){
             if(dataset[p][0]==dataset[Vneighbors][0] && dataset[p_star][0]!=dataset[Vneighbors][0]){
                 // cout<<"I am before continuing "<<endl;
+                //It's actually never printed
                 cout<<"CONTINUING!!!-------------------------------------------------------------------------------------------------------------"<<endl;
                 continue;
             }
             
-            if(alpha*vectormatrix[p_star][Vneighbors]<=vectormatrix[p][Vneighbors]){
+            if(alpha*vectormatrix[matrix_to_triangular(p_star,Vneighbors,n)] <=vectormatrix[matrix_to_triangular(p,Vneighbors,n)] ){
                 counter++;
                 nodes_to_be_deleted.insert(Vneighbors);
             }

@@ -5,7 +5,7 @@ using namespace std;
 map<int,set<int>> StitchedVamana(vector <vector<float>>& DataNodes,
 set<float> &category_attributes,
 double a,int L_small,int R_small, int R_stitched
-,vector<vector<double>>& vecmatrix,
+,vector<double>& vecmatrix,
 map<float,int> M){
     map <int,set <int>> Gf;
         //categorizing each node to it's label

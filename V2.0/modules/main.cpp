@@ -5,7 +5,7 @@
 #include <map>
 #include <chrono>
 #include "reading.h"
-#include "euclidean_distance.h"
+#include "Euclidean_distance.h"
 #include "FilteredVamana.h"
 #include "FilteredGreedySearch.h"
 #include "Stitched.h"
@@ -18,6 +18,15 @@ using json = nlohmann::json;
 
 using namespace std;
 using namespace chrono;
+
+
+struct RecallStats {
+    float total_recall;
+    float filtered_accuracy;
+    float unfiltered_accuracy;
+    int filtered_count;
+    int unfiltered_count;
+};
 
 
 
@@ -74,20 +83,26 @@ int main(int argc, char **argv) {
     vector<int>queries_to_delete;
 
     //removing the queries with type>1
-for(int i=0;i<query_number;i++){
-    if(queries[i][0]>1)
-        queries_to_delete.push_back(i);
-}
-for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
-    queries.erase(queries.begin() + queries_to_delete[i]);
-}
+    for(int i=0;i<query_number;i++){
+        if(queries[i][0]>1)
+            queries_to_delete.push_back(i);
+    }
+
+    for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
+        queries.erase(queries.begin() + queries_to_delete[i]);
+    }
+
     query_number = queries.size(); //updating the size of queries with the remaining elemtod of type 0 && 1
     vector<vector<int>> ground; //the groundtuth for each query node will be saved here
 
     //calculating the euclidean distaances
-    vector<vector<double>> vecmatrix(vector_number,vector<double>(vector_number));  //10000 *10000 matrix for the euclidean distance of every node between every node
-    vector <vector <double>> querymatrix(vector_number,vector<double>(query_number)); // 10000 *100 matrix which calculates the euclidean distance between database node and queries
+        cout<<"WE'RE HERE!!! "<<endl;
 
+    int n_for_triangular = vector_number; // Number of rows/columns for the first matrix
+    int triangular_matrix = n_for_triangular * (n_for_triangular + 1) / 2; // Correct formula
+    vector<double> vecmatrix(triangular_matrix); // 50,005,000 elements for upper triangular matrix
+
+    vector <vector <double>> querymatrix(vector_number,vector<double>(query_number)); // 10000 *100 matrix which calculates the euclidean distance between database node and queries
 
     euclidean_distance_of_database(DataNodes,vecmatrix); //calculating the euclidean distances of the whole database of nodes with each other
     euclidean_distance_of_queries (DataNodes,queries,querymatrix); //calculating the euclidean distances between the nodes of database and each querie vector
@@ -95,7 +110,7 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
     cout<<"I am after calculating euclidean distances"<<endl;
 
     //writing groundtruth into a txt file and giving values into ground vector in order to exctract recall later.
-    groundtruth(DataNodes,queries,vecmatrix,querymatrix,ground); //uncomment only if you want calculate from scrath the groundtruth of a dataset
+    groundtruth(DataNodes,queries,querymatrix,ground); //uncomment only if you want calculate from scrath the groundtruth of a dataset
     
     //ground = reading_groundtruth();
 
@@ -111,8 +126,6 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
     //initializing variables which are gonna be used in recall calculation
     vector<int>starting_nodes_for_unfiltered_search; 
     pair <set<pair<double,int>>,set<int>> PairVector;
-    vector<float> accuracyS;
-    vector<float>accuracyF;
     float total_recall=0;
     int stitched_filtered_count=0;
     float stitched_unfiltered_accuracy=0;
@@ -130,7 +143,6 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
                         counter++;
             }
         accuracy = float(counter) /100; //casting float because it was turning into an integer without it
-        accuracyS.push_back(accuracy);
         if(Fq[0]!=-1){
             stitched_filtered_count++;
             stitched_filtered_accuracy+=accuracy;
@@ -195,7 +207,6 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
             counter++;
     }
     float accuracy = float(counter) /100; //casting float because it was turning into an integer without it
-    accuracyF.push_back(accuracy);
     total_recall+=accuracy;
     if(Fq[0] != -1)
         filtered_accuracy+=accuracy;

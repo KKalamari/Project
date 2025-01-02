@@ -9,4 +9,4 @@
 #include <random>
 #pragma once
 
-map <int,set<int>> FilteredVamanaIndex(vector<vector<double>>&vectormatrix,vector<vector<float>>&DataNodes,double &alpha,int& R,set<float>&category_attributes,map<float,int>&medoids);
+map <int,set<int>> FilteredVamanaIndex(vector<double>&vectormatrix,vector<vector<float>>&DataNodes,double &alpha,int& R,set<float>&category_attributes,map<float,int>&medoids);

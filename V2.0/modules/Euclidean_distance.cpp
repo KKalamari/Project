@@ -1,11 +1,24 @@
-#include "euclidean_distance.h"
+#include "Euclidean_distance.h"
 
 //function that calculates the distance between all of the nodes
 
-void euclidean_distance_of_database(vector<vector<float>> &vec, vector<vector<double>> &matrix)
+int mapping_indexes(int& i,int& j, int& n ){
+    return n * i - (i-1)*i/2 + (j-i); //https://stackoverflow.com/questions/34804216/multiplying-upper-triangular-matrix-stored-in-1d-array-alogrithm
+}
+
+int matrix_to_triangular(int& i,int& j, int& n ){
+    if(i>j)
+        swap(i,j);
+    return n * i - (i-1)*i/2 + (j-i); //https://stackoverflow.com/questions/34804216/multiplying-upper-triangular-matrix-stored-in-1d-array-alogrithm
+}
+
+
+
+void euclidean_distance_of_database(vector<vector<float>> &vec, vector<double> &matrix)
 {
-    for (int i = 0; i < int(vec.size()); i++) {
-        for (int j = i + 1; j < int(vec.size()); j++) {
+    int n = int(vec.size());
+    for (int i = 0; i <n; i++) {
+        for (int j = i + 1; j < n; j++) {
             double euclidean = 0;  //rset for each new pair (i, j)
 
             for (int k = 2; k < int(vec[k].size()); k++) { //we don't consider the first 2 dimensions.
@@ -13,8 +26,7 @@ void euclidean_distance_of_database(vector<vector<float>> &vec, vector<vector<do
             }
 
             double dist = sqrt(euclidean);
-            matrix[i][j] = dist;
-            matrix[j][i] = dist; //it's symmetric
+            matrix[mapping_indexes(i,j,n)] = dist;
 
         }
     }
@@ -22,15 +34,15 @@ void euclidean_distance_of_database(vector<vector<float>> &vec, vector<vector<do
 
 //function tha calculates the distance between the nodes and the queries
 void euclidean_distance_of_queries(vector<vector<float>>& vec, vector<vector<float>> &queries, vector<vector<double>> &matrix) {
-    for (int i = 0; i < int(vec.size()); i++) {
+    int n=vec.size();
+    for (int i = 0; i < n; i++) {
         for (int j = 0; j < int(queries.size()); j++) {
             double euclidean = 0;  //reset for each query
-            for (int k = 2; k < int(vec[i].size()); k++) {
+            for (int k = 2; k < n; k++) {
                 euclidean += pow(vec[i][k] - queries[j][k+2], 2); //we don't consider the first 2 dimensions of data and 4 dimensions of query
             }
             matrix[i][j] = sqrt(euclidean);
         }
-        
         
     }
 }

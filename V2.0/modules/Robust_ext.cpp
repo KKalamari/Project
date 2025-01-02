@@ -4,8 +4,12 @@ using namespace std;
 
 
 
+int matrix_to_triangular(int i, int j, int n) {
+    if (i > j) swap(i, j); // Ensure i <= j for upper triangular indexing
+    return i * n - (i * (i + 1)) / 2 + j;
+}
 
-int pickingP(int point, set<int> &candidate_set, vector<vector<double>> &distances)
+int pickingP(int point, set<int> &candidate_set, vector<double> &distances,int &n)
 {
     int p; //the nearest neighbor
     float mindist;//min distance
@@ -13,16 +17,16 @@ int pickingP(int point, set<int> &candidate_set, vector<vector<double>> &distanc
     advance(it, 1);  //we begin from the second element
     if(*(candidate_set.begin())==point){ //if its the point itselft then go to the next one and get the dist
         
-        mindist=distances[point][*it];
+        mindist=distances[matrix_to_triangular(point,*it,n)];
         p=*it;
     }
     else{//else just get the dist
-        mindist=distances[point][*candidate_set.begin()];
+        mindist=distances [matrix_to_triangular(point,*candidate_set.begin(),n)];
         p=*(candidate_set.begin());
     }
     for( set <int> ::iterator  setIt=it;setIt!=candidate_set.end();setIt++){
-        if(distances[*setIt][point]<mindist && *setIt!=point){
-            mindist=distances[*setIt][point];
+        if(distances[matrix_to_triangular(*setIt,point,n)]<mindist && *setIt!=point){
+            mindist=distances[matrix_to_triangular(*setIt,point,n)];
             p=*setIt; //assigning the minimum distance neighbor to p
         }
     }
@@ -36,8 +40,9 @@ void RobustPrune(
     set<int>& candidateSet, 
     double alpha,
     size_t R,
-    vector<vector<double>>&vecmatrix
+    vector<double>&vecmatrix
 ) {
+    int n = vecmatrix.size(); //gonna be used to map indexes for triangular matrix
 //adding every neighbor of p in the candidate Set
     for (int neighbor : graph[point]) 
     {  
@@ -53,17 +58,16 @@ void RobustPrune(
     
     int p; //p will contain the nearest neighbor.Initialized with -1 to ensure it starts as empty 
     while (candidateSet.empty()!=1 && graph[point].size()<R){
-        p=pickingP(point,candidateSet,vecmatrix); //choosing the node from the candidate set with the smallest distance from current point and adressing it to p
+        p=pickingP(point,candidateSet,vecmatrix,n); //choosing the node from the candidate set with the smallest distance from current point and adressing it to p
        
         graph[point].insert(p);  
 
         if(graph[point].size()>=R ) 
             break;
-        
     
         set <int> nodes_to_be_erased;
         for (auto candidate = candidateSet.begin(); candidate != candidateSet.end(); candidate++ ) {
-            if (alpha * vecmatrix[p] [*candidate] <= vecmatrix[point] [*candidate]) {
+            if (alpha * vecmatrix[matrix_to_triangular(p,*candidate,n)] <= vecmatrix[matrix_to_triangular(point,*candidate,n)]) {
                nodes_to_be_erased.insert(*candidate);
 
             }

@@ -14,4 +14,4 @@ using namespace std;
 
 
 //implements the greedy algorithm
-pair <set<pair<double,int>>,set<int>> greedysearch( map <int, set<int>>& graph,int &s,int& query_point,int &k_neigh,int &L_sizelist,vector<vector<double>>&querymatrix);
+pair <set<pair<double,int>>,set<int>> greedysearch( map <int, set<int>>& graph,int &s,int& query_point,int &k_neigh,int &L_sizelist,vector<double>&querymatrix);
