@@ -27,7 +27,7 @@ map <int,set<int>> FilteredVamanaIndex(vector<vector<double>>&vectormatrix,vecto
         pair <set<pair<double,int>>,set<int>> queuepair;
         queuepair = FilteredGreedy(graph,sigma,knn,L_sizelist,medoids,Filterset,vectormatrix,DataNodes,category_attributes);
         set<int> V=queuepair.second;
-       counter_for_robust+= FilteredRobustPrune(graph,sigma,V,alpha,R,vectormatrix,DataNodes);
+        counter_for_robust+= FilteredRobustPrune(graph,sigma,V,alpha,R,vectormatrix,DataNodes);
 
         for(auto J : graph[sigma]){
             if(int(graph[J].size()+1)>R){

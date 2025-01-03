@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
     int R_small = config["Rsmall"];
     int L_small = config["Lsmall"];
     int R_stitched = config["Rstitched"];
-    auto start = std:: chrono::system_clock::now();
+    auto start = system_clock::now();
     // Read data points
     vector <vector<float>> DataNodes;
     set <float> category_attributes;
@@ -88,11 +88,12 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
     vector<vector<double>> vecmatrix(vector_number,vector<double>(vector_number));  //10000 *10000 matrix for the euclidean distance of every node between every node
     vector <vector <double>> querymatrix(vector_number,vector<double>(query_number)); // 10000 *100 matrix which calculates the euclidean distance between database node and queries
 
-
+    auto time_before =system_clock::now();
     euclidean_distance_of_database(DataNodes,vecmatrix); //calculating the euclidean distances of the whole database of nodes with each other
     euclidean_distance_of_queries (DataNodes,queries,querymatrix); //calculating the euclidean distances between the nodes of database and each querie vector
-    
-    cout<<"I am after calculating euclidean distances"<<endl;
+    auto time_now = system_clock::now();
+    duration <double> elapsed = time_now - time_before;
+    cout<<"The euclidean caclulations take: "<< elapsed.count()<<endl;
 
     //writing groundtruth into a txt file and giving values into ground vector in order to exctract recall later.
     groundtruth(DataNodes,queries,vecmatrix,querymatrix,ground); //uncomment only if you want calculate from scrath the groundtruth of a dataset

@@ -1,7 +1,7 @@
 #include "Vamana.h"
 #include "GreedySearch.h"
 #include "Robust_ext.h"
-
+#include <chrono>
 
 map<int, set<int>> graph_creation(list<int>& labeled_nodes, int R) {
     int labeled_size = labeled_nodes.size();
@@ -11,12 +11,13 @@ map<int, set<int>> graph_creation(list<int>& labeled_nodes, int R) {
     // vector<int> nodes_vector(labeled_nodes.begin(), labeled_nodes.end());
     srand(time(0));
     if(labeled_size>1){
+       
         for (int node : labeled_nodes) {
-            int neighbors_added = 0;
+            int neighbors_added = 0; //int j=0;
             list<int> remaining_neighbors = labeled_nodes;
             remaining_neighbors.remove(node); //erasing the node from the candidates neighbors so a node can't have its self for a neighbor
+
             while (neighbors_added < R ) {
-                
                 //picking randomly a neighbor which has not been assigned as of yet(that's why we use remaining_neighbors)
                 int random_index = rand() % remaining_neighbors.size();
                 auto it = remaining_neighbors.begin();
@@ -32,6 +33,8 @@ map<int, set<int>> graph_creation(list<int>& labeled_nodes, int R) {
                 if(remaining_neighbors.empty()) 
                     break;
             }
+                  //  cout<<" I iterated the neighbors "<<j<<"times"<<endl;
+
         }
     }
 
@@ -48,7 +51,10 @@ vector<vector<double>>& vecmatrix,
 map<float,int> M,int R_stitched){
     // cout<<"doing the "<<filters<<"iteration";
     int number_of_nodes=labeled_nodes[filters].size();
+    auto time_before =chrono::system_clock::now();
     map <int, set<int>> graph = graph_creation(labeled_nodes[filters],R_small); //graph that contains each node with its neghbors
+    auto time_now = chrono::system_clock::now();
+    chrono::duration <double> elapsed = time_now - time_before;
     int medoid_node = M[filters];
    //save_graph_to_binary_set(graph, "graph_data.bin");
     //creating the random permutation
