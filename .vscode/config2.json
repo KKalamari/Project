@@ -4,12 +4,12 @@
     "num_data_dimensions": 102,
     "num_query_dimensions_offset": 2,
     "sample_proportion": 0.001,
-    "alpha": 1.2,
+    "alpha": 2.0,
     "R": 14,
     "knn": 100,
-    "L_sizelist": 140,
+    "L_sizelist": 200,
     "Rsmall": 32,
     "Lsmall": 100,
-    "Rstitched": 64
+    "Rstitched": 30
 }
 

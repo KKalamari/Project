@@ -131,3 +131,11 @@ the elapsed time is 192.576
     the elapsed time is 228.02
 }
 
+
+
+
+THE TOTAL RECALL FOR STITCHED IS0.905882
+the recall for stitched unfiltered nodes is0.947368
+the recall for stitched filtered node is0.864068
+the elapsed time is 100.369
+
