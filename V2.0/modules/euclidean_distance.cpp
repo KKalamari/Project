@@ -3,7 +3,7 @@
 //function that calculates the distance between all of the nodes
 void euclidean_distance_of_database(vector<vector<float>>& vec, vector<vector<double>>& matrix) {
     int n=vec.size();
-    int blocksize =32; // Gonna be used for tiling method
+    int blocksize =32; //gonna be used for tiling method
 
     for(int bi=0; bi < n; bi += blocksize){
         for (int bj = bi; bj < n;bj+=blocksize){
@@ -13,7 +13,7 @@ void euclidean_distance_of_database(vector<vector<float>>& vec, vector<vector<do
                     __m256 accumulator = _mm256_setzero_ps();
                     int k;
                     
-                    // Process 8 elements at once starting from k=2
+                    //processing 8 elements at once starting from k=2
                     for (k = 2; k + 7 < vec[i].size(); k += 8) {
                         __m256 vi = _mm256_loadu_ps(&vec[i][k]);
                         __m256 vj = _mm256_loadu_ps(&vec[j][k]);

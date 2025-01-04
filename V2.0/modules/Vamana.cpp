@@ -71,7 +71,11 @@ map<float,int> M,int R_stitched){
         int k=1;
         pairSet= greedysearch(graph,medoid_node,nodes[i],k,L_small,vecmatrix);
         set <int>  setV= pairSet.second;
+        // time_before = chrono:: system_clock::now();
         RobustPrune(graph,nodes[i],setV,a,R_stitched,vecmatrix);
+        // time_now = chrono::system_clock::now();
+        // chrono::duration<double> elapsed_time = time_now - time_before;
+        // cout<<"the time for Robust is"<<elapsed.count()<<endl;
             
         //if a node exceeds the R limit while making a node directed
         //then fill a set with the nodes of its neighbors + the extra one we  want to add
