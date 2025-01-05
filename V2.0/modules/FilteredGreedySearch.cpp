@@ -38,6 +38,7 @@ set <float> &category_attributes){
         }
     }
     int p;
+    
     while (unexplored_nodes(L,V)==1) {
         // pickingP(p,L,V,querymatrix,xq); //p<-argmin
         for(auto& candidateP: L){

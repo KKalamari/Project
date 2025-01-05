@@ -3,6 +3,8 @@
 #include <algorithm>
 #include<queue>
 #include <vector>
+#include <omp.h>
+
 
 void groundtruth (vector<vector<float>>&DataNodes,vector<vector<float>>&queries, vector<vector<double>> &datamatrix,vector<vector<double>>&querymatrix,vector<vector<int>>&ground){
     int query_size = queries.size();
@@ -11,7 +13,7 @@ void groundtruth (vector<vector<float>>&DataNodes,vector<vector<float>>&queries,
     int data_size = DataNodes.size();
     // vector <vector<int>> neighbors(query_size);
     
-
+    #pragma omp parallel for
     for(int i=0;i<query_size;i++){
   
         int k=0;        
@@ -28,6 +30,7 @@ void groundtruth (vector<vector<float>>&DataNodes,vector<vector<float>>&queries,
             
 
         int count = min(100,int(candidates_neighbors.size()));
+
         for(int k =0;k<count;k++){
             pair<double,int> node = candidates_neighbors.top(); //loading the 1st element
             int inserting_neighbor = node.second;

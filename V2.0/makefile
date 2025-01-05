@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -O3  -march=native -Iheader_files 
+CXXFLAGS = -O3  -march=native -fopenmp -Iheader_files 
 OUTPUT_DIR = output
 MODULES_DIR = modules
 
