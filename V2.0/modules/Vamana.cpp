@@ -4,40 +4,56 @@
 #include <chrono>
 
 map<int, set<int>> graph_creation(list<int>& labeled_nodes, int R) {
+    int count=4;
     int labeled_size = labeled_nodes.size();
-    // cout << "The vector size is: " << labeled_nodes.size() << "\n";
-
     map<int, set<int>> adj;
-    // vector<int> nodes_vector(labeled_nodes.begin(), labeled_nodes.end());
-    srand(time(0));
-    if(labeled_size>1){
-       
-        for (int node : labeled_nodes) {
-            int neighbors_added = 0; //int j=0;
-            list<int> remaining_neighbors = labeled_nodes;
-            remaining_neighbors.remove(node); //erasing the node from the candidates neighbors so a node can't have its self for a neighbor
-
-            while (neighbors_added < R ) {
-                //picking randomly a neighbor which has not been assigned as of yet(that's why we use remaining_neighbors)
-                int random_index = rand() % remaining_neighbors.size();
-                auto it = remaining_neighbors.begin();
-                advance(it, random_index);
-                int random_neighbor = *(it);
-
-                //ensuring
-                if (random_neighbor != node && adj[node].find(random_neighbor) == adj[node].end()) {
-                    adj[node].insert(random_neighbor);
-                    remaining_neighbors.erase(it);
-                    neighbors_added++;
+    
+    if (labeled_size > 1) {
+        // Convert list to vector for better parallel access
+        vector<int> nodes_vector(labeled_nodes.begin(), labeled_nodes.end());
+        
+        // Create a mutex for protecting the shared adj map
+      //  #pragma omp parallel num_threads(count)
+        {
+            // Create thread-local random number generator
+            random_device rd;
+            mt19937 gen(rd());
+            
+            for (int i = 0; i < nodes_vector.size(); i++) {
+                int node = nodes_vector[i];
+                int neighbors_added = 0;
+                
+                // Create thread-local copy of remaining neighbors
+                vector<int> remaining_neighbors(nodes_vector);
+                remaining_neighbors.erase(
+                    remove(remaining_neighbors.begin(), remaining_neighbors.end(), node),
+                    remaining_neighbors.end()
+                );
+                
+                set<int> local_neighbors;
+                
+                while (neighbors_added < R && !remaining_neighbors.empty()) {
+                    uniform_int_distribution<> dis(0, remaining_neighbors.size() - 1);
+                    int random_index = dis(gen);
+                    int random_neighbor = remaining_neighbors[random_index];
+                    
+                    if (local_neighbors.find(random_neighbor) == local_neighbors.end()) {
+                        local_neighbors.insert(random_neighbor);
+                        remaining_neighbors.erase(
+                            remaining_neighbors.begin() + random_index
+                        );
+                        neighbors_added++;
+                    }
                 }
-                if(remaining_neighbors.empty()) 
-                    break;
+                
+                // Critical section: update the shared adj map
+                // #pragma omp critical
+                // {
+                    adj[node] = local_neighbors;
+                //}
             }
-                  //  cout<<" I iterated the neighbors "<<j<<"times"<<endl;
-
         }
     }
-
     return adj;
 }
 
