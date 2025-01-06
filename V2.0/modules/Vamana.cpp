@@ -5,6 +5,7 @@
 #include <omp.h>
 
 map<int, set<int>> graph_creation(list<int>& labeled_nodes, int R) {
+    int count=4;
     int labeled_size = labeled_nodes.size();
     map<int, set<int>> adj;
     
@@ -13,13 +14,12 @@ map<int, set<int>> graph_creation(list<int>& labeled_nodes, int R) {
         vector<int> nodes_vector(labeled_nodes.begin(), labeled_nodes.end());
         
         // Create a mutex for protecting the shared adj map
-        #pragma omp parallel
+      //  #pragma omp parallel num_threads(count)
         {
             // Create thread-local random number generator
             random_device rd;
             mt19937 gen(rd());
             
-            #pragma omp for schedule(dynamic)
             for (int i = 0; i < nodes_vector.size(); i++) {
                 int node = nodes_vector[i];
                 int neighbors_added = 0;
@@ -48,10 +48,10 @@ map<int, set<int>> graph_creation(list<int>& labeled_nodes, int R) {
                 }
                 
                 // Critical section: update the shared adj map
-                #pragma omp critical
-                {
+                // #pragma omp critical
+                // {
                     adj[node] = local_neighbors;
-                }
+                //}
             }
         }
     }
@@ -69,9 +69,9 @@ map<float,int> M,int R_stitched){
     int number_of_nodes=labeled_nodes[filters].size();
     auto time_before =chrono::system_clock::now();
     map <int, set<int>> graph = graph_creation(labeled_nodes[filters],R_small); //graph that contains each node with its neghbors
-    auto time_now = chrono::system_clock::now();
-    chrono::duration <double> elapsed = time_now - time_before;
-    cout<<"the elapsed time for graph creation is:" <<elapsed.count()<<endl;
+    // auto time_now = chrono::system_clock::now();
+    // chrono::duration <double> elapsed = time_now - time_before;
+    // cout<<"the elapsed time for graph creation is:" <<elapsed.count()<<endl;
     int medoid_node = M[filters];
    //save_graph_to_binary_set(graph, "graph_data.bin");
     //creating the random permutation

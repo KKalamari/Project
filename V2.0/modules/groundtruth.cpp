@@ -5,15 +5,15 @@
 #include <vector>
 #include <omp.h>
 
-
 void groundtruth (vector<vector<float>>&DataNodes,vector<vector<float>>&queries, vector<vector<double>> &datamatrix,vector<vector<double>>&querymatrix,vector<vector<int>>&ground){
     int query_size = queries.size();
+    int count = 8;
     cout<<" the queries size is"<<query_size<<endl;
     ground.resize(query_size); //initialing vector ground
     int data_size = DataNodes.size();
     // vector <vector<int>> neighbors(query_size);
     
-    #pragma omp parallel for
+    #pragma omp parallel for num_threads(count) schedule (dynamic)
     for(int i=0;i<query_size;i++){
   
         int k=0;        
