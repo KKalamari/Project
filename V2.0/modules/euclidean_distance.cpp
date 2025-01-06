@@ -2,7 +2,7 @@
 #include <immintrin.h>
 #include <omp.h>
 //function that calculates the distance between all of the nodes
-    int count = 8;
+    int count = 32;
 
 void euclidean_distance_of_database(vector<vector<float>>& vec, vector<vector<double>>& matrix) {
 

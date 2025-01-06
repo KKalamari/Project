@@ -5,7 +5,7 @@
 #include <omp.h>
 
 map<int, set<int>> graph_creation(list<int>& labeled_nodes, int R) {
-    int count=4;
+    int count=32;
     int labeled_size = labeled_nodes.size();
     map<int, set<int>> adj;
     
@@ -14,7 +14,7 @@ map<int, set<int>> graph_creation(list<int>& labeled_nodes, int R) {
         vector<int> nodes_vector(labeled_nodes.begin(), labeled_nodes.end());
         
         // Create a mutex for protecting the shared adj map
-      //  #pragma omp parallel num_threads(count)
+        #pragma omp parallel num_threads(count)
         {
             // Create thread-local random number generator
             random_device rd;
@@ -48,10 +48,10 @@ map<int, set<int>> graph_creation(list<int>& labeled_nodes, int R) {
                 }
                 
                 // Critical section: update the shared adj map
-                // #pragma omp critical
-                // {
+                 #pragma omp critical
+                 {
                     adj[node] = local_neighbors;
-                //}
+                }
             }
         }
     }
