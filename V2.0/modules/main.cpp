@@ -58,17 +58,6 @@ int main(int argc, char **argv) {
     int R_stitched = config["Rstitched"];
     int thread_num=1; //it will be serial from default
     cout<<"The parameters are:\n a="<<alpha<<" R="<<R<<" knn="<<knn<<" L_siselist="<<L_sizelist<<" R_small="<<R_small<<" L_small="<<L_small<<" R_stitched="<<R_stitched<<endl;
-    auto start = system_clock::now();
-    // Read data points
-    vector <vector<float>> DataNodes;
-    set <float> category_attributes;
-    category_attributes= ReadBin(source_path, num_data_dimensions, DataNodes); //DataNode is the database, attributes is the set which have all the categories each vector can have)
-    for (set <float> ::iterator categories=category_attributes.begin();categories!=category_attributes.end();categories++){
-        cout <<*categories << " ";
-    }
-    
-    vector <vector<float>> queries;
-    ReadBin(query_path, num_query_dimensions, queries);
     int m=1;
     int loops=1;
     if(argc > 1){
@@ -80,6 +69,22 @@ int main(int argc, char **argv) {
 
     while(m<=loops){
         m++;
+    auto start = system_clock::now();
+    // Read data points
+
+    vector <vector<float>> DataNodes;
+    set <float> category_attributes;
+    category_attributes= ReadBin(source_path, num_data_dimensions, DataNodes); //DataNode is the database, attributes is the set which have all the categories each vector can have)
+    cout<<"the filter categories are:";
+        for (set <float> ::iterator categories=category_attributes.begin();categories!=category_attributes.end();categories++){
+        cout <<*categories << " ";
+    }
+    
+    cout<<endl;
+    
+    vector <vector<float>> queries;
+    ReadBin(query_path, num_query_dimensions, queries);
+    
     FILE* output_file;
     output_file=fopen("execution_times.csv","a");
 
@@ -115,6 +120,7 @@ int main(int argc, char **argv) {
 
     //writing groundtruth into a txt file and giving values into ground vector in order to exctract recall later.
     time_before = system_clock::now();
+    
     groundtruth(DataNodes,queries,vecmatrix,querymatrix,ground,thread_num); //uncomment only if you want calculate from scrath the groundtruth of a dataset
     time_now = system_clock::now();
     elapsed = time_now - time_before;
@@ -270,13 +276,11 @@ int main(int argc, char **argv) {
     // cout<< "The total nuber of queries under 90 for stitched accuracy is "<<belowninetyS;
     // cout<< "The total nuber of queries under 90 for FILTERED accuracy is "<<belowninetyF;
 
-    auto end = std:: chrono::system_clock::now();
-    std::chrono::duration<double> elapsed_seconds = end - start;
+    auto end = system_clock::now();
+    duration<double> elapsed_seconds = end - start;
     cout<<"the elapsed time is "<<elapsed_seconds.count()<<endl;
 
     fprintf(output_file,"\n%d, %d, %d, %d, %d, %d, %d, %d, %f, %f, %f, %d\n",vector_number,query_number,R,knn,L_sizelist,R_small,L_small,R_stitched,Filtered_recall,stitched_recall,elapsed_seconds.count(),thread_num);
-
-    
 
     cout <<endl;
 
