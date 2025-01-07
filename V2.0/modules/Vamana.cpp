@@ -4,8 +4,8 @@
 #include <chrono>
 #include <omp.h>
 
-map<int, set<int>> graph_creation(list<int>& labeled_nodes, int R) {
-    int count=32;
+map<int, set<int>> Graph_creation(list<int>& labeled_nodes, int R,int thread_num) {
+    int count=thread_num;
     int labeled_size = labeled_nodes.size();
     map<int, set<int>> adj;
     
@@ -64,11 +64,11 @@ map<int, set<int>> graph_creation(list<int>& labeled_nodes, int R) {
 
 map <int, set<int>> vamana_index_algorithm(map<float,list<int>>&labeled_nodes,float filters,double a,int& R_small,int &L_small,
 vector<vector<double>>& vecmatrix,
-map<float,int> M,int R_stitched){
+map<float,int> M,int R_stitched,int thread_num){
     // cout<<"doing the "<<filters<<"iteration";
     int number_of_nodes=labeled_nodes[filters].size();
     auto time_before =chrono::system_clock::now();
-    map <int, set<int>> graph = graph_creation(labeled_nodes[filters],R_small); //graph that contains each node with its neghbors
+    map <int, set<int>> graph = Graph_creation(labeled_nodes[filters],R_small,thread_num); //graph that contains each node with its neghbors
     // auto time_now = chrono::system_clock::now();
     // chrono::duration <double> elapsed = time_now - time_before;
     // cout<<"the elapsed time for graph creation is:" <<elapsed.count()<<endl;

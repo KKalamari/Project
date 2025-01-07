@@ -7,7 +7,7 @@ MODULES_DIR = modules
 
 OBJS = $(OUTPUT_DIR)/reading.o \
 	   $(OUTPUT_DIR)/medoid.o \
-	   $(OUTPUT_DIR)/euclidean_distance.o \
+	   $(OUTPUT_DIR)/Euclidean_distance.o \
 	   $(OUTPUT_DIR)/FilteredGreedySearch.o \
 	   $(OUTPUT_DIR)/FilteredRobustPrune.o \
 	   $(OUTPUT_DIR)/FilteredVamana.o  \
@@ -30,7 +30,7 @@ $(OUTPUT_DIR)/reading.o: $(MODULES_DIR)/reading.cpp | $(OUTPUT_DIR)
 $(OUTPUT_DIR)/medoid.o: $(MODULES_DIR)/medoid.cpp | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-$(OUTPUT_DIR)/euclidean_distance.o: $(MODULES_DIR)/euclidean_distance.cpp | $(OUTPUT_DIR)
+$(OUTPUT_DIR)/Euclidean_distance.o: $(MODULES_DIR)/Euclidean_distance.cpp | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(OUTPUT_DIR)/FilteredGreedySearch.o: $(MODULES_DIR)/FilteredGreedySearch.cpp | $(OUTPUT_DIR)

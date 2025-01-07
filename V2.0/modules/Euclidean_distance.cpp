@@ -1,11 +1,10 @@
-#include "euclidean_distance.h"
+#include "Euclidean_distance.h"
 #include <immintrin.h>
 #include <omp.h>
 //function that calculates the distance between all of the nodes
-    int count = 32;
 
-void euclidean_distance_of_database(vector<vector<float>>& vec, vector<vector<double>>& matrix) {
-
+void euclidean_distance_of_database(vector<vector<float>>& vec, vector<vector<double>>& matrix,int thread_num) {
+    int count = thread_num;
     int n=vec.size();
     int blocksize =32; //gonna be used for tiling method
 
@@ -79,8 +78,9 @@ void euclidean_distance_of_database(vector<vector<float>>& vec, vector<vector<do
 
 
 //function tha calculates the distance between the nodes and the queries
-void euclidean_distance_of_queries(vector<vector<float>>& vec, vector<vector<float>> &queries, vector<vector<double>> &matrix) {
+void euclidean_distance_of_queries(vector<vector<float>>& vec, vector<vector<float>> &queries, vector<vector<double>> &matrix,int thread_num) {
     // #pragma omp parallel for schedule(static)
+    int count = thread_num;
     #pragma omp parallel for num_threads(count) schedule(dynamic)
     for (int i = 0; i < int(vec.size()); i++) {
         for (int j = 0; j < int(queries.size()); j++) {

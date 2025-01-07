@@ -5,7 +5,7 @@
 #include <map>
 #include <chrono>
 #include "reading.h"
-#include "euclidean_distance.h"
+#include "Euclidean_distance.h"
 #include "FilteredVamana.h"
 #include "FilteredGreedySearch.h"
 #include "Stitched.h"
@@ -40,6 +40,7 @@ json readConfig(const string& config_filename) {
 
 int main(int argc, char **argv) {
 
+
     json config = readConfig("../../.vscode/config2.json");
 
     //extract variables from configuration
@@ -55,6 +56,7 @@ int main(int argc, char **argv) {
     int R_small = config["Rsmall"];
     int L_small = config["Lsmall"];
     int R_stitched = config["Rstitched"];
+    int thread_num=1; //it will be serial from default
     cout<<"The parameters are:\n a="<<alpha<<" R="<<R<<" knn="<<knn<<" L_siselist="<<L_sizelist<<" R_small="<<R_small<<" L_small="<<L_small<<" R_stitched="<<R_stitched<<endl;
     auto start = system_clock::now();
     // Read data points
@@ -64,11 +66,22 @@ int main(int argc, char **argv) {
     for (set <float> ::iterator categories=category_attributes.begin();categories!=category_attributes.end();categories++){
         cout <<*categories << " ";
     }
-   
+    
     vector <vector<float>> queries;
     ReadBin(query_path, num_query_dimensions, queries);
+    int m=1;
+    int loops=1;
+    if(argc > 1){
+        loops =  atol(argv[1]);
+        thread_num = atol(argv[2]);
+    }
+    cout <<"the loops are:"<<loops<<endl;
+    cout << "the thread_nums are"<<thread_num<<endl;
 
-    
+    while(m<=loops){
+        m++;
+    FILE* output_file;
+    output_file=fopen("execution_times.csv","a");
 
     int vector_number = int (DataNodes.size());
     int query_number = int (queries.size());
@@ -76,14 +89,17 @@ int main(int argc, char **argv) {
     vector<int>queries_to_delete;
 
     //removing the queries with type>1
-for(int i=0;i<query_number;i++){
-    if(queries[i][0]>1)
-        queries_to_delete.push_back(i);
-}
-for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
-    queries.erase(queries.begin() + queries_to_delete[i]);
-}
+    for(int i=0;i<query_number;i++){
+        if(queries[i][0]>1)
+            queries_to_delete.push_back(i);
+    }
+    for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
+        queries.erase(queries.begin() + queries_to_delete[i]);
+    }
     query_number = queries.size(); //updating the size of queries with the remaining elemtod of type 0 && 1
+
+
+
     vector<vector<int>> ground; //the groundtuth for each query node will be saved here
 
     //calculating the euclidean distaances
@@ -91,15 +107,15 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
     vector <vector <double>> querymatrix(vector_number,vector<double>(query_number)); // 10000 *100 matrix which calculates the euclidean distance between database node and queries
 
     auto time_before =system_clock::now();
-    euclidean_distance_of_database(DataNodes,vecmatrix); //calculating the euclidean distances of the whole database of nodes with each other
-    euclidean_distance_of_queries (DataNodes,queries,querymatrix); //calculating the euclidean distances between the nodes of database and each querie vector
+    euclidean_distance_of_database(DataNodes,vecmatrix,thread_num); //calculating the euclidean distances of the whole database of nodes with each other
+    euclidean_distance_of_queries (DataNodes,queries,querymatrix,thread_num); //calculating the euclidean distances between the nodes of database and each querie vector
     auto time_now = system_clock::now();
     duration <double> elapsed = time_now - time_before;
     cout<<"The euclidean caclulations take: "<< elapsed.count()<<endl;
 
     //writing groundtruth into a txt file and giving values into ground vector in order to exctract recall later.
     time_before = system_clock::now();
-    groundtruth(DataNodes,queries,vecmatrix,querymatrix,ground); //uncomment only if you want calculate from scrath the groundtruth of a dataset
+    groundtruth(DataNodes,queries,vecmatrix,querymatrix,ground,thread_num); //uncomment only if you want calculate from scrath the groundtruth of a dataset
     time_now = system_clock::now();
     elapsed = time_now - time_before;
     cout<< " The groundtuth took "<<elapsed.count()<<endl;
@@ -116,7 +132,7 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
     //calling StitchedVamana
     map <int,set<int>> Vamana_graph = StitchedVamana( DataNodes, category_attributes,
     alpha, L_small, R_small, R_stitched,vecmatrix,
-    M);
+    M,thread_num);
     
     //initializing variables which are gonna be used in recall calculation
     vector<int>starting_nodes_for_unfiltered_search; 
@@ -150,7 +166,7 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
         }
         total_recall+=accuracy;
     }
-    float stitched_recall=total_recall/queries.size();
+    double stitched_recall=total_recall/queries.size();
         
 
         //that was in oredr to print the recall for each node
@@ -224,8 +240,8 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
     //         }
 
     //     }
-    
-    cout<<endl<<"THE TOTAL RECALL FOR Filtered IS: "<<total_recall/queries.size()<<endl;
+    double Filtered_recall = total_recall/ query_number;
+    cout<<endl<<"THE TOTAL RECALL FOR Filtered IS: "<<Filtered_recall<<endl;
     cout<< "The recall for filtered queries is:"<<filtered_accuracy/filtered_counter;
     cout<<"The recall for unfiltered queries in filteredVamana is"<<unfiltered_accuracy/unfiltered_counter<<endl;
 
@@ -248,21 +264,26 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
 
     cout<<endl<<"THE TOTAL RECALL FOR STITCHED IS"<<stitched_recall<<endl;
     unfiltered_counter= int(queries.size())-stitched_filtered_count;
-    cout<<"the recall for stitched unfiltered nodes is"<<float(stitched_unfiltered_accuracy/unfiltered_counter)<<endl;;
+    cout<<"the recall for stitched unfiltered nodes is"<<double(stitched_unfiltered_accuracy/unfiltered_counter)<<endl;;
   
     cout<<"the recall for stitched filtered node is" <<stitched_filtered_accuracy/stitched_filtered_count<<endl;
     // cout<< "The total nuber of queries under 90 for stitched accuracy is "<<belowninetyS;
     // cout<< "The total nuber of queries under 90 for FILTERED accuracy is "<<belowninetyF;
 
-    
     auto end = std:: chrono::system_clock::now();
     std::chrono::duration<double> elapsed_seconds = end - start;
     cout<<"the elapsed time is "<<elapsed_seconds.count()<<endl;
 
-    cout <<endl;
-    
-}
+    fprintf(output_file,"\n%d, %d, %d, %d, %d, %d, %d, %d, %f, %f, %f, %d\n",vector_number,query_number,R,knn,L_sizelist,R_small,L_small,R_stitched,Filtered_recall,stitched_recall,elapsed_seconds.count(),thread_num);
 
+    
+
+    cout <<endl;
+
+    
+    }
+
+}
 
 
 

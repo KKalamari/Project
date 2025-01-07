@@ -12,4 +12,4 @@ map<int,set<int>> StitchedVamana(vector <vector<float>>& DataNodes,
 set<float> &category_attributes,
 double a,int L_small,int R_small, int R_stitched
 ,vector<vector<double>>& vecmatrix,
-map<float,int> M);
+map<float,int> M,int thread_num);

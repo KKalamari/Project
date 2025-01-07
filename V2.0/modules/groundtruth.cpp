@@ -5,9 +5,9 @@
 #include <vector>
 #include <omp.h>
 
-void groundtruth (vector<vector<float>>&DataNodes,vector<vector<float>>&queries, vector<vector<double>> &datamatrix,vector<vector<double>>&querymatrix,vector<vector<int>>&ground){
+void groundtruth (vector<vector<float>>&DataNodes,vector<vector<float>>&queries, vector<vector<double>> &datamatrix,vector<vector<double>>&querymatrix,vector<vector<int>>&ground,int thread_num){
     int query_size = queries.size();
-    int count = 32;
+    int count = thread_num;
     cout<<" the queries size is"<<query_size<<endl;
     ground.resize(query_size); //initialing vector ground
     int data_size = DataNodes.size();
