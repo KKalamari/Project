@@ -6,7 +6,7 @@ map<int,set<int>> StitchedVamana(vector <vector<float>>& DataNodes,
 set<float> &category_attributes,
 double a,int L_small,int R_small, int R_stitched
 ,vector<vector<double>>& vecmatrix,
-map<float,int> M){
+map<float,int> M,int thread_num){
     map <int,set <int>> Gf;
         //categorizing each node to it's label
 
@@ -18,7 +18,7 @@ map<float,int> M){
 
     for( auto filters: category_attributes){
 
-        map<int,set<int>>tempGf =vamana_index_algorithm(labeled_nodes,filters,a,R_small,L_small,vecmatrix,M,R_stitched);
+        map<int,set<int>>tempGf =vamana_index_algorithm(labeled_nodes,filters,a,R_small,L_small,vecmatrix,M,R_stitched,thread_num);
         for(auto CurrList : tempGf ){
             set <int> set_of_nodes_to_insert= CurrList.second;
             for(auto nodes : set_of_nodes_to_insert){

@@ -134,7 +134,6 @@ bool unexplored_nodes_in_greedy(const set<pair<double, int>>& L, const set<int>&
 
 
 pair <set<pair<double,int>>,set<int>> greedysearch( map <int, set<int>>& graph,int &s,int& query_point,int &k_neigh,int &L_sizelist,vector<vector<double>>&querymatrix){
-
 set<pair<double,int>>L;
 set <int>V;
 pair <double,int>node; //node to be insteter in L set
@@ -142,36 +141,36 @@ node = make_pair(querymatrix[s][query_point],s);
 L.insert(node);
 int p;
 
-while(unexplored_nodes_in_greedy(L,V)==1){
-    for(auto& candidateP: L){
-        if((V.find(candidateP.second)==V.end())==1){
-            p=candidateP.second;
-            break;
+    while(unexplored_nodes_in_greedy(L,V)==1){
+        for(auto& candidateP: L){
+            if((V.find(candidateP.second)==V.end())==1){
+                p=candidateP.second;
+                break;
+            }
         }
-    }
-    V.insert(p);
-    for(auto Nout: graph[p]){
-        node= make_pair(querymatrix[Nout][query_point],Nout);
-        L.insert(node);
-    }
-    if(L.size()>L_sizelist){
-        set<pair<double,int>>::iterator Lit=L.begin();
-        advance(Lit,L_sizelist);
-        L.erase(Lit,L.end()); //deleting the last nodes when L-sizelist threshold is exceeded.
+        V.insert(p);
+        for(auto Nout: graph[p]){
+            node= make_pair(querymatrix[Nout][query_point],Nout);
+            L.insert(node);
         }
-
-        
-        // auto end =std:: chrono::system_clock::now();
-        // std::chrono::duration<double> elapsed_seconds = end - starting_time;
-        // std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-    //    cout << " elapsed time in greedy search: " << elapsed_seconds.count()<<endl;
-}
-        if(L.size()>k_neigh){
+        if(L.size()>L_sizelist){
             set<pair<double,int>>::iterator Lit=L.begin();
-            advance(Lit,k_neigh);
-            L.erase(Lit,L.end());
-        
-        }
+            advance(Lit,L_sizelist);
+            L.erase(Lit,L.end()); //deleting the last nodes when L-sizelist threshold is exceeded.
+            }
+
+            
+            // auto end =std:: chrono::system_clock::now();
+            // std::chrono::duration<double> elapsed_seconds = end - starting_time;
+            // std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+        //    cout << " elapsed time in greedy search: " << elapsed_seconds.count()<<endl;
+    }
+    if(L.size()>k_neigh){
+        set<pair<double,int>>::iterator Lit=L.begin();
+        advance(Lit,k_neigh);
+        L.erase(Lit,L.end());
+    
+    }
     return make_pair(L,V);
 
 

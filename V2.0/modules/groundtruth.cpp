@@ -3,15 +3,17 @@
 #include <algorithm>
 #include<queue>
 #include <vector>
+#include <omp.h>
 
-void groundtruth (vector<vector<float>>&DataNodes,vector<vector<float>>&queries, vector<vector<double>> &datamatrix,vector<vector<double>>&querymatrix,vector<vector<int>>&ground){
+void groundtruth (vector<vector<float>>&DataNodes,vector<vector<float>>&queries, vector<vector<double>> &datamatrix,vector<vector<double>>&querymatrix,vector<vector<int>>&ground,int thread_num){
     int query_size = queries.size();
+    int count = thread_num;
     cout<<" the queries size is"<<query_size<<endl;
     ground.resize(query_size); //initialing vector ground
     int data_size = DataNodes.size();
     // vector <vector<int>> neighbors(query_size);
     
-
+    #pragma omp parallel for num_threads(count) schedule (dynamic)
     for(int i=0;i<query_size;i++){
   
         int k=0;        
@@ -28,6 +30,7 @@ void groundtruth (vector<vector<float>>&DataNodes,vector<vector<float>>&queries,
             
 
         int count = min(100,int(candidates_neighbors.size()));
+
         for(int k =0;k<count;k++){
             pair<double,int> node = candidates_neighbors.top(); //loading the 1st element
             int inserting_neighbor = node.second;

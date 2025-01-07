@@ -14,4 +14,4 @@ map<int, set<int>> graph_creation(list<int>& labeled_nodes, int R);
 
 map <int, set<int>> vamana_index_algorithm(map<float,list<int>>&labeled_nodes,float filters,double a,int& R_small,int &L_small,
 vector<vector<double>>& vecmatrix,
-map<float,int> M,int R);
+map<float,int> M,int R,int thread_num);

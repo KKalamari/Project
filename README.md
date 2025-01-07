@@ -139,3 +139,8 @@ the recall for stitched unfiltered nodes is0.947368
 the recall for stitched filtered node is0.864068
 the elapsed time is 100.369
 
+
+
+
+parallized 1st time:169s
+parallelized 2nd time:116s

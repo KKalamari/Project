@@ -5,13 +5,14 @@
 #include <map>
 #include <chrono>
 #include "reading.h"
-#include "euclidean_distance.h"
+#include "Euclidean_distance.h"
 #include "FilteredVamana.h"
 #include "FilteredGreedySearch.h"
 #include "Stitched.h"
 #include "groundtruth.h"
 #include "reading_groundtruth.h"
 #include "json.hpp"
+#include <omp.h>
 
 //define the json from the nlohmann library
 using json = nlohmann::json;
@@ -39,6 +40,7 @@ json readConfig(const string& config_filename) {
 
 int main(int argc, char **argv) {
 
+
     json config = readConfig("../../.vscode/config2.json");
 
     //extract variables from configuration
@@ -54,6 +56,7 @@ int main(int argc, char **argv) {
     int R_small = config["Rsmall"];
     int L_small = config["Lsmall"];
     int R_stitched = config["Rstitched"];
+    int thread_num=1; //it will be serial from default
     cout<<"The parameters are:\n a="<<alpha<<" R="<<R<<" knn="<<knn<<" L_siselist="<<L_sizelist<<" R_small="<<R_small<<" L_small="<<L_small<<" R_stitched="<<R_stitched<<endl;
     auto start = system_clock::now();
     // Read data points
@@ -63,11 +66,22 @@ int main(int argc, char **argv) {
     for (set <float> ::iterator categories=category_attributes.begin();categories!=category_attributes.end();categories++){
         cout <<*categories << " ";
     }
-   
+    
     vector <vector<float>> queries;
     ReadBin(query_path, num_query_dimensions, queries);
+    int m=1;
+    int loops=1;
+    if(argc > 1){
+        loops =  atol(argv[1]);
+        thread_num = atol(argv[2]);
+    }
+    cout <<"the loops are:"<<loops<<endl;
+    cout << "the thread_nums are"<<thread_num<<endl;
 
-    
+    while(m<=loops){
+        m++;
+    FILE* output_file;
+    output_file=fopen("execution_times.csv","a");
 
     int vector_number = int (DataNodes.size());
     int query_number = int (queries.size());
@@ -75,14 +89,17 @@ int main(int argc, char **argv) {
     vector<int>queries_to_delete;
 
     //removing the queries with type>1
-for(int i=0;i<query_number;i++){
-    if(queries[i][0]>1)
-        queries_to_delete.push_back(i);
-}
-for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
-    queries.erase(queries.begin() + queries_to_delete[i]);
-}
+    for(int i=0;i<query_number;i++){
+        if(queries[i][0]>1)
+            queries_to_delete.push_back(i);
+    }
+    for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
+        queries.erase(queries.begin() + queries_to_delete[i]);
+    }
     query_number = queries.size(); //updating the size of queries with the remaining elemtod of type 0 && 1
+
+
+
     vector<vector<int>> ground; //the groundtuth for each query node will be saved here
 
     //calculating the euclidean distaances
@@ -90,15 +107,15 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
     vector <vector <double>> querymatrix(vector_number,vector<double>(query_number)); // 10000 *100 matrix which calculates the euclidean distance between database node and queries
 
     auto time_before =system_clock::now();
-    euclidean_distance_of_database(DataNodes,vecmatrix); //calculating the euclidean distances of the whole database of nodes with each other
-    euclidean_distance_of_queries (DataNodes,queries,querymatrix); //calculating the euclidean distances between the nodes of database and each querie vector
+    euclidean_distance_of_database(DataNodes,vecmatrix,thread_num); //calculating the euclidean distances of the whole database of nodes with each other
+    euclidean_distance_of_queries (DataNodes,queries,querymatrix,thread_num); //calculating the euclidean distances between the nodes of database and each querie vector
     auto time_now = system_clock::now();
     duration <double> elapsed = time_now - time_before;
     cout<<"The euclidean caclulations take: "<< elapsed.count()<<endl;
 
     //writing groundtruth into a txt file and giving values into ground vector in order to exctract recall later.
     time_before = system_clock::now();
-    groundtruth(DataNodes,queries,vecmatrix,querymatrix,ground); //uncomment only if you want calculate from scrath the groundtruth of a dataset
+    groundtruth(DataNodes,queries,vecmatrix,querymatrix,ground,thread_num); //uncomment only if you want calculate from scrath the groundtruth of a dataset
     time_now = system_clock::now();
     elapsed = time_now - time_before;
     cout<< " The groundtuth took "<<elapsed.count()<<endl;
@@ -106,12 +123,16 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
 
     
     //calculatin medoid
+    time_before = system_clock :: now();
     map<float,int> M =FindMedoid(DataNodes,1,category_attributes); //r=1;
+    time_now = system_clock::now();
+    elapsed = time_now - time_before;
+    cout<<"the time for caclulating medoid is "<<elapsed.count()<<endl;
 
     //calling StitchedVamana
     map <int,set<int>> Vamana_graph = StitchedVamana( DataNodes, category_attributes,
     alpha, L_small, R_small, R_stitched,vecmatrix,
-    M);
+    M,thread_num);
     
     //initializing variables which are gonna be used in recall calculation
     vector<int>starting_nodes_for_unfiltered_search; 
@@ -145,7 +166,7 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
         }
         total_recall+=accuracy;
     }
-    float stitched_recall=total_recall/queries.size();
+    double stitched_recall=total_recall/queries.size();
         
 
         //that was in oredr to print the recall for each node
@@ -219,8 +240,8 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
     //         }
 
     //     }
-    
-    cout<<endl<<"THE TOTAL RECALL FOR Filtered IS: "<<total_recall/queries.size()<<endl;
+    double Filtered_recall = total_recall/ query_number;
+    cout<<endl<<"THE TOTAL RECALL FOR Filtered IS: "<<Filtered_recall<<endl;
     cout<< "The recall for filtered queries is:"<<filtered_accuracy/filtered_counter;
     cout<<"The recall for unfiltered queries in filteredVamana is"<<unfiltered_accuracy/unfiltered_counter<<endl;
 
@@ -243,21 +264,26 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
 
     cout<<endl<<"THE TOTAL RECALL FOR STITCHED IS"<<stitched_recall<<endl;
     unfiltered_counter= int(queries.size())-stitched_filtered_count;
-    cout<<"the recall for stitched unfiltered nodes is"<<float(stitched_unfiltered_accuracy/unfiltered_counter)<<endl;;
+    cout<<"the recall for stitched unfiltered nodes is"<<double(stitched_unfiltered_accuracy/unfiltered_counter)<<endl;;
   
     cout<<"the recall for stitched filtered node is" <<stitched_filtered_accuracy/stitched_filtered_count<<endl;
     // cout<< "The total nuber of queries under 90 for stitched accuracy is "<<belowninetyS;
     // cout<< "The total nuber of queries under 90 for FILTERED accuracy is "<<belowninetyF;
 
-    
     auto end = std:: chrono::system_clock::now();
     std::chrono::duration<double> elapsed_seconds = end - start;
     cout<<"the elapsed time is "<<elapsed_seconds.count()<<endl;
 
-    cout <<endl;
-    
-}
+    fprintf(output_file,"\n%d, %d, %d, %d, %d, %d, %d, %d, %f, %f, %f, %d\n",vector_number,query_number,R,knn,L_sizelist,R_small,L_small,R_stitched,Filtered_recall,stitched_recall,elapsed_seconds.count(),thread_num);
 
+    
+
+    cout <<endl;
+
+    
+    }
+
+}
 
 
 
@@ -329,158 +355,4 @@ for (int i = queries_to_delete.size() - 1; i >= 0; --i) {
 
 
 
-
-    #include "Robust_ext.h"
-using namespace std;
-
-
-
-
-
-// int pickingP(int point, set<int> &candidate_set, vector<vector<double>> &distances)
-// {
-//     int p; //the nearest neighbor
-//     float mindist;//min distance
-//     auto it = candidate_set.begin();
-//     advance(it, 1);  //we begin from the second element
-//     if(*(candidate_set.begin())==point){ //if its the point itselft then go to the next one and get the dist
-        
-//         mindist=distances[point][*it];
-//         p=*it;
-//     }
-//     else{//else just get the dist
-//         mindist=distances[point][*candidate_set.begin()];
-//         p=*(candidate_set.begin());
-//     }
-//     for( set <int> ::iterator  setIt=it;setIt!=candidate_set.end();setIt++){
-//         if(distances[*setIt][point]<mindist && *setIt!=point){
-//             mindist=distances[*setIt][point];
-//             p=*setIt; //assigning the minimum distance neighbor to p
-//         }
-//     }
-//     return p;
-// }
-
-// //parameters are the random R-graph, point =p of the pseudocode, candidate_set=V,alpha,R, matrix of distances
-// void RobustPrune(
-//     map<int,set<int>>& graph,
-//     int point,
-//     set<int>& candidateSet, 
-//     double alpha,
-//     size_t R,
-//     vector<vector<double>>&vecmatrix
-// ) {
-//     set<pair<double,int>> ordered_V;
-//     pair<double,int> node;
-//     for(auto& existingV : candidateSet){
-//         node = make_pair(vecmatrix[point][existingV],existingV);
-//         ordered_V.insert(node);
-//     }
-// //adding every neighbor of p in the candidate Set
-//     for (int neighbor : graph[point]) 
-//     {  
-//         if(neighbor!=point)
-//             node = make_pair(vecmatrix[point][neighbor],neighbor);
-//             ordered_V.insert(node); //inserting all the neighbors of point in the candidate_set
-//     }
-//       // there is a possibily that V set contains point as an element which was causing a segmentation problem. When i added this it got fixed!
-//     set <pair<double,int>>::iterator exisiting_p=ordered_V.find({0.0,point});
-//     if(exisiting_p!=ordered_V.end())
-//         ordered_V.erase({0.0,point});  //V=P/{p}
-
-//     graph[point].clear();
-    
-    
-//     int p; //p will contain the nearest neighbor.Initialized with -1 to ensure it starts as empty 
-//     while (ordered_V.empty()!=1 && graph[point].size()<R){
-//        // p=pickingP(point,candidateSet,vecmatrix); //choosing the node from the candidate set with the smallest distance from current point and adressing it to p
-//         exisiting_p = ordered_V.begin(); // the first element will be the closest
-//         p = exisiting_p->second;
-//         graph[point].insert(p);  
-
-//         if(graph[point].size()>=R ) 
-//             break;
-        
-    
-//         set <int> nodes_to_be_erased;
-//         for (auto candidate = ordered_V.begin(); candidate != ordered_V.end(); candidate++ ) {
-//             if (alpha * vecmatrix[p] [candidate->second] <= vecmatrix[point] [candidate->second]) {
-//                nodes_to_be_erased.insert(candidate->second);
-
-//             }
-//             }
-         
-//         for(auto nodes_to_delete : nodes_to_be_erased){
-//             ordered_V.erase({vecmatrix[point][nodes_to_delete],nodes_to_delete});
-//         }
-
-//         }
-//     }
-       
-
-
-
-
-
-
-
-
-// #include "groundtruth.h"
-// #include <algorithm>
-// #include<queue>
-// #include <vector>
-
-// void groundtruth (vector<vector<float>>&DataNodes,vector<vector<float>>&queries, vector<vector<double>> &datamatrix,vector<vector<double>>&querymatrix,vector<vector<int>>&ground){
-//     int query_size = queries.size();
-//     cout<<" the queries size is"<<query_size<<endl;
-//     ground.resize(query_size); //initialing vector ground
-//     int data_size = DataNodes.size();
-//     // vector <vector<int>> neighbors(query_size);
-    
-
-//     for(int i=0;i<query_size;i++){
-  
-//         int k=0;        
-//         priority_queue<pair<double, int>, vector<pair<double, int>>, greater<>> candidates_neighbors;
-
-//             for(int j=0;j<data_size;j++){
-                
-//                 if(queries[i][1]== DataNodes[j][0] || queries[i][1]==-1){ //if they have the same filter or it's unfiltered.
-//                     double distance = querymatrix[j][i];
-//                     int node = j;
-//                     candidates_neighbors.emplace( make_pair(distance,node));
-//                     if(k==100)   //we want the 100 closest neughbors
-//                         break;
-
-//                 }
-//             }
-            
-
-//         int count = min(100,int(candidates_neighbors.size()));
-//         for(int k =0;k<count;k++){
-//             pair<double,int> node = candidates_neighbors.top(); //loading the 1st element
-//             int inserting_neighbor = node.second;
-//             // neighbors[i].push_back(inserting_neighbor); 
-//             ground[i].push_back(inserting_neighbor); //pushing the nodes from minimum to maximum order into ground vector
-//             candidates_neighbors.pop(); //removing the 1st element now that it's used.
-//         }
-        
-//     }
-
-//     // Write results to a text file
-//     ofstream outfile("groundtruth.txt"); // Open a file named "neighbors.txt"
-//     if (outfile.is_open()) {
-//         for (int i =0; i <query_size; i++) {
-//             outfile << "Nearest neighbors for query " << i  <<" with FQ =" <<queries[i][1]<< " and query type  "<<queries[i][0]<< " :" ;
-//             for (const auto &node: ground[i]) {
-//                 outfile << node << ", ";
-//             }
-//             outfile << endl;
-//         }
-//         outfile.close(); // Close the file
-//         cout << "results written succesfully!" << endl;
-//     } else {
-//         cerr << "Error writing in the txt file." << endl;
-//     }
-// }
 
