@@ -5,7 +5,7 @@ MODULES_DIR = modules
 
 .PHONY: all clean run valgrind
 
-OBJS = $(OUTPUT_DIR)/reading.o \
+OBJS = $(OUTPUT_DIR)/Reading.o \
 	   $(OUTPUT_DIR)/medoid.o \
 	   $(OUTPUT_DIR)/Euclidean_distance.o \
 	   $(OUTPUT_DIR)/FilteredGreedySearch.o \
@@ -24,7 +24,7 @@ all: $(OUTPUT_DIR)/main
 $(OUTPUT_DIR)/main: $(MODULES_DIR)/main.cpp $(OBJS) | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -o $@ $^  
 
-$(OUTPUT_DIR)/reading.o: $(MODULES_DIR)/reading.cpp | $(OUTPUT_DIR)
+$(OUTPUT_DIR)/Reading.o: $(MODULES_DIR)/Reading.cpp | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(OUTPUT_DIR)/medoid.o: $(MODULES_DIR)/medoid.cpp | $(OUTPUT_DIR)

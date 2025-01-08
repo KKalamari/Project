@@ -1,14 +1,14 @@
 {
-    "source_path": "dummy-data.bin",
-    "query_path": "dummy-queries.bin",
+    "source_path": "contest-data-release-1m(1).bin",
+    "query_path": "contest-queries-release-1m(1).bin",
     "num_data_dimensions": 102,
     "num_query_dimensions_offset": 2,
     "sample_proportion": 0.001,
     "alpha": 2.0,
     "R": 14,
     "knn": 100,
-    "L_sizelist": 200,
+    "L_sizelist": 300,
     "Rsmall": 32,
-    "Lsmall": 100,
+    "Lsmall": 150,
     "Rstitched": 30
 }

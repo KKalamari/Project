@@ -53,7 +53,7 @@ void groundtruth (vector<vector<float>>&DataNodes,vector<vector<float>>&queries,
             outfile << endl;
         }
         outfile.close(); // Close the file
-        cout << "results written succesfully!" << endl;
+        cout << "results of groundtruth  written succesfully in groundtruth.txt file!" << endl;
     } else {
         cerr << "Error writing in the txt file." << endl;
     }
