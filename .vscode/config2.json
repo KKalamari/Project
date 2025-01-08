@@ -7,8 +7,8 @@
     "alpha": 2.0,
     "R": 14,
     "knn": 100,
-    "L_sizelist": 200,
+    "L_sizelist": 300,
     "Rsmall": 32,
-    "Lsmall": 100,
+    "Lsmall": 150,
     "Rstitched": 30
 }

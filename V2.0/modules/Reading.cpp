@@ -4,7 +4,7 @@
 #include <string>
 #include <numeric>
 #include <set>
-#include "reading.h"
+#include "Reading.h"
 using namespace std;
 set <float> ReadBin(const string &file_path,
             int num_dimensions,
