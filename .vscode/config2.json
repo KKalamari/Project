@@ -1,6 +1,6 @@
 {
-    "source_path": "dummy-data.bin",
-    "query_path": "dummy-queries.bin",
+    "source_path": "contest-data-release-1m(1).bin",
+    "query_path": "contest-queries-release-1m(1).bin",
     "num_data_dimensions": 102,
     "num_query_dimensions_offset": 2,
     "sample_proportion": 0.001,

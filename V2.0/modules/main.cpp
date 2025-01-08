@@ -84,11 +84,11 @@ int main(int argc, char **argv) {
     int R_small = config["Rsmall"];
     int L_small = config["Lsmall"];
     int R_stitched = config["Rstitched"];
-    int thread_num=1; //it will be serial from default
+    int thread_num=16; //it will be serial from default
     cout<<"The parameters are:\n a="<<alpha<<" R="<<R<<" knn="<<knn<<" L_siselist="<<L_sizelist<<" R_small="<<R_small<<" L_small="<<L_small<<" R_stitched="<<R_stitched<<endl;
     int m=1;
     int loops=1;
-    int Do_I_calculate_groundtruth = 0; //by default it will read the groundtruth from the txt file instead of calculating it from scratch.
+    int Do_I_calculate_groundtruth = 1; //by default it will read the groundtruth from the txt file instead of calculating it from scratch.
     string function_to_run = "clean_run";
     if(argc > 1){
         loops =  atol(argv[1]);
