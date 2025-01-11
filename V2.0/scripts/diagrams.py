@@ -12,7 +12,7 @@ matplotlib.use('Agg')
 df = pd.read_csv("/root/Project-1/V2.0/output/execution_times.csv")
 
 # Filter data for a specific grid size
-subset = df[df["Data_Dimensions"] == 10000] 
+subset = df[df["L_small"] == 150] 
 
 # Group by Num_Threads and calculate the mean Execution_Time
 summary = subset.groupby("thread_num")["Execution_time"].mean()

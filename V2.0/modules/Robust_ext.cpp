@@ -64,7 +64,7 @@ void RobustPrune(
     
         for(auto it = candidateSet.begin();it != candidateSet.end();){
             if(alpha* vecmatrix[p][*it]<= vecmatrix[point][*it]) {
-                it= candidateSet.erase(it); //erasing the element and moving the iterator to the next one
+                it= candidateSet.erase(it); // Εrasing the element and moving the iterator to the next one
             } else {
                 ++it; // Move to the next element
             }

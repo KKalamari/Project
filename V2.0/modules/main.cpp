@@ -14,6 +14,11 @@
 #include "json.hpp"
 #include <omp.h>
 
+
+//L_sizelist increases the recall for the FilteredVamana algortihm, above 150 doesn't affect Stitched
+//L_small increases the recall for the Stitched, above 200 doesn't affect FilteredVamana
+
+
 //define the json from the nlohmann library
 using json = nlohmann::json;
 
@@ -88,7 +93,7 @@ int main(int argc, char **argv) {
     cout<<"The parameters are:\n a="<<alpha<<" R="<<R<<" knn="<<knn<<" L_siselist="<<L_sizelist<<" R_small="<<R_small<<" L_small="<<L_small<<" R_stitched="<<R_stitched<<endl;
     int m=1;
     int loops=1;
-    int Do_I_calculate_groundtruth = 1; //by default it will read the groundtruth from the txt file instead of calculating it from scratch.
+    int Do_I_calculate_groundtruth = 1; //by default it will calculate the groundtruth instead of reading the txt file (if any txt file conatining the groundtruth exists).
     string function_to_run = "clean_run";
     if(argc > 1){
         loops =  atol(argv[1]);
@@ -148,11 +153,9 @@ int main(int argc, char **argv) {
         vector<vector<int>> ground; //the groundtuth for each query node will be saved here
 
         if(Do_I_calculate_groundtruth==0){ //if it's zero we read the groundtruth that has already been calculated and saved in the txt file
-            if(ground.empty()){ // if groundtruth calculation wasn't called only then read from the groundtruth.txt file
                 ground = reading_groundtruth();
-            }
+            
         }
-
         else{ //else we calculate groundtruth from dcrath
             starting_time_of_function = system_clock ::now();
             groundtruth(DataNodes,queries,vecmatrix,querymatrix,ground,thread_num); //uncomment only if you want calculate from scrath the groundtruth of a dataset
@@ -161,9 +164,6 @@ int main(int argc, char **argv) {
             cout<< "The groundtuth took "<<elapsed_function_time.count()<<endl;
             }
 
-        
-        
-        
         //calculatin medoid
         map<float,int> M;
         if(function_to_run == "clean_run" || function_to_run == "Medoid" || function_to_run == "StitchedVamana" || function_to_run == "Filtered_vamana"){
@@ -180,7 +180,8 @@ int main(int argc, char **argv) {
         int unfiltered_counter=0;
         double stitched_recall=0;
         double Filtered_recall=0;
-        if(function_to_run == "clean_run" || function_to_run == "StitchedVamana"|| function_to_run == "StitchedVamana"){
+
+        if(function_to_run == "clean_run" || function_to_run == "StitchedVamana"){
             starting_time_of_function = system_clock::now();
             Vamana_graph = StitchedVamana( DataNodes, category_attributes,
             alpha, L_small, R_small, R_stitched,vecmatrix,
@@ -208,7 +209,7 @@ int main(int argc, char **argv) {
                             if(find(ground[j].begin(),ground[j].end(),Lit->second)!=ground[j].end())
                                 counter++;
                     }
-                accuracy = float(counter) /100; //casting float because it was turning into an integer without it
+                accuracy = float(counter) /knn; //casting float because it was turning into an integer without it
                 if(Fq[0]!=-1){
                     stitched_filtered_count++;
                     stitched_filtered_accuracy+=accuracy;
@@ -229,15 +230,14 @@ int main(int argc, char **argv) {
             cout<<"the recall for stitched filtered node is" <<stitched_filtered_accuracy/stitched_filtered_count<<endl;
         }
             
-        if(function_to_run == "clean_run" || function_to_run == "FIlteredVamana" ||  function_to_run == "Filtered_vamana"){
+        if(function_to_run == "clean_run" || function_to_run == "FIlteredVamana"){
             starting_time_of_function = system_clock::now();
-            Vamana_graph = FilteredVamanaIndex(vecmatrix,DataNodes,alpha,R,category_attributes,M);
+            Vamana_graph = FilteredVamanaIndex(vecmatrix,DataNodes,alpha,R,category_attributes,M,L_small);
             ending_time_of_funtion = system_clock::now();
             elapsed_function_time = ending_time_of_funtion - starting_time_of_function;
             cout << "\nelapsed time of FilteredVamana is "<<elapsed_function_time.count()<< endl;
             float filtered_accuracy=0.0;
             float unfiltered_accuracy =0.0;
-            L_sizelist = 300;
             map<float,int> new_M;
             float total_recall = 0;
             starting_time_of_function = system_clock::now();
@@ -265,7 +265,7 @@ int main(int argc, char **argv) {
                 if(find(ground[j].begin(),ground[j].end(),Lit->second)!=ground[j].end())
                     counter++;
             }
-            float accuracy = float(counter) /100; //casting float because it was turning into an integer without it
+            float accuracy = float(counter) /knn; //casting float because it was turning into an integer without it
             total_recall+=accuracy;
             if(Fq[0] != -1)
                 filtered_accuracy+=accuracy;
@@ -289,7 +289,7 @@ int main(int argc, char **argv) {
         duration<double> elapsed_seconds = end - start;
         cout<<"the elapsed time is "<<elapsed_seconds.count()<<endl;
 
-        fprintf(output_file,"\n%d, %d, %d, %d, %d, %d, %d, %d, %f, %f, %f, %d\n",vector_number,query_number,R,knn,L_sizelist,R_small,L_small,R_stitched,Filtered_recall,stitched_recall,elapsed_seconds.count(),thread_num);
+        fprintf(output_file,"\n%d, %d, %f, %d, %d, %d, %d, %d, %d, %f, %f, %f, %d\n",vector_number,query_number,alpha,R,knn,L_sizelist,R_small,L_small,R_stitched,Filtered_recall,stitched_recall,elapsed_seconds.count(),thread_num);
 
         cout <<endl;
 
