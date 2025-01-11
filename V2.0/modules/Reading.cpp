@@ -17,9 +17,9 @@ set<float> ReadBin(const string &file_path,
     ifs.read((char *)&N, sizeof(int)); // reading the first element of file (size)
     
     // Cap N to 100,000 to limit data size
-    if (N > 100000) {
+    if (N > 11000) {
         std::cout << "Limiting the number of points to 100,000 (from " << N << ")" << std::endl;
-        N = 100000;
+        N = 11000;
     }
     
     data.resize(N);

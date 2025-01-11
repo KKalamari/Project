@@ -133,14 +133,21 @@ the elapsed time is 192.576
 
 
 
+                        #Παραδοτέο 3
+Εκτέλεση κώδικα: Πλέον ο χρήστης μπορεί να εκτελέσει κάποια συγκεκριμένη συνάρτηση που επιθυμεί. Τρέχει τη main ως εξής
 
-THE TOTAL RECALL FOR STITCHED IS0.905882
-the recall for stitched unfiltered nodes is0.947368
-the recall for stitched filtered node is0.864068
-the elapsed time is 100.369
+    ./main loops_of_current_instance num_threads Do_I_Calc Function_to_run
+
+   loops_of_current_instance: Πόσες φορές θέλυομε να τρέξει το συγκεκριμένο instance που εκτελούμε
+   num_threads: πλήθος threads που θέλουμε να τρέξουμε το πρόγραμμα μας
+   Do_I_Calc: 0 αν θέλουμε να διαβάσουμε το groundtruth από το έτοιμο txt αρχείο
+   Function_to_Run: Συνάρτηση που θέλουμε να εκτελέσουμε
+   
+   Συνεπώς η εκτέλεση: ./main 2 16 0 Euclidean θα τρέξει 2 φορές τη συνάρτηση euclidean με 16 νήματα.
+
+   Οι συναρτήσεις που υπάρχουν είναι: Reading, Euclidean, Groundtruth, StitchedVamana, FilteredVamana. 
+
+   Αν ειθυμούμε εκτέλεση ολόκληρη της main είτε δεν βάζουμε τίποτα ως τελευταίο όρισμα είτε γράφουμε "clean_run"
 
 
-
-
-parallized 1st time:169s
-parallelized 2nd time:116s
+Εισαγωγή παραλληλίας στο groundtruth,Stitched και υπολογισμός euclidean_distances, Στο branch optimizations υπάρχει το optimization για αρχικοποίηση του γράφου στο FilteredVamana με random nodes αντί να ξεκινάει ως κενός. Έχει δημιουργηθεί script για πολλαπλή εκτέλεση της main και py script για δημιουργία γράφου. Ανάλυση κώδικα και πειράματα θα βρεθούν στο pdf.
