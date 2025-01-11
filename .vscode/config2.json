@@ -1,16 +1,16 @@
 {
-    "source_path": "dummy-data.bin",
-    "query_path": "dummy-queries.bin",
+    "source_path": "/root/Project-1/V2.0/modules/contest-data-release-1m(1).bin",
+    "query_path": "/root/Project-1/V2.0/modules/contest-queries-release-1m(1).bin",
     "num_data_dimensions": 102,
     "num_query_dimensions_offset": 2,
     "sample_proportion": 0.001,
-    "alpha": 1.0,
-    "R": 35,
+    "alpha": 2.0,
+    "R": 25,
     "knn": 100,
-    "L_sizelist": 600, 
-    "Rsmall": 60,
-    "Lsmall": 600, 
-    "Rstitched": 90
+    "L_sizelist": 120, 
+    "Rsmall": 45,
+    "Lsmall": 160, 
+    "Rstitched": 30
 }
 
 
