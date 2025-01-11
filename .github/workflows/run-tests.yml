@@ -19,7 +19,7 @@ jobs:
         sudo apt-get install -y make g++
 
     - name: Run Makefile to build and test
-      working-directory: V2.0/tests/
+      working-directory: V1.0/tests/
       run: |
         make       # Runs the default target in the Makefile, assuming it compiles the tests
         make run  # Runs a specific 'test' target if available, or replace with the appropriate target name
