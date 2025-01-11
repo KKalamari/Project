@@ -1,6 +1,6 @@
 #include "FilteredRobust.h"
 #include "FilteredGreedySearch.h"
-#include "euclidean_distance.h"
+#include "Euclidean_distance.h"
 #include"acutest.h"
 
 /*
@@ -17,9 +17,9 @@ void FilteredRobustTest(){
     int p=3;
     double alpha=1;
     int R=1;
-
+    int thread_num = 1;
     vector<vector<double>> vectormatrix(dataset.size(),vector<double>(dataset.size())); //6 x 6 matrix
-    euclidean_distance_of_database(dataset,vectormatrix);
+    euclidean_distance_of_database(dataset,vectormatrix, thread_num);
   
     set<int>V1({5, 0, 3});
     graph[0]={1,3,5};

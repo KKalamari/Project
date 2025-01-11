@@ -1,5 +1,5 @@
 #include "FilteredVamana.h"
-#include "euclidean_distance.h"
+#include "Euclidean_distance.h"
 #include "medoid.h"
 #include "Stitched.h"
 #include "acutest.h"
@@ -21,7 +21,8 @@ void FilteredVamana(){
     category_attributes.insert(1.0);
     category_attributes.insert(6.0);
     M = FindMedoid(DataNodes,1,category_attributes);
-    map<int,set<int>> graph = FilteredVamanaIndex(vectormatrix,DataNodes,alpha,R,category_attributes,M);
+    int L_small=5;
+    map<int,set<int>> graph = FilteredVamanaIndex(vectormatrix,DataNodes,alpha,R,category_attributes,M,L_small);
     int Vamana_size = graph.size();
     cout<<"the graph size is "<< Vamana_size<<endl;
     for(int i=0;i<Vamana_size;i++){
@@ -46,18 +47,19 @@ void StitchedVamana_test(){
     int R=13; //too big for our example, that's ok though.
     map<float,int>M;
     int L_small=100;
+    int thread_num = 1;
     set<float> category_attributes;
     category_attributes.insert(1.0);
     category_attributes.insert(6.0);
     M = FindMedoid(DataNodes,1,category_attributes);
-    map<int,set<int>> graph = StitchedVamana(DataNodes,category_attributes,alpha,L_small,R,R,vectormatrix,M);
+    map<int,set<int>> graph = StitchedVamana(DataNodes,category_attributes,alpha,L_small,R,R,vectormatrix,M,thread_num);
     int Vamana_size = graph.size();
     cout<<"the graph size is "<< Vamana_size<<endl;
     TEST_CHECK(graph.size()==6); //checking if every node has been assigned a naighbor
 
 
     //checking if the R limit is enforced
-    graph = StitchedVamana(DataNodes,category_attributes,alpha,L_small,1,1,vectormatrix,M); 
+    graph = StitchedVamana(DataNodes,category_attributes,alpha,L_small,1,1,vectormatrix,M,thread_num); 
     for(int i=0;i<Vamana_size;i++){
         cout <<i<<" node has neighbors: ";
         for(auto neighbors : graph[i]){
