@@ -16,6 +16,6 @@ echo -e "Do you want to run a single function or do a clean_run of the project?"
 read function_to_run
 
 for thread_num in 1 2 4 8 16 32; do 
-    output=$(/root/Project-1/V2.0/output/main $loops $thread_num $Do_I_Calculate $function_to_run)
+    /root/Project-1/V2.0/output/main $loops $thread_num $Do_I_Calculate $function_to_run
 done
 
