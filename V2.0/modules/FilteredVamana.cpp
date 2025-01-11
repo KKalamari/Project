@@ -7,6 +7,7 @@
 #include "medoid.h"
 #include "FilteredRobust.h"
 #include <random>
+#include "Vamana.h"
 using namespace std;
 
 map <int,set<int>> FilteredVamanaIndex(vector<vector<double>>&vectormatrix,vector<vector<float>>&DataNodes,
@@ -16,6 +17,24 @@ map <float,int>&medoids,
 int L_small){
     
     map<int,set<int>>graph; //empty graph
+    map<float,list<int>> labeled_nodes;
+    int thread_num = 16;
+    int R_small=5;
+    for(int i=0; i<DataNodes.size();i++){
+        labeled_nodes[DataNodes[i][0]].push_back(i); 
+    }
+    int i=0;
+    map<int,set<int>>tempGf;
+    for(auto filter : category_attributes){
+
+        tempGf = Graph_creation(labeled_nodes[filter],R_small,thread_num);
+        for(auto nodes :tempGf){
+            graph[i].insert(nodes.second.begin(),nodes.second.end());
+            break;
+        }
+        i++;
+    }
+
     random_device rd; //obtain a random number from hardware
     mt19937 generator(rd()); //seed the generator
     vector<int> randomized_nodes(DataNodes.size());
