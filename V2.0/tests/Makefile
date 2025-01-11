@@ -1,5 +1,8 @@
 CXX = g++
-CXXFLAGS = -g 
+CXXFLAGS = -g -mavx -mavx2 -mfma
+
+
+
 
 MEDOID_TARGET = medoid_test
 FILTERED_GREEDY_TARGET = FilteredGreedyTest
@@ -7,9 +10,9 @@ FILTERED_ROBUST_TARGET = FilteredRobustTest
 FILTERED_VAMANA_TARGET = FilteredVamanaTest
 
 MEDOID_SRCS = medoid_test.cpp ./../modules/medoid.cpp
-FILTERED_SRCS = FilteredGreedyTest.cpp ./../modules/FilteredGreedySearch.cpp ./../modules/euclidean_distance.cpp
-FILTERED_ROBUST_SRCS = FilteredRobustTest.cpp ./../modules/FilteredRobustPrune.cpp ./../modules/euclidean_distance.cpp ./../modules/FilteredGreedySearch.cpp
-FILTERED_VAMANA_SRCS = FilteredVamanaTest.cpp ./../modules/medoid.cpp ./../modules/euclidean_distance.cpp ./../modules/FilteredVamana.cpp ./../modules/FilteredRobustPrune.cpp ./../modules/FilteredGreedySearch.cpp ./../modules/Stitched.cpp ./../modules/Vamana.cpp ./../modules/GreedySearch.cpp ./../modules/Robust_ext.cpp
+FILTERED_SRCS = FilteredGreedyTest.cpp ./../modules/FilteredGreedySearch.cpp ./../modules/Euclidean_distance.cpp
+FILTERED_ROBUST_SRCS = FilteredRobustTest.cpp ./../modules/FilteredRobustPrune.cpp ./../modules/Euclidean_distance.cpp ./../modules/FilteredGreedySearch.cpp
+FILTERED_VAMANA_SRCS = FilteredVamanaTest.cpp ./../modules/medoid.cpp ./../modules/Euclidean_distance.cpp ./../modules/FilteredVamana.cpp ./../modules/FilteredRobustPrune.cpp ./../modules/FilteredGreedySearch.cpp ./../modules/Stitched.cpp ./../modules/Vamana.cpp ./../modules/GreedySearch.cpp ./../modules/Robust_ext.cpp
 
 ACUTEST_DIR = ./../header_files  
 ACUTEST_FLAGS = -I$(ACUTEST_DIR)  

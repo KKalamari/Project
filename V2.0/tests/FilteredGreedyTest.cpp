@@ -1,6 +1,6 @@
 #include "acutest.h"
 #include "FilteredGreedySearch.h"
-#include "euclidean_distance.h"
+#include "Euclidean_distance.h"
 void FilteredTest(){
     //checking FilteredGreedySearch without an initialized graph
     map<int,set<int>>graph; 
@@ -14,20 +14,21 @@ void FilteredTest(){
     vector<vector<float>>dataset={{6,5,1,4},{1,5,5,3},{6,5,3,4},{6,5,6,1},{1,3,4,2},{6,1,2,2}};
     vector<vector<float>> queries={{5,2,7,9,7,9},{3,6,1,2,1,2}};
     vector<vector<double>> querymatrix(dataset.size(),vector<double>(queries.size()));
-    euclidean_distance_of_queries(dataset,queries,querymatrix);
+    int count=1;
+    euclidean_distance_of_queries(dataset,queries,querymatrix,count);
 
-//the euclidean distance for node 0 is: 7.81025
-//    the euclidean distance for node 0 is: 2
-// the euclidean distance for node 1 is: 6.32456
-// the euclidean distance for node 1 is: 4.12311
-// the euclidean distance for node 2 is: 6.40312
-// the euclidean distance for node 2 is: 2.82843
-// the euclidean distance for node 3 is: 8.06226
-// the euclidean distance for node 3 is: 5.09902
-// the euclidean distance for node 4 is: 7.61577
-// the euclidean distance for node 4 is: 3
-// the euclidean distance for node 5 is: 8.60233
-// the euclidean distance for node 5 is: 1
+// the euclidean distance for node 0 is: 0
+// the euclidean distance for node 0 is: 17
+// the euclidean distance for node 1 is: 17
+// the euclidean distance for node 1 is: 0
+// the euclidean distance for node 2 is: 4
+// the euclidean distance for node 2 is: 5
+// the euclidean distance for node 3 is: 34
+// the euclidean distance for node 3 is: 5
+// the euclidean distance for node 4 is: 13
+// the euclidean distance for node 4 is: 2
+// the euclidean distance for node 5 is: 5
+// the euclidean distance for node 5 is: 10
 
     for(int i =0; i<int(querymatrix.size());i++){
         for(auto distance : querymatrix[i]){
@@ -71,12 +72,13 @@ void FilteredTest(){
     for(set<pair<double,int>>::iterator neighbors=L.begin();neighbors!=L.end();neighbors++){
         cout << neighbors->second <<" ";
     }
+    cout<<"the size is"<<L.size()<<endl;
     TEST_CHECK(L.size()==3);
-    TEST_CHECK(neighbors->second==5); //the smaller distanced neighbor
+    TEST_CHECK(neighbors->second==2); //the smaller distanced neighbor
     advance(neighbors,1);
-    TEST_CHECK(neighbors->second==0); //the 2nd smaller distanced neighbor
+    TEST_CHECK(neighbors->second==3); //the 2nd smaller distanced neighbor
     advance(neighbors,1);
-    TEST_CHECK(neighbors->second==2);
+    TEST_CHECK(neighbors->second==5);
 
 
 pair <set<pair<double,int>>,set<int>> FilteredGreedy(map<int,set<int>>&graph,int xq,int knn,int L_sizelist,map <float,int> &M,vector<float>&Fq,vector<vector<double>>& querymatrix,vector<vector<float>>&dataset,set<float>&category_attribuytes);

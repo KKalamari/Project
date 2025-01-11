@@ -231,10 +231,11 @@ int main(int argc, char **argv) {
             cout << "elapsed time for recalling for stitched is "<< elapsed_function_time.count();
             stitched_recall=total_recall/queries.size();
             cout<<endl<<"THE TOTAL RECALL FOR STITCHED IS"<<stitched_recall<<endl;
-            unfiltered_counter = query_number- stitched_filtered_accuracy;
+            unfiltered_counter = query_number- stitched_filtered_count;
             cout<<"the recall for stitched unfiltered nodes is"<<double(stitched_unfiltered_accuracy/unfiltered_counter)<<endl;;
         
             cout<<"the recall for stitched filtered node is" <<stitched_filtered_accuracy/stitched_filtered_count<<endl;
+            cout<<"queries per second: "<< queries.size()/elapsed_function_time.count() <<endl;
         }
             
         if(function_to_run == "clean_run" || function_to_run == "FilteredVamana"){
@@ -286,9 +287,10 @@ int main(int argc, char **argv) {
 
             
             Filtered_recall = total_recall/ query_number;
-            cout<<endl<<"THE TOTAL RECALL FOR FILTERED IS: "<<Filtered_recall<<endl;
-            cout<< "The recall for filtered queries is:"<<filtered_accuracy/ unfiltered_counter;
+            cout<<endl<<"THE TOTAL RECALL FOR FILTERED IS: "<<Filtered_recall<<endl;   
             cout<<"The recall for unfiltered queries in filteredVamana is"<<unfiltered_accuracy/unfiltered_counter<<endl;
+            cout<< "The recall for filtered queries is:"<<filtered_accuracy/ unfiltered_counter;
+            cout<<"queries per second: "<< queries.size()/elapsed_function_time.count() <<endl;
 
         }
 
