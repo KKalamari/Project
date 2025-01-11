@@ -89,11 +89,11 @@ int main(int argc, char **argv) {
     int R_small = config["Rsmall"];
     int L_small = config["Lsmall"];
     int R_stitched = config["Rstitched"];
-    int thread_num=16; //it will be serial from default
+    int thread_num=1; //it will be serial from default
     cout<<"The parameters are:\n a="<<alpha<<" R="<<R<<" knn="<<knn<<" L_siselist="<<L_sizelist<<" R_small="<<R_small<<" L_small="<<L_small<<" R_stitched="<<R_stitched<<endl;
     int m=1;
     int loops=1;
-    int Do_I_calculate_groundtruth = 1; //by default it will calculate the groundtruth instead of reading the txt file (if any txt file conatining the groundtruth exists).
+    int Do_I_calculate_groundtruth = 0; //by default it will read the groundtruth from the txt file instead of calculating it from scratch
     string function_to_run = "clean_run";
     if(argc > 1){
         loops =  atol(argv[1]);
@@ -104,7 +104,8 @@ int main(int argc, char **argv) {
     }
     cout <<"the instane will be executed for: "<<loops<<" times"<<endl;
     cout << "the thread_nums are"<<thread_num<<endl;
-     cout<<"DO I Calc"<<Do_I_calculate_groundtruth<<endl;
+    cout<<"DO I Calc"<<Do_I_calculate_groundtruth<<endl;
+
     while(m<=loops){
         m++;
         auto starting_time_of_function = system_clock:: now();
@@ -116,19 +117,20 @@ int main(int argc, char **argv) {
         vector <vector<float>> DataNodes;
         set <float> category_attributes;
         vector <vector<float>> queries;
-        if(function_to_run == "clean_run" || function_to_run =="Reading"|| function_to_run == "StitchedVamana" || function_to_run == "Filtered_vamana"){
+        if(function_to_run == "clean_run" || function_to_run =="Reading"|| function_to_run == "StitchedVamana" || function_to_run == "FilteredVamana"){
             starting_time_of_function = system_clock::now();
             category_attributes = reading_dataset_and_queries(source_path,query_path,num_data_dimensions,num_query_dimensions,DataNodes,queries);
             ending_time_of_funtion = system_clock::now();
             elapsed_function_time = ending_time_of_funtion - starting_time_of_function;
             cout<<"\nreading function took: "<<elapsed_function_time.count()<<endl;
         }
-
+        if(!category_attributes.empty()){
         cout<<"\nthe filter categories are:";
             for (set <float> ::iterator categories=category_attributes.begin();categories!=category_attributes.end();categories++){
             cout <<*categories << " ";
         }
         cout<<endl;
+        }
         
         FILE* output_file;
         output_file=fopen("execution_times.csv","a");
@@ -140,7 +142,7 @@ int main(int argc, char **argv) {
         vector<vector<double>> vecmatrix(vector_number,vector<double>(vector_number));  //10000 *10000 matrix for the euclidean distance of every node between every database node
         vector <vector <double>> querymatrix(vector_number,vector<double>(query_number)); // 10000 *100 matrix which calculates the euclidean distance between database node and queries node
 
-        if(function_to_run == "clean_run" || function_to_run == "Euclidean" || function_to_run == "StitchedVamana" || function_to_run == "Filtered_vamana"){     
+        if(function_to_run == "clean_run" || function_to_run == "Euclidean" || function_to_run == "StitchedVamana" || function_to_run == "FilteredVamana"){     
             starting_time_of_function =system_clock::now();
             Euclidean_caclulations(DataNodes,queries,vecmatrix,querymatrix,thread_num);
             ending_time_of_funtion = system_clock::now();
@@ -150,23 +152,28 @@ int main(int argc, char **argv) {
         
 
         //writing groundtruth into a txt file and giving values into ground vector in order to exctract recall later.
-        vector<vector<int>> ground; //the groundtuth for each query node will be saved here
 
-        if(Do_I_calculate_groundtruth==0){ //if it's zero we read the groundtruth that has already been calculated and saved in the txt file
-                ground = reading_groundtruth();
-            
-        }
-        else{ //else we calculate groundtruth from dcrath
+        vector<vector<int>> ground; //the groundtuth for each query node will be saved here
+        if(function_to_run == "clean_run" || function_to_run == "Groundtruth" || function_to_run == "StitchedVamana" || function_to_run == "FilteredVamana"){
             starting_time_of_function = system_clock ::now();
-            groundtruth(DataNodes,queries,vecmatrix,querymatrix,ground,thread_num); //uncomment only if you want calculate from scrath the groundtruth of a dataset
-            ending_time_of_funtion = system_clock::now();
-            elapsed_function_time = ending_time_of_funtion-starting_time_of_function;
-            cout<< "The groundtuth took "<<elapsed_function_time.count()<<endl;
+            if(Do_I_calculate_groundtruth==0){ //if it's zero we read the groundtruth that has already been calculated and saved in the txt file
+                ground = reading_groundtruth();
+                ending_time_of_funtion = system_clock::now();
+                elapsed_function_time = ending_time_of_funtion-starting_time_of_function;
+                cout<< "The groundtuth took "<<elapsed_function_time.count()<<endl;
+
             }
+            else{ //else we calculate groundtruth from dcrath
+                groundtruth(DataNodes,queries,vecmatrix,querymatrix,ground,thread_num); //uncomment only if you want calculate from scrath the groundtruth of a dataset
+                ending_time_of_funtion = system_clock::now();
+                elapsed_function_time = ending_time_of_funtion-starting_time_of_function;
+                cout<< "The groundtuth took "<<elapsed_function_time.count()<<endl;
+                }
+        }
 
         //calculatin medoid
         map<float,int> M;
-        if(function_to_run == "clean_run" || function_to_run == "Medoid" || function_to_run == "StitchedVamana" || function_to_run == "Filtered_vamana"){
+        if(function_to_run == "clean_run" || function_to_run == "Medoid" || function_to_run == "StitchedVamana" || function_to_run == "FilteredVamana"){
             starting_time_of_function = system_clock :: now();
             M =FindMedoid(DataNodes,1,category_attributes); //r=1;
             ending_time_of_funtion = system_clock::now();
@@ -230,7 +237,7 @@ int main(int argc, char **argv) {
             cout<<"the recall for stitched filtered node is" <<stitched_filtered_accuracy/stitched_filtered_count<<endl;
         }
             
-        if(function_to_run == "clean_run" || function_to_run == "FIlteredVamana"){
+        if(function_to_run == "clean_run" || function_to_run == "FilteredVamana"){
             starting_time_of_function = system_clock::now();
             Vamana_graph = FilteredVamanaIndex(vecmatrix,DataNodes,alpha,R,category_attributes,M,L_small);
             ending_time_of_funtion = system_clock::now();
@@ -287,7 +294,8 @@ int main(int argc, char **argv) {
 
         auto end = system_clock::now();
         duration<double> elapsed_seconds = end - start;
-        cout<<"the elapsed time is "<<elapsed_seconds.count()<<endl;
+        if(function_to_run=="clean_run")
+            cout<<"the elapsed time is "<<elapsed_seconds.count()<<endl;
 
         fprintf(output_file,"\n%d, %d, %f, %d, %d, %d, %d, %d, %d, %f, %f, %f, %d\n",vector_number,query_number,alpha,R,knn,L_sizelist,R_small,L_small,R_stitched,Filtered_recall,stitched_recall,elapsed_seconds.count(),thread_num);
 
