@@ -14,7 +14,7 @@ map<int, set<int>> Graph_creation(list<int>& labeled_nodes, int R,int thread_num
         vector<int> nodes_vector(labeled_nodes.begin(), labeled_nodes.end());
         
         // Create a mutex for protecting the shared adj map
-        #pragma omp parallel num_threads(count)
+        #pragma omp parallel num_threads(count) 
         {
             // Create thread-local random number generator
             random_device rd;
@@ -28,7 +28,7 @@ map<int, set<int>> Graph_creation(list<int>& labeled_nodes, int R,int thread_num
                 vector<int> remaining_neighbors(nodes_vector);
                 remaining_neighbors.erase(
                     remove(remaining_neighbors.begin(), remaining_neighbors.end(), node),
-                    remaining_neighbors.end()
+                    remaining_neighbors.end() // Erasing from the start of the shifted elements until the end(because of remove all of the ending elements are elements that matched and went to the end of the vector)
                 );
                 
                 set<int> local_neighbors;
@@ -73,7 +73,7 @@ map<float,int> M,int R_stitched,int thread_num){
     // chrono::duration <double> elapsed = time_now - time_before;
     // cout<<"the elapsed time for graph creation is:" <<elapsed.count()<<endl;
     int medoid_node = M[filters];
-   //save_graph_to_binary_set(graph, "graph_data.bin");
+    save_graph_to_binary_set(graph, "graph_data.bin");
     //creating the random permutation
     random_device rd; //obtain a random number from hardware
     mt19937 generator(rd()); //seed the generator

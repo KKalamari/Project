@@ -48,7 +48,7 @@ void euclidean_distance_of_database(vector<vector<float>>& vec, vector<vector<do
         }
     }
  // Write the symmetric values to improve memory locality
-    #pragma omp parallel for num_threads(count)
+    #pragma omp parallel for num_threads(count) schedule(dynamic)
     for (int bi = 0; bi < n; bi += blocksize) {
         for (int bj = bi; bj < n; bj += blocksize) {
             for (int i = bi; i < min(bi + blocksize, n); i++) { // min(bi + blockSize, n) in order to not pass the vec.size()
