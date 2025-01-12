@@ -7,7 +7,7 @@
 using namespace std;
 vector<vector<int>> reading_groundtruth() {
     vector <vector<int>>ground;
-    ifstream file("groundtruth.txt");      
+    ifstream file("../output/groundtruth.txt");      
 
     if (!file.is_open()) {
         std::cerr << "Error: Could not open the file!" << std::endl;

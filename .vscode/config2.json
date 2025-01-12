@@ -1,6 +1,6 @@
 {
-    "source_path": "../V2.0/output/dummy-data.bin",
-    "query_path": "../V2.0/output/dummy-queries.bin",
+    "source_path": "../../V2.0/output/dummy-data.bin",
+    "query_path": "../../V2.0/output/dummy-queries.bin",
     "num_data_dimensions": 102,
     "num_query_dimensions_offset": 2,
     "sample_proportion": 0.001,
