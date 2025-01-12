@@ -3,11 +3,15 @@
 
 void save_graph_to_binary_set(const std::map<int, std::set<int>>& graph, const std::string& filename)
 {
-    std::ofstream outfile(filename, std::ios::binary);
+    const std::string folder = "./../graphs/";
+
+    std::string full_path = folder + filename;
+
+    std::ofstream outfile(full_path, std::ios::binary);
     
     if (!outfile)
     {
-        std::cerr << "Error opening file for writing: " << filename << std::endl;
+        std::cerr << "Error opening file for writing: " << full_path << std::endl;
         return;
     }
     
@@ -33,11 +37,16 @@ void save_graph_to_binary_set(const std::map<int, std::set<int>>& graph, const s
 
 bool load_graph_from_binary(const std::string& filename, std::map<int, std::set<int>>& graph)
 {
-    std::ifstream infile(filename, std::ios::binary);
+    
+    const std::string folder = "./../graphs/";
+
+    std::string full_path = folder + filename;
+
+    std::ifstream infile(full_path, std::ios::binary);
     
     if (!infile)
     {
-        std::cerr << "Error opening file for reading: " << filename << std::endl;
+        std::cerr << "Error opening file for reading: " << full_path << std::endl;
         return false;
     }
 

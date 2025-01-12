@@ -73,7 +73,7 @@ map<float,int> M,int R_stitched,int thread_num){
     // chrono::duration <double> elapsed = time_now - time_before;
     // cout<<"the elapsed time for graph creation is:" <<elapsed.count()<<endl;
     int medoid_node = M[filters];
-    save_graph_to_binary_set(graph, "graph_data.bin");
+    save_graph_to_binary_set(graph, "graph_data_vamana.bin");
     //creating the random permutation
     random_device rd; //obtain a random number from hardware
     mt19937 generator(rd()); //seed the generator

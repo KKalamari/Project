@@ -29,7 +29,7 @@ map<float,int> M,int thread_num){
             }
         }
     }
-//save_graph_to_binary_set(Gf, "graph_data_from_stitched.bin");
+    save_graph_to_binary_set(Gf, "graph_data_from_stitched.bin");
     return Gf;
 
 

@@ -6,6 +6,7 @@
 #include <set>
 #include <fstream>
 #include <iostream>
+
 using namespace std;
 #pragma once
 void save_graph_to_binary_set(const std::map<int, std::set<int>>& graph, const std::string& filename);
