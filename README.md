@@ -85,7 +85,8 @@ StitchedVamana:
 Και για filteredVamana αλλά και για stitched εχει υλοποιήθει και η εύρεση recall για unfiltered queries. Στο  FilteredVamana χρειάστηκε η υλοποίηση της λύσης που περιγράφηκε στο piazza (αντί για medoids βρίσκουμε το πιο κοντινό σημείο για κάθε medoid και περνάμε αυτά τα σημεία ως starting_points). Για το StitchedVamana δεν χρειάστηκαν κάποια ιδιαίτερη μεταχείριση τα ufniltered_queries.
 
 
-                        Παραδοτέο 3
+## Παραδοτέο 3
+
 Εκτέλεση κώδικα: Πλέον ο χρήστης μπορεί να εκτελέσει κάποια συγκεκριμένη συνάρτηση που επιθυμεί. Τρέχει τη main ως εξής
 
     ./main loops_of_current_instance num_threads Do_I_Calc Function_to_run
