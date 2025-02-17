@@ -1,11 +1,14 @@
 [![Run tests](https://github.com/KKalamari/Project/actions/workflows/run-tests.yml/badge.svg)](https://github.com/KKalamari/Project/actions/workflows/run-tests.yml)
 Project 2024-2025
 
-Implemented FilteredVamana and StitchedVamana based on 2023 acm's web conference paper: https://dl.acm.org/doi/10.1145/3543507.3583552
-
 Για περισσότερες λεπτομέρειες της υλοποίησης μας και των query αρχειων που χρησιμοποιηθήκαν ανατρέξτε στο final_paper.pdf
 
+##Λίγα λόγια για τους αλγορίθμους##
 
+Οι 2 παραπάνω αλγόριθμοι είναι ANNS αλγόριθμοι, βρίσκουν δηλαδή προσεγγιστικά τους πιο κοντινούς γείτονες κάποιου query. Η διαφορά με τους υπόλοιπους ANNS αλγορίθμους είναι πως παρουσιάζουν εγγενής υποστήριξη για γρηγορότερη αναζήτηση και εγγυρότερα αποτελέσματα σε queries. Για περισσότερες πληροφορίες ανατρέξτε στο paper: https://dl.acm.org/doi/10.1145/3543507.3583552
+
+
+## ReadMe παραδοτέων ##
 
 Ισίδωρος Καλαμάρης 1115202000233 sdi2000233@di.uoa.gr
 
@@ -25,7 +28,6 @@ Implemented FilteredVamana and StitchedVamana based on 2023 acm's web conference
 
 Robust:
 
-PickingP: Συνάρτηση που βάση την ήδη υπολογίσμενη απόσταση, διαλέγει από το candidateset το πιο κοντινο σημείο.
 
 RobustPrune: Συνάρτηση στην οποία υλοποιέιται το pruning με τη βοήθεια της PickingP , euclidean distance.
 
