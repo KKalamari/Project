@@ -1,7 +1,10 @@
 [![Run tests](https://github.com/KKalamari/Project/actions/workflows/run-tests.yml/badge.svg)](https://github.com/KKalamari/Project/actions/workflows/run-tests.yml)
 Project 2024-2025
 
-#Implemented FilteredVamana and StitchedVamana based on 2023 acm's web conference paper: https://dl.acm.org/doi/10.1145/3543507.3583552
+Implemented FilteredVamana and StitchedVamana based on 2023 acm's web conference paper: https://dl.acm.org/doi/10.1145/3543507.3583552
+
+Για περισσότερες λεπτομέρειες της υλοποίησης μας και των query αρχειων που χρησιμοποιηθήκαν ανατρέξτε στο final_paper.pdf
+
 
 
 Ισίδωρος Καλαμάρης 1115202000233 sdi2000233@di.uoa.gr
@@ -38,9 +41,9 @@ greedysearch: Συνάρτηση στην οποία υλοποιείται ο g
 
 vamana :
 
-medoid: Συνάρτηση που βρήσκει το medoid.
+medoid: Συνάρτηση που βρίσκει το medoid.
 
-vamana_index_algorithm: Συναρτηση που φτιάχει τον γράφω vamana χρησιμοποιόντας τις συναρτήσεις medoid, greedysearch , RobustPrune.
+vamana_index_algorithm: Συναρτηση που φτιάχει τον γράφο vamana χρησιμοποιόντας τις συναρτήσεις medoid, greedysearch , RobustPrune.
 
 Χρόνοι: (με flag -O3) Για α=1.1,k=100,L=150,R=16 τρέχει σε 5,30 λεπτά με πολύ καλό accuracy (σχεδόν όλα >95%) Για α=1, κ=50,L=100,R=20 τρέχει σε 2,30 λεπτά με recall=1 (και τα neighbors ανήκουν στο groundtruth) Για a=1.2,k=100,L_sizelist=120,R=14 2 λεπτά με καλό accuracy ( από τα 100 queries τα 95 είχαν παραπάνω από 90 κοινά στοιχεία)
 
