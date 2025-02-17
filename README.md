@@ -1,6 +1,9 @@
 [![Run tests](https://github.com/KKalamari/Project/actions/workflows/run-tests.yml/badge.svg)](https://github.com/KKalamari/Project/actions/workflows/run-tests.yml)
 Project 2024-2025
 
+#Implemented FilteredVamana and StitchedVamana based on 2023 acm's web conference paper: https://dl.acm.org/doi/10.1145/3543507.3583552
+
+
 Ισίδωρος Καλαμάρης 1115202000233 sdi2000233@di.uoa.gr
 
 Κυριακή Καλαμάρη 1115202000255 sdi2000255@di.uoa.gr
