@@ -10,21 +10,21 @@ Project 2024-2025
 Το project χωρίστηκε σε 3 παραδοτέα με το τελικό να έχει πλήρως υλοποιημένο τους 2 αλγορίθμους και ένα εκτενές report που παρέχει πειράματα και ανάλυση κώδικα/ σχεδιαστικών επιλογών final_paper.pdf. To V2.0 περιέχει τους 2 τελικούς αλγορίθμους.
 
 ## build
-make
+    make
 
 ## run
-cd output και ./main 
+    cd output και ./main 
 
 Παρέχεται η δυνατότητα στον χρήστη να δώσει συγκεκριμένα command line arguments που να ορίζουν το πόσα νήματα θα χρησιμοποιηθούν ή ποιος αλγόριθμος να τρέξει. Περισσότερες λεπτομέρειες στα σχόλια του κώδικα και στο report.
 
 ## clean project
-make clean
+    make clean
 
 ## tests
-Από το κεντρικό directory cd tests και έπειτα make run.
+    Από το κεντρικό directory cd tests και έπειτα make run.
 
 ## καθαρισμός tests
-make clean
+    make clean
 
 
 
